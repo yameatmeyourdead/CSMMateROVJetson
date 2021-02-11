@@ -11,7 +11,4 @@ stream = cv2.VideoCapture(0)
 
 while True:
     ret, frame = stream.read()
-    if ret == True:
-        sender.send_image(hostName, frame)
-    else:
-        break
+    sender.send_image(hostName, frame)
