@@ -16,8 +16,9 @@ operatingMode = True # Operate in Autonomous or TeleOp? True = TeleOp, False = A
 # Filling components
 # parts.append() ...
 
-# Defining stop method (Includes E Stop functionality through SHUTDOWN bool)
+# Defining stop method (Includes E Stop functionality through FATAL bool)
 def stop(FATAL = False):
+    # Calmly deactivate all components
     for Comp in parts:
         Comp.kill()
     # If EStop was triggered, shutdown Jetson immediately
@@ -46,7 +47,7 @@ def KeyListener():
         f.write(traceback.format_exc())
         f.close()
 
-        # Shutdown NOW
+        # Shutdown NOW (if needed)
         stop(e.args)
 
 def start():
