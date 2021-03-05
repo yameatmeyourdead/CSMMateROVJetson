@@ -1,9 +1,10 @@
 from .Component import Component
-from .__main__ import logger
+from . import ROVMap
 
 class Manip(Component):
     def __init__(self):
-        print("MANIPULATOR CONSTRUCTED")
+        # Do setup things
+        Manip.logEvent("Manipulator Constructed")
 
     def Update(self):
         print("Manipulator Update")
@@ -15,4 +16,4 @@ class Manip(Component):
         print("Manipulator received kill command")
 
     def logEvent(string):
-        logger.log("Test from Manip")
+        ROVMap.LOGGER.log(string)

@@ -1,9 +1,10 @@
 from .Component import Component
-from .__main__ import logger
+from . import ROVMap
 
 class MicroROV(Component):
     def __init__(self):
-        print("MICROROV CONSTRUCTED")
+        # Do setup things
+        MicroROV.logEvent("MICROROV CONSTRUCTED")
 
     def Update(self):
         print("MicroROV Update")
@@ -15,4 +16,4 @@ class MicroROV(Component):
         print("MicroROV received kill command")
     
     def logEvent(string):
-        logger.log("Test from Drive")
+        ROVMap.LOGGER.log(string)

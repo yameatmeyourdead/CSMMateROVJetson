@@ -1,25 +1,24 @@
 from .Drive import Drive
 from .Manip import Manip
 from .MicroROV import MicroROV
-from .Logger import Logger
 from . import ROVMap
 import sys
 import os
 import time
 import traceback
 from threading import Thread
-from pynput import keyboard
-from pynput.keyboard import Listener, Key
 
+# Find something better? VVV
+# from pynput import keyboard
+# from pynput.keyboard import Listener, Key
+
+# TODO: IMPLEMENT without breaking stacktrace
 # Creation of EStop Exception and its Fatal counterpart (Fatal EStop completely shuts down computer)
-class EStopInterruptFatal(Exception): args: True 
-class EStopInterrupt(Exception): args: False
+# class EStopInterruptFatal(Exception): args: True 
+# class EStopInterrupt(Exception): args: False
 
 parts = [] # Component list for ease of looping in autoOp/teleOp function
 operatingMode = True # Operate in Autonomous or TeleOp? True = TeleOp, False = Auto
-
-# Create Logger
-logger = Logger()
 
 # Creation of parts
 # Drive thrusters
@@ -29,15 +28,21 @@ parts.append(Manip())
 # MicroROV
 parts.append(MicroROV())
 
+ROVMap.LOGGER.log("All parts constructed")
+
 # Defining stop method (Includes E Stop functionality through FATAL bool)
 def stop(FATAL = False):
+    ROVMap.LOGGER.log(f"Received Stop Command.....Fatal? => {FATAL}")
     # Calmly deactivate all components
     for Comp in parts:
         Comp.kill()
     # If EStop was triggered, shutdown Jetson immediately
     if(FATAL):
-        print("Triggering system shutdown due to EStop")
+        ROVMap.LOGGER.log("Triggering system shutdown due to EStop")
+        ROVMap.LOGGER.closeLog()
         #os.system('shutdown /s /t 1')
+    ROVMap.LOGGER.log("ROV Successfully Shutdown....Closing Log")
+    ROVMap.Logger.closeLog()
 
 # TODO: IMPLEMENT
 # .
@@ -65,16 +70,17 @@ def stop(FATAL = False):
     #         # Shutdown NOW (if needed)
     #         stop(e.args)
 
-def start(self):
+def start():
     # TODO CONSIDER ADDING TICKRATE HERE?????
-    while True:
+    while False:
         # Update each component of the robot depending on the operating mode
-        if(self.operatingMode):
-            for Comp in self.parts:
+        if(operatingMode):
+            for Comp in parts:
                 Comp.Update()
         else:
-            for Comp in self.parts:
+            for Comp in parts:
                 Comp.autoUpdate()
+    stop()
 
 try:
     # TODO: IMPLEMENT??? (Or am I just being stupid?)

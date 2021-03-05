@@ -1,11 +1,10 @@
-from ROV.Logger import Logger
 from .Component import Component
-from .__main__ import logger
+from . import ROVMap
 
 class Drive(Component):
-
     def __init__(self):
-        print("DRIVE CONSTRUCTED")
+        # Do setup things
+        Drive.logEvent("DRIVE CONSTRUCTED")
 
     def Update(self):
         print("Drive Update")
@@ -17,5 +16,5 @@ class Drive(Component):
         print("Drive received kill command")
 
     def logEvent(string):
-        logger.log("Test from Drive")
+        ROVMap.LOGGER.log(string)
 
