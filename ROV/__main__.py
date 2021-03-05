@@ -38,10 +38,10 @@ def stop(FATAL = False):
         Comp.kill()
     # If EStop was triggered, shutdown Jetson immediately
     if(FATAL):
-        ROVMap.LOGGER.log("Triggering system shutdown due to EStop")
+        ROVMap.LOGGER.log("Triggering system shutdown due to EStop", end="")
         ROVMap.LOGGER.closeLog()
         #os.system('shutdown /s /t 1')
-    ROVMap.LOGGER.log("ROV Successfully Shutdown....Closing Log")
+    ROVMap.LOGGER.log("ROV Successfully Shutdown....Closing Log", end="")
     ROVMap.Logger.closeLog()
 
 # TODO: IMPLEMENT
