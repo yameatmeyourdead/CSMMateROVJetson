@@ -70,14 +70,17 @@ def stop(FATAL = False):
     #         # Shutdown NOW (if needed)
     #         stop(e.args)
 
+# Start the robot
 def start():
     # TODO CONSIDER ADDING TICKRATE HERE?????
     while True:
         # Update each component of the robot depending on the operating mode
         if(operatingMode):
+            # Teleop
             for Comp in parts:
                 Comp.Update()
         else:
+            # Autonomous
             for Comp in parts:
                 Comp.autoUpdate()
 

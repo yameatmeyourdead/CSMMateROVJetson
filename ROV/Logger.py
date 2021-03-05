@@ -13,9 +13,11 @@ class Logger:
         strin = '[' + Logger.getTimeFormatted(':') + '] ' + str(strin) + endO
         f.write(strin)
 
+    # get current system time formatted with given delimiter
     def getTimeFormatted(delim):
         SYSTIME = time.localtime(time.time())
         return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
     
+    # close file writer
     def closeLog():
         f.close()
