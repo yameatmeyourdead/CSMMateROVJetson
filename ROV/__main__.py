@@ -72,7 +72,7 @@ def stop(FATAL = False):
 
 def start():
     # TODO CONSIDER ADDING TICKRATE HERE?????
-    while False:
+    while True:
         # Update each component of the robot depending on the operating mode
         if(operatingMode):
             for Comp in parts:
@@ -80,7 +80,6 @@ def start():
         else:
             for Comp in parts:
                 Comp.autoUpdate()
-    stop()
 
 try:
     # TODO: IMPLEMENT??? (Or am I just being stupid?)
@@ -94,4 +93,5 @@ try:
     start()
 # If keyboard interrupt, shut down every single part
 except (KeyboardInterrupt):
+    ROVMap.LOGGER.log("Received Keyboard Interrupt.....Stopping")
     stop()
