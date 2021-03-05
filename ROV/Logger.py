@@ -9,8 +9,9 @@ class Logger:
         f = open("ROV/Logs/" + f"{time}" + ".txt", "w")
 
     # Call this method to log something compatible with all data types capable of conversion to str through str()
-    def log(self, strin):
-        f.write('[' + Logger.getTimeFormatted(':') + '] ' + str(strin) + '\n')
+    def log(self, strin, endO="\n"):
+        strin = '[' + Logger.getTimeFormatted(':') + '] ' + str(strin) + endO
+        f.write(strin)
 
     def getTimeFormatted(delim):
         SYSTIME = time.localtime(time.time())
