@@ -91,7 +91,7 @@ try:
     # keyboardThread.start()
 
     # Thread for actually doing things
-    # functionalThread = Thread(target = start)
+    # functionalThread = Thread(target=start)
     # functionalThread.start()
     start()
 # If keyboard interrupt, shut down every single part

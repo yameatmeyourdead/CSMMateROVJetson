@@ -8,7 +8,8 @@ sender = imagezmq.ImageSender(connect_to="tcp://10.0.0.1:5555")
 
 hostName = socket.gethostname()
 stream = cv2.VideoCapture(0)
-
+if(not stream.isOpened()):
+    stream.open()
 while True:
     ret, frame = stream.read()
     sender.send_image(hostName, frame)
