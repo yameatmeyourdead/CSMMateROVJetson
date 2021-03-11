@@ -64,8 +64,8 @@ class CameraServer:
 
     def start(self):
         set_start_method('spawn')
-        self.cameraServer = Process(target=waitForImage, args=self.queues)
+        self.cameraServer = Process(target=waitForImage, args=(self.queues))
         self.cameraServer.start()
     
     def kill(self):
-        self.cameraServer.kill()    
+        self.cameraServer.kill()
