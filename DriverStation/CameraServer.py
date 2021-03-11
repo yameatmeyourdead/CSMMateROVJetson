@@ -10,18 +10,7 @@ def waitForImage():
     # Create the server
     imageHub = imagezmq.ImageHub()
 
-    # Create the queues (to push grabbed frames)
-    imageQueueCam1 = Queue()
-    imageQueueCam2 = Queue()
-    imageQueueCam3 = Queue()
-    imageQueueCam4 = Queue()
-
-    # cry
-    queues = [imageQueueCam1, imageQueueCam2, imageQueueCam3, imageQueueCam4]
-
-    # punch a baby
-    guiDriver = CameraGUIDriver(queues)
-
+    
     # TODO REPLACE THIS WITH GUI CODE
     # start looping over all the frames 
     while True:
@@ -59,7 +48,17 @@ class CameraServer:
                 newCameraServerObject.kill()\n
                 (  Process is no longer running :)  )
         '''
-        pass
+        # Create the queues (to push grabbed frames)
+        self.imageQueueCam1 = Queue()
+        self.imageQueueCam2 = Queue()
+        self.imageQueueCam3 = Queue()
+        self.imageQueueCam4 = Queue()
+
+        # cry
+        self.queues = [self.imageQueueCam1, self.imageQueueCam2, self.imageQueueCam3, self.imageQueueCam4]
+
+        # punch a baby
+        self.guiDriver = CameraGUIDriver(self.queues)
     
     def start(self):
         set_start_method('spawn')
