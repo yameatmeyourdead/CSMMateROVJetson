@@ -6,11 +6,10 @@ from multiprocessing import Process, set_start_method, Queue
 
 logger = DriverStationMap.LOGGER
 
-def waitForImage():
+def waitForImage(queues):
     # Create the server
     imageHub = imagezmq.ImageHub()
 
-    
     # TODO REPLACE THIS WITH GUI CODE
     # start looping over all the frames 
     while True:
@@ -60,9 +59,12 @@ class CameraServer:
         # punch a baby
         self.guiDriver = CameraGUIDriver(self.queues)
     
+    def getGuiDriver(self):
+        return self.guiDriver
+
     def start(self):
         set_start_method('spawn')
-        self.cameraServer = Process(target=waitForImage)
+        self.cameraServer = Process(target=waitForImage, args=self.queues)
         self.cameraServer.start()
     
     def kill(self):

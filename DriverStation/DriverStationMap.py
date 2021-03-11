@@ -4,3 +4,4 @@ from .CameraServer import CameraServer
 
 LOGGER = Logger()
 CAMERASERVER = CameraServer()
+CAMERAGUIDRIVER = CAMERASERVER.getGuiDriver()
