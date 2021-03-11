@@ -6,15 +6,25 @@ def waitForImage():
     # Create the server
     imageHub = imagezmq.ImageHub()
 
-    # Create the queue (to push grabbed frames)
-    imageQueue = Queue()
+    # Create the queues (to push grabbed frames)
+    # imageQueueCam1 = Queue()
+    # imageQueueCam2 = Queue()
+    # imageQueueCam3 = Queue()
+    # imageQueueCam4 = Queue()
 
-    # start looping over all the frames
+    # TODO REPLACE THIS WITH GUI CODE
+    # start looping over all the frames 
     while True:
         # receive client name and frame from the client and acknowledge
         # the receipt
         (clientName, frame) = imageHub.recv_image()
-        imageQueue.put((clientName,frame))
+
+        
+        cv2.imshow(clientName, frame)
+
+
+        # imageQueue.put((clientName,frame))
+        cv2.waitKey(1)
         imageHub.send_reply(b'OK') 
 
 
