@@ -16,10 +16,16 @@
 # start_dearpygui()
 
 # THIS IS WORKING
-from .CameraServer import CameraServer
+from .Logger import Logger
+from . import DriverStationMap
 
-cameraServer = CameraServer()
+logger = DriverStationMap.LOGGER
+cameraServer = DriverStationMap.CAMERASERVER
 
+logger.log("Attempt Camera Server Start")
 cameraServer.start()
-input("Press to stop")
+logger.log("Camera Server Started")
+input("Enter to stop")
 cameraServer.kill()
+logger.log("Killing ")
+logger.closeLog()
