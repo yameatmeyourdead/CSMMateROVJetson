@@ -19,4 +19,8 @@ class CameraGUIDriver:
     
     def start(self):
         set_start_method("spawn")
-        self.guiDriver = Process(target=updateCams)
+        self.guiDriver = Process(target=updateCams, args=(self.queues))
+        self.guiDriver.start()
+    
+    def kill(self):
+        self.guiDriver.kill()
