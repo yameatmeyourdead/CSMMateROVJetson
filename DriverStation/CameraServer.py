@@ -48,13 +48,8 @@ class CameraServer:
                 (  Process is no longer running :)  )
         '''
         # Create the queues (to push grabbed frames)
-        self.imageQueueCam1 = Queue()
-        self.imageQueueCam2 = Queue()
-        self.imageQueueCam3 = Queue()
-        self.imageQueueCam4 = Queue()
-
         # cry
-        self.queues = [self.imageQueueCam1, self.imageQueueCam2, self.imageQueueCam3, self.imageQueueCam4]
+        self.queues = [Queue(), Queue(), Queue(), Queue()]
 
         # punch a baby
         self.guiDriver = CameraGUIDriver(self.queues)
