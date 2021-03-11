@@ -1,3 +1,14 @@
+from multiprocessing import Process, set_start_method, Queue
+
+def updateCams(queues):
+    while True:
+        index = 0
+        for index in range (4):
+            if(queues[index].qsize()):
+                # Do thing with frame
+                frame = queues[index].get()
+
+
 class CameraGUIDriver:
     
     def __init__(self, que):
@@ -6,3 +17,6 @@ class CameraGUIDriver:
         """
         self.queues = que
     
+    def start(self):
+        set_start_method("spawn")
+        self.guiDriver = Process(target=updateCams)
