@@ -1,16 +1,16 @@
 # CSMMateROVJetson
 Contains code relevant to CSM's 2020-2021 MATEROV season
-If you contribute to this repo, make sure you comment your code. If you don't............I will find you and reject your pull request
+\nIf you contribute to this repo, make sure you comment your code. If you don't............I will find you and reject your pull request
 
 Dependencies:
 
-ROV:
-imageZMQ
-adafruit-circuitpython-servokit
-xboxdrv
-cv2
+\nROV:
+\nimageZMQ
+\nadafruit-circuitpython-servokit
+\nxboxdrv
+\ncv2
 
-DriverStation:
-imageZMQ
-cv2
-tkinter
+\nDriverStation:
+\nimageZMQ
+\ncv2
+\ntkinter
