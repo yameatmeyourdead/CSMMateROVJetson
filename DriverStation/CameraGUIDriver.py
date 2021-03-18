@@ -20,7 +20,7 @@ def updateCams(queues, panel):
                 frames.append(frame)
 
         other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
-        output = concat_tile_resize(other_list)
+        output = concat_tile_resize(other_list)  # putting things into a single frame to display
 
         # if panel doesnt exist yet, initialize it
         if panel is None:
@@ -64,7 +64,7 @@ def concat_tile_resize(list_2d):
     # return final image
     return vconcat_resize(img_list_v, interpolation=cv2.INTER_CUBIC)
 
-
+# helper method for concatenating picture tiles (use for grayscale images)
 def toColor(img):
     return cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
@@ -83,6 +83,7 @@ class CameraGUIDriver:
         set_start_method("spawn")
         self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel))
         self.guiDriver.start()
+        self.root.mainloop()  # start the tk window (hopefully)
 
     def kill(self):
         self.guiDriver.kill()
