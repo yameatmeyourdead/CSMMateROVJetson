@@ -85,7 +85,6 @@ class CameraGUIDriver:
         """
         GOD IS DEAD AND I KILLED HIM. NO IM NOT EXPLAINING WHY THIS IS A THING (until i calm down, come read the class comments)
         """
-        print("init")
         self.queues = que
         self.root = Tk()
         self.panel = None
@@ -98,7 +97,6 @@ class CameraGUIDriver:
             pass
         self.LOGGER.log("attempt to start updating cams")
 
-        print("Test")
         self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel, self.LOGGER))
         self.guiDriver.start()
         self.root.mainloop()  # start the tk window (hopefully)

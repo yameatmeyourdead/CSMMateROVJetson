@@ -1,11 +1,10 @@
 import imagezmq
 import cv2
-from .Logger import LOGGER
 from .CameraGUIDriver import CameraGUIDriver
 from multiprocessing import Process, set_start_method, Queue
 
 
-def waitForImage(queues):
+def waitForImage(queues, LOGGER):
     # Create the server
     imageHub = imagezmq.ImageHub()
 
@@ -35,7 +34,7 @@ def waitForImage(queues):
         
 
 class CameraServer:
-    def __init__(self):
+    def __init__(self, logger):
         '''
         Use to create distinct camera server using imagezmq
         One has already been created for you in /DriverStation/__main__.py
@@ -51,18 +50,19 @@ class CameraServer:
         # Create the queues (to push grabbed frames)
         # cry
         self.queues = [Queue(), Queue(), Queue(), Queue()]
+        self.LOGGER = logger
 
     def start(self):
         try:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage, args=((self.queues,)))
+        self.cameraServer = Process(target=waitForImage, args=((self.queues,self.LOGGER)))
         self.cameraServer.start()
 
         # spawn GUI Driver
-        LOGGER.log("GuiDriver Created")
-        self.guiDriver = CameraGUIDriver(self.queues, LOGGER)
+        self.LOGGER.log("GuiDriver Created")
+        self.guiDriver = CameraGUIDriver(self.queues, self.LOGGER)
         self.guiDriver.start()
     
     def kill(self):
