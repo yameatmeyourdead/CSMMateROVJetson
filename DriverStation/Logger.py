@@ -21,5 +21,5 @@ class Logger:
     # close file writer
     def closeLog(self):
         f.close()
-    
+
 LOGGER = Logger()

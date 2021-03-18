@@ -1,10 +1,9 @@
 import imagezmq
 import cv2
-from . import Logger
+from .Logger import LOGGER
 from .CameraGUIDriver import CameraGUIDriver
 from multiprocessing import Process, set_start_method, Queue
 
-logger = Logger.LOGGER
 
 def waitForImage(queues):
     # Create the server
@@ -18,13 +17,13 @@ def waitForImage(queues):
 
         # if recieved client did not specify camera designation error out
         if(len(clientName) <= 6):
-            logger.log("received image did not contain valid camera designation")
+            LOGGER.log("received image did not contain valid camera designation")
         
         # grab camera designation
         cameraDesignation = int(clientName[6:])
         
         # Uncomment below line for debug ONLY
-        # logger.log(f"received image from camera {cameraDesignation}")
+        # LOGGER.log(f"received image from camera {cameraDesignation}")
         cv2.imshow(clientName, frame)
         cv2.waitKey(1)
         imageHub.send_reply(b'OK')
@@ -53,10 +52,6 @@ class CameraServer:
         # cry
         self.queues = [Queue(), Queue(), Queue(), Queue()]
 
-        # punch a baby
-        logger.log("GuiDriver Created")
-        self.guiDriver = CameraGUIDriver(self.queues)
-
     def start(self):
         try:
             set_start_method('spawn', force=True)
@@ -64,6 +59,12 @@ class CameraServer:
             pass
         self.cameraServer = Process(target=waitForImage, args=((self.queues,)))
         self.cameraServer.start()
+
+        # spawn GUI Driver
+        LOGGER.log("GuiDriver Created")
+        self.guiDriver = CameraGUIDriver(self.queues, LOGGER)
+        self.guiDriver.start()
     
     def kill(self):
+        self.guiDriver.kill()
         self.cameraServer.kill()

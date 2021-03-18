@@ -17,15 +17,12 @@
 
 # THIS IS WORKING
 from .CameraServer import CameraServer
-from . import Logger
 
-logger = Logger.LOGGER
 cameraServer = CameraServer()
 
-logger.log("Attempt Camera Server Start")
+print("Attempt Camera Server Start")
 cameraServer.start()
-logger.log("Camera Server Started")
+print("Camera Server Started")
 input("Enter to stop")
 cameraServer.kill()
-logger.log("Killing ", endO='')
-logger.closeLog()
+print("Killing ")

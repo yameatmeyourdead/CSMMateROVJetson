@@ -4,9 +4,8 @@ import cv2
 import numpy as np
 from PIL import Image
 from PIL import ImageTk
-from .Logger import LOGGER
 
-def updateCams(queues, panel):
+def updateCams(queues, panel, LOGGER):
     while True:
         frames = []
         for index in range(4):
@@ -79,20 +78,25 @@ def toColor(img):
 
 class CameraGUIDriver:
 
-    def __init__(self, que):
+    def __init__(self, que, logger):
         """
         GOD IS DEAD AND I KILLED HIM. NO IM NOT EXPLAINING WHY THIS IS A THING (until i calm down, come read the class comments)
         """
+        print("init")
         self.queues = que
         self.root = Tk()
         self.panel = None
+        self.LOGGER = logger
 
     def start(self):
         try:
             set_start_method("spawn", force=True)
         except RuntimeError:
             pass
-        self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel))
+        self.LOGGER.log("attempt to start updating cams")
+
+        print("Test")
+        self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel, self.LOGGER))
         self.guiDriver.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
