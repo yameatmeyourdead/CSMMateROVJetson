@@ -19,7 +19,13 @@ def updateCams(queues, panel):
                 frame = ImageTk.PhotoImage(frame)
                 frames.append(frame)
 
-        other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
+        if len(frames) == 4:
+            other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
+        elif len(frames) == 3:
+            other_list = [[frames[0], frames[1]], [frames[2]]]
+        else:
+            other_list = [frames]
+
         output = concat_tile_resize(other_list)  # putting things into a single frame to display
 
         # if panel doesnt exist yet, initialize it
