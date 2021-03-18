@@ -6,7 +6,7 @@ from multiprocessing import Process, set_start_method, Queue
 
 logger = Logger.LOGGER
 
-def waitForImage(self, queues):
+def waitForImage(queues):
     # Create the server
     imageHub = imagezmq.ImageHub()
 
@@ -29,8 +29,8 @@ def waitForImage(self, queues):
             if(cameraDesignation == index):
                 queues[index].put(frame)
 
-        # cv2.imshow(clientName, frame)
-        # cv2.waitKey(1)
+        cv2.imshow(clientName, frame)
+        cv2.waitKey(1)
         imageHub.send_reply(b'OK') 
 
 class CameraServer:
@@ -59,7 +59,7 @@ class CameraServer:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage, args=(self.queues))
+        self.cameraServer = Process(target=waitForImage, args=((self.queues,)))
         self.cameraServer.start()
     
     def kill(self):
