@@ -6,7 +6,7 @@ from multiprocessing import Process, set_start_method, Queue
 
 logger = Logger.LOGGER
 
-def waitForImage(queues):
+def waitForImage(self, queues):
     # Create the server
     imageHub = imagezmq.ImageHub()
 
@@ -53,12 +53,12 @@ class CameraServer:
 
         # punch a baby
         self.guiDriver = CameraGUIDriver(self.queues)
-    
-    def getGuiDriver(self):
-        return self.guiDriver
 
     def start(self):
-        set_start_method('spawn')
+        try:
+            set_start_method('spawn', force=True)
+        except RuntimeError:
+            pass
         self.cameraServer = Process(target=waitForImage, args=(self.queues))
         self.cameraServer.start()
     
