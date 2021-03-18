@@ -1,10 +1,10 @@
 import imagezmq
 import cv2
-from . import DriverStationMap
+from . import Logger
 from .CameraGUIDriver import CameraGUIDriver
 from multiprocessing import Process, set_start_method, Queue
 
-logger = DriverStationMap.LOGGER
+logger = Logger.LOGGER
 
 def waitForImage(queues):
     # Create the server

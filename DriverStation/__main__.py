@@ -17,8 +17,9 @@
 
 # THIS IS WORKING
 from . import DriverStationMap
+from . import Logger
 
-logger = DriverStationMap.LOGGER
+logger = Logger.LOGGER
 cameraServer = DriverStationMap.CAMERASERVER
 
 logger.log("Attempt Camera Server Start")
