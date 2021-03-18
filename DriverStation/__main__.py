@@ -16,7 +16,6 @@
 # start_dearpygui()
 
 # THIS IS WORKING
-from .Logger import Logger
 from . import DriverStationMap
 
 logger = DriverStationMap.LOGGER
