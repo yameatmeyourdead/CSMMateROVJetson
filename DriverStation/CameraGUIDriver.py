@@ -13,12 +13,15 @@ def updateCams(queues, panel, LOGGER):
                 # Do thing with frame
                 # this is disgusting but it fine don't worry
                 frame = queues[index].get()
-                frame = cv2.cvtColor(cv2.COLOR_BGR2RGB, frame)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frame = Image.fromarray(frame)
                 frame = ImageTk.PhotoImage(frame)
                 frames.append(frame)
 
         LOGGER.log(len(frames))
+
+        if(len(frames) == 0):
+            continue
 
         if len(frames) == 4:
             other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
