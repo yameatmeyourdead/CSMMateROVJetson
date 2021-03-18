@@ -19,19 +19,21 @@ def waitForImage(queues):
         # if recieved client did not specify camera designation error out
         if(len(clientName) <= 6):
             logger.log("received image did not contain valid camera designation")
-            
-
+        
         # grab camera designation
         cameraDesignation = int(clientName[6:])
-
-        # depending upon camera designation put it in corresponding queue
-        for index in range(4):
-            if(cameraDesignation == index):
-                queues[index].put(frame)
-
+        
+        # Uncomment below line for debug ONLY
+        # logger.log(f"received image from camera {cameraDesignation}")
         cv2.imshow(clientName, frame)
         cv2.waitKey(1)
-        imageHub.send_reply(b'OK') 
+        imageHub.send_reply(b'OK')
+            
+
+        # depending upon camera designation put it in corresponding queue
+        queues[cameraDesignation].put(frame)
+
+        
 
 class CameraServer:
     def __init__(self):
@@ -52,6 +54,7 @@ class CameraServer:
         self.queues = [Queue(), Queue(), Queue(), Queue()]
 
         # punch a baby
+        logger.log("GuiDriver Created")
         self.guiDriver = CameraGUIDriver(self.queues)
 
     def start(self):

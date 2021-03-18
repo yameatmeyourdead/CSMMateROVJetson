@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from PIL import ImageTk
-
+from .Logger import LOGGER
 
 def updateCams(queues, panel):
     while True:
@@ -18,6 +18,8 @@ def updateCams(queues, panel):
                 frame = Image.fromarray(frame)
                 frame = ImageTk.PhotoImage(frame)
                 frames.append(frame)
+
+        LOGGER.log(len(frames))
 
         if len(frames) == 4:
             other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
@@ -86,7 +88,10 @@ class CameraGUIDriver:
         self.panel = None
 
     def start(self):
-        set_start_method("spawn")
+        try:
+            set_start_method("spawn", force=True)
+        except RuntimeError:
+            pass
         self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel))
         self.guiDriver.start()
         self.root.mainloop()  # start the tk window (hopefully)
