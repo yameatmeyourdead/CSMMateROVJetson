@@ -11,7 +11,7 @@ class Manip(Component):
     def Update(self):
         print("Manipulator Update")
         with ROVMap.CONTROLLER as joystick:
-            joystick_lx = (joystick['lx']+1)/2*100
+            joystick_lx = (joystick['lx']+1)/2*180
             ROVMap.kit.servo[ROVMap.PCA9685PINOUT["MANIP_PLACEHOLDER_SERVO1"]].angle=joystick_lx
     
     def autoUpdate(self):
