@@ -15,8 +15,8 @@ def updateCams(queues, panel, LOGGER):
                 frame = queues[index].get()
                 print(frame.info)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame = Image.fromarray(frame)
-                frameTk = ImageTk.PhotoImage(frame)
+                framePil = Image.fromarray(frame)
+                frameTk = ImageTk.PhotoImage(framePil)
                 frames.append(frameTk)
 
         if(len(frames) == 0):
