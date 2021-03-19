@@ -1,11 +1,11 @@
-from .xbox import Joystick
 from .Logger import Logger
 from adafruit_servokit import ServoKit
+from approxeng.input.selectbinder import ControllerResource
 
 #use this to create constants/lists of constants for all needs
 
 LOGGER = Logger()
-CONTROLLER = Joystick()
+CONTROLLER = ControllerResource()
 
 # PCA9685 should be connected to jetson on J41 pins 27(SDA)/28(SCL) for Bus0 or pins 3(SDA)/5(SCL) for Bus1 as well as relevant voltage (pin1/7 i think (CHECK CHECK CHECK))
 # Run PCA9685 at v+ = 5V 4A

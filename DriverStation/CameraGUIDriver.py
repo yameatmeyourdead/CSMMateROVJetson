@@ -10,7 +10,7 @@ def updateCams(queues, panel, LOGGER):
         frames = []
         for index in range(4):
             if (queues[index].qsize()):
-                # Do thing with frame
+                # Do thing with frame4
                 # this is disgusting but it fine don't worry
                 frame = queues[index].get()
                 frames.append(frame)
