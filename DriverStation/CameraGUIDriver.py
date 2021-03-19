@@ -16,8 +16,8 @@ def updateCams(queues, panel):
                 frame = queues[index].get()
                 frame = cv2.cvtColor(cv2.COLOR_BGR2RGB, frame)
                 frame = Image.fromarray(frame)
-                frame = ImageTk.PhotoImage(frame)
-                frames.append(frame)
+                frameTk = ImageTk.PhotoImage(frame)
+                frames.append(frameTk)
 
         if len(frames) == 4:
             other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
@@ -76,6 +76,8 @@ def toColor(img):
 
 
 class CameraGUIDriver:
+
+    # TODO make a better GUI
 
     def __init__(self, que):
         """
