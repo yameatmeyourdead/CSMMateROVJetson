@@ -6,13 +6,12 @@ class Manip(Component):
     def __init__(self):
         # Do setup things
         Manip.logEvent("MANIPULATOR CONSTRUCTED")
-        # Try to set servo to specific angle
 
     def Update(self):
         print("Manipulator Update")
-        with ROVMap.CONTROLLER as joystick:
-            joystick_lx = (joystick['lx']+1)/2*180
-            ROVMap.kit.servo[ROVMap.PCA9685PINOUT["MANIP_PLACEHOLDER_SERVO1"]].angle=joystick_lx
+        # Test controls
+        desired_angle = (ROVMap.getLeftStick[0]+1)/2*180
+        ROVMap.kit.servo[ROVMap.PCA9685PINOUT["MANIP_PLACEHOLDER_SERVO1"]].angle=desired_angle
     
     def autoUpdate(self):
         print("Manipulator autoUpdate")
@@ -21,4 +20,4 @@ class Manip(Component):
         print("Manipulator received kill command")
 
     def logEvent(string):
-        ROVMap.LOGGER.log(string)
+        ROVMap.log(string)

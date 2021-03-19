@@ -32,17 +32,22 @@ ROVMap.LOGGER.log("All parts constructed")
 
 # Defining stop method (Includes E Stop functionality through FATAL bool)
 def stop(FATAL = False):
-    ROVMap.LOGGER.log(f"Received Stop Command.....Fatal? => {FATAL}")
+    """
+    Stop the robot. Contains Capability for auto-shutdown of computer\n
+    WARNING: IF TESTING THIS FATAL FUNCTIONALITY, IT WILL SHUTDOWN YOUR COMPUTER... YOU HAVE BEEN WARNED\n
+    usage stop(FATAL) Fatal=False by default
+    """
+    ROVMap.log(f"Received Stop Command.....Fatal? => {FATAL}")
     # Calmly deactivate all components
     for Comp in parts:
         Comp.kill()
     # If EStop was triggered, shutdown Jetson immediately
     if(FATAL):
-        ROVMap.LOGGER.log("Triggering system shutdown due to EStop", endO="")
-        ROVMap.LOGGER.closeLog()
-        #os.system('shutdown /s /t 1')
-    ROVMap.LOGGER.log("ROV Successfully Shutdown....Closing Log", endO="")
-    ROVMap.Logger.closeLog()
+        ROVMap.log("Triggering system shutdown due to EStop", endO="")
+        ROVMap.closeLogger()
+        os.system('shutdown /s /t 1')
+    ROVMap.log("ROV Successfully Shutdown....Closing Log", endO="")
+    ROVMap.closeLogger()
 
 # TODO: IMPLEMENT
 # .
@@ -72,7 +77,11 @@ def stop(FATAL = False):
 
 # Start the robot
 def start():
-    # TODO CONSIDER ADDING TICKRATE HERE?????
+    """
+    Start the Robot\n
+    Creates two child processes, one for keyboard stop/estop and one for actually doing robo
+    """
+    # TODO CONSIDER ADDING TICKRATE HERE??
     while True:
         # Update each component of the robot depending on the operating mode
         if(operatingMode):

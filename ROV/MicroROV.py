@@ -16,4 +16,4 @@ class MicroROV(Component):
         print("MicroROV received kill command")
     
     def logEvent(string):
-        ROVMap.LOGGER.log(string)
+        ROVMap.log(string)

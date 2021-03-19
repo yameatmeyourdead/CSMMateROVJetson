@@ -16,5 +16,5 @@ class Drive(Component):
         print("Drive received kill command")
 
     def logEvent(string):
-        ROVMap.LOGGER.log(string)
+        ROVMap.log(string)
 

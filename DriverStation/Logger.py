@@ -1,3 +1,5 @@
+# TODO: REPLACE WITH DRIVERSTATIONMAP FOR "STATIC" IMPLEMENTATION
+
 import time
 
 # Use this class for all logging needs. Instance of Logger has already been created below
