@@ -5,8 +5,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageTk
 
-
-def updateCams(queues, panel):
+def updateCams(queues, panel, LOGGER):
     while True:
         frames = []
         for index in range(4):
@@ -14,10 +13,17 @@ def updateCams(queues, panel):
                 # Do thing with frame
                 # this is disgusting but it fine don't worry
                 frame = queues[index].get()
-                frame = cv2.cvtColor(cv2.COLOR_BGR2RGB, frame)
+                print(frame.info)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frame = Image.fromarray(frame)
-                frameTk = ImageTk.PhotoImage(frame)
-                frames.append(frameTk)
+                frame = ImageTk.PhotoImage(frame)
+                frames.append(frame)
+
+        if(len(frames) == 0):
+            continue
+
+        LOGGER.log(f"{len(frames)} frames grabbed from queues")
+        
 
         if len(frames) == 4:
             other_list = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
@@ -77,19 +83,23 @@ def toColor(img):
 
 class CameraGUIDriver:
 
-    # TODO make a better GUI
-
-    def __init__(self, que):
+    def __init__(self, que, logger):
         """
         GOD IS DEAD AND I KILLED HIM. NO IM NOT EXPLAINING WHY THIS IS A THING (until i calm down, come read the class comments)
         """
         self.queues = que
         self.root = Tk()
         self.panel = None
+        self.LOGGER = logger
 
     def start(self):
-        set_start_method("spawn")
-        self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel))
+        try:
+            set_start_method("spawn", force=True)
+        except RuntimeError:
+            pass
+        self.LOGGER.log("attempt to start updating cams")
+
+        self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel, self.LOGGER))
         self.guiDriver.start()
         self.root.mainloop()  # start the tk window (hopefully)
 

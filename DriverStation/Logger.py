@@ -1,6 +1,6 @@
 import time
 
-# Use this class for all logging needs. Instance of Logger has already been created -> main -> logger variable
+# Use this class for all logging needs. Instance of Logger has already been created below
 class Logger:
     # Constructor creates global file object named f
     def __init__(self):
@@ -21,3 +21,5 @@ class Logger:
     # close file writer
     def closeLog(self):
         f.close()
+
+LOGGER = Logger()
