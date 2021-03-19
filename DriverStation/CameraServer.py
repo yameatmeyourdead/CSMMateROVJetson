@@ -24,8 +24,8 @@ def waitForImage(queues, LOGGER):
         
         # Uncomment below line for debug ONLY
         # LOGGER.log(f"received image from camera {cameraDesignation}")
-        cv2.imshow(clientName, frame)
-        cv2.waitKey(1)
+        #cv2.imshow(clientName, frame)
+        #cv2.waitKey(1)
         imageHub.send_reply(b'OK')
             
 

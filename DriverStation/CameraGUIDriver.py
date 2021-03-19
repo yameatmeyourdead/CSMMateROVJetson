@@ -13,7 +13,7 @@ def updateCams(queues, panel, LOGGER):
                 # Do thing with frame
                 # this is disgusting but it fine don't worry
                 frame = queues[index].get()
-                print(frame.info)
+                #print(frame.info)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 framePil = Image.fromarray(frame)
                 Tk()
