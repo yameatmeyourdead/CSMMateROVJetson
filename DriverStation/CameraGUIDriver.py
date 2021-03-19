@@ -100,7 +100,7 @@ class CameraGUIDriver:
             set_start_method("spawn", force=True)
         except RuntimeError:
             pass
-        self.LOGGER.log("attempt to start updating cams")
+        self.LOGGER.log("attempt to start updating displayed cams")
 
         self.guiDriver = Process(target=updateCams, args=(self.queues, self.panel, self.LOGGER))
         self.guiDriver.start()
