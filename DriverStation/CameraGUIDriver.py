@@ -13,12 +13,7 @@ def updateCams(queues, panel, LOGGER):
                 # Do thing with frame
                 # this is disgusting but it fine don't worry
                 frame = queues[index].get()
-                print(frame.info)
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                framePil = Image.fromarray(frame)
-                Tk()
-                frameTk = ImageTk.PhotoImage(framePil)
-                frames.append(frameTk)
+                frames.append(frame)
 
         if(len(frames) == 0):
             continue
@@ -34,6 +29,13 @@ def updateCams(queues, panel, LOGGER):
             other_list = [frames]
 
         output = concat_tile_resize(other_list)  # putting things into a single frame to display
+
+        frame = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
+        framePil = Image.fromarray(frame)
+        Tk()
+        output = ImageTk.PhotoImage(framePil)
+
+
 
         # if panel doesnt exist yet, initialize it
         if panel is None:
@@ -105,4 +107,5 @@ class CameraGUIDriver:
         self.root.mainloop()  # start the tk window (hopefully)
 
     def kill(self):
+        self.root.quit()
         self.guiDriver.kill()
