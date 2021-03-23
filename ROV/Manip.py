@@ -60,11 +60,11 @@ class Manip(Component):
         # Move all but elbow
         # Else moves elbow servos
         if(self.chicken):
-            self.level_angle = self.level_angle_old + self.y_velocity / self.slow
-            self.wrist_angle = self.wrist_angle_old + self.x_velocity / self.slow
-        else:
             self.elbow_angle = self.elbow_angle_old + self.y_velocity / self.slow
             self.level_angle = self.level_angle_old - self.y_velocity / self.slow
+            self.wrist_angle = self.wrist_angle_old + self.x_velocity / self.slow
+        else:
+            self.level_angle = self.level_angle_old + self.y_velocity / self.slow
             self.wrist_angle = self.wrist_angle_old + self.x_velocity / self.slow
 
         # Keeps velocities from overshooting 0 or 180 deg
@@ -87,16 +87,17 @@ class Manip(Component):
         # Always write the wrist_servo
         self.wrist_servo.angle = self.wrist_angle + self.wrist_tune
 
-        # TODO: Check this logic still works. I switched the 0 and 1 cases so i didnt have to type ==
+        # TODO: Check this logic still works
         # Determines protocol based on if auto-leveling (chicken) is desired
         # Move only level servo
         # Else move all
         if(self.chicken):
-            self.level_servo.angle = self.level_angle + self.level_tune
-        else:
             self.elbow_servo.angle = self.elbow_angle + self.elbow_tune
             self.elbow_servo2.angle = 180 - self.elbow_angle + self.elbow_tune
             self.level_servo.angle = self.level_angle + self.level_tune
+        else:
+            self.level_servo.angle = self.level_angle + self.level_tune
+            
         
         # Update old variables
         self.elbow_angle_old = self.elbow_angle
