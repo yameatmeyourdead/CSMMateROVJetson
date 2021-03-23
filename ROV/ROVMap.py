@@ -107,7 +107,7 @@ def getDPad():
     -> (dleft, dup, dright, ddown)  \n
     val = 1 if pressed else 0  
     """
-    buttonStates = getButtons()
+    buttonStates = getButtonPresses()
     return [buttonStates.dleft, buttonStates.dup, buttonStates.dright, buttonStates.ddown]
 
 def updatePresses():

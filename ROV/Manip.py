@@ -98,7 +98,6 @@ class Manip(Component):
         else:
             self.level_servo.angle = self.level_angle + self.level_tune
             
-        
         # Update old variables
         self.elbow_angle_old = self.elbow_angle
         self.level_angle_old = self.level_angle
