@@ -12,7 +12,7 @@ def waitForImage(panel):
     imageHub = imagezmq.ImageHub()
 
     # initialize empty opencv frames so stitching them together works.
-    frames = [np.zeros((400,400,3), np.uint8), np.zeros((400,400,3), np.uint8), np.zeros((400,400,3), np.uint8), np.zeros((400,400,3), np.uint8)]
+    frames = [cv2.imread("/Assets/NullFrame.png")]
 
     # start looping over all the frames
     while True:
@@ -73,10 +73,10 @@ class CameraDriver:
         self.root = Tk()
         self.panel = Label()
 
-        output = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
+        temp_img = ImageTk.PhotoImage(Image.open("/Assets/NullFrame.png"))
 
-        panel = Label(image=output)
-        panel.image = output
+        panel = Label(image=temp_img)
+        panel.image = temp_img
         panel.pack(side="left", padx=10, pady=10)
 
     def start(self):
