@@ -28,7 +28,7 @@ parts.append(Manip())
 # MicroROV
 parts.append(MicroROV())
 
-ROVMap.LOGGER.log("All parts constructed")
+ROVMap.log("All parts constructed")
 
 # Defining stop method (Includes E Stop functionality through FATAL bool)
 def stop(FATAL = False):
@@ -105,5 +105,5 @@ try:
     start()
 # If keyboard interrupt, shut down every single part
 except (KeyboardInterrupt):
-    ROVMap.LOGGER.log("Received Keyboard Interrupt.....Stopping")
+    ROVMap.log("Received Keyboard Interrupt.....Stopping")
     stop()
