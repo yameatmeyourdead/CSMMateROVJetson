@@ -77,7 +77,7 @@ class CameraDriver:
         '''
         DSM.log("Camera Driver Created")
         self.root = Tk()
-        self.panel = None
+        self.panel = Label()
 
     def start(self):
         try:
