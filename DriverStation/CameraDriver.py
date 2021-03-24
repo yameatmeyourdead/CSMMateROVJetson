@@ -1,13 +1,13 @@
 import imagezmq
 import cv2
-from .CameraGUIDriver import CameraGUIDriver
+from . import DriverStationMap as DSM
 from multiprocessing import Process, set_start_method
 from tkinter import *
 import numpy as np
 from PIL import Image
 from PIL import ImageTk
 
-def waitForImage(LOGGER):
+def waitForImage():
     # Create the server
     imageHub = imagezmq.ImageHub()
 
@@ -22,14 +22,14 @@ def waitForImage(LOGGER):
 
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
-            LOGGER.log("received image did not contain valid camera designation")
+            DSM.log("received image did not contain valid camera designation")
             continue
 
         # grab camera designation
         cameraDesignation = int(clientName[6:])
 
         # Uncomment below line for debug ONLY
-        # LOGGER.log(f"received image from camera {cameraDesignation}")
+        # DSM.log(f"received image from camera {cameraDesignation}")
         # cv2.imshow(clientName, frame)
         # cv2.waitKey(1)
         imageHub.send_reply(b'OK')
@@ -62,7 +62,7 @@ def waitForImage(LOGGER):
 
 
 class CameraDriver:
-    def __init__(self, logger):
+    def __init__(self):
         '''
         Use to create distinct camera server using imagezmq
         One has already been created for you in /DriverStation/__main__.py
@@ -75,8 +75,7 @@ class CameraDriver:
                 newCameraServerObject.kill()\n
                 (  Process is no longer running :)  )
         '''
-        self.LOGGER = logger
-
+        DSM.log("Camera Driver Created")
         self.root = Tk()
         self.panel = None
 
@@ -85,7 +84,7 @@ class CameraDriver:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage, args=(self.LOGGER))
+        self.cameraServer = Process(target=waitForImage)
         self.cameraServer.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
