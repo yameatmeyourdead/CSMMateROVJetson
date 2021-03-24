@@ -98,7 +98,7 @@ def concat_tile_resize(list_2d):
     # function calling for every
     # list of images
 
-    # stacks cv2 images vertically (don't actually use this, use concat_tile_resize)
+    # stacks cv2 images vertically
     def vconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
         # take minimum width
         w_min = min(img.shape[1] for img in img_list)
@@ -110,7 +110,7 @@ def concat_tile_resize(list_2d):
         return cv2.vconcat(im_list_resize)
 
 
-    # stacks cv2 images horizontally (don't actually use this, use concat_tile_resize)
+    # stacks cv2 images horizontally
     def hconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
         h_min = min(img.shape[0] for img in img_list)
         im_list_resize = [
