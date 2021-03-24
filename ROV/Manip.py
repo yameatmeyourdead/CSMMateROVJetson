@@ -47,7 +47,7 @@ class Manip(Component):
     def Update(self):
         # Read input from joystick and map it to velocity
         self.x_velocity = (ROVMap.getLeftStick[0]+1)/2*180
-        self.y_velocity = (ROVMap.getLeftStick[0]+1)/2*180
+        self.y_velocity = (ROVMap.getLeftStick[1]+1)/2*180
 
         # Disregard very low velocities (< 10% max)
         if(self.y_velocity >= -(self.global_velocity/10) and self.y_velocity <= (self.global_velocity/10)):
