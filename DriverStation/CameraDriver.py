@@ -19,7 +19,7 @@ def waitForImage():
     panel.pack(side="left", padx=10, pady=10)
 
     # initialize empty opencv frames so stitching them together works.
-    frames = [cv2.imread("/Assets/NullFrame.jpg"), cv2.imread("/Assets/NullFrame.jpg"), cv2.imread("/Assets/NullFrame.jpg"), cv2.imread("/Assets/NullFrame.jpg")]
+    frames = [cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg")]
 
     # start looping over all the frames
     while True:
@@ -36,7 +36,7 @@ def waitForImage():
 
         # Uncomment below line for debug ONLY
         # DSM.log(f"received image from camera {cameraDesignation}")
-        # cv2.imshow(clientName, frame)
+        cv2.imshow(cameraDesignation, frame)
         # cv2.waitKey(1)
         imageHub.send_reply(b'OK')
 
