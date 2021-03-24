@@ -71,13 +71,12 @@ class CameraDriver:
         '''
         DSM.log("Camera Driver Created")
         self.root = Tk()
-        self.panel = Label()
 
         temp_img = ImageTk.PhotoImage(Image.open("DriverStation/Assets/NullFrame.png"))
 
-        panel = Label(image=temp_img)
-        panel.image = temp_img
-        panel.pack(side="left", padx=10, pady=10)
+        self.panel = Label(image=temp_img)
+        self.panel.image = temp_img
+        self.panel.pack(side="left", padx=10, pady=10)
 
     def start(self):
         try:
