@@ -7,9 +7,15 @@ import numpy as np
 from PIL import Image
 from PIL import ImageTk
 
-def waitForImage(panel):
+def waitForImage():
     # Create the server
     imageHub = imagezmq.ImageHub()
+
+    temp_img = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
+
+    panel = Label(image=temp_img)
+    panel.image = temp_img
+    panel.pack(side="left", padx=10, pady=10)
 
     # initialize empty opencv frames so stitching them together works.
     frames = [cv2.imread("/Assets/NullFrame.png")]
@@ -72,18 +78,12 @@ class CameraDriver:
         DSM.log("Camera Driver Created")
         self.root = Tk()
 
-        temp_img = ImageTk.PhotoImage(Image.open("DriverStation/Assets/NullFrame.png"))
-
-        self.panel = Label(image=temp_img)
-        self.panel.image = temp_img
-        self.panel.pack(side="left", padx=10, pady=10)
-
     def start(self):
         try:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage, args=(self.panel,))
+        self.cameraServer = Process(target=waitForImage)
         self.cameraServer.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
