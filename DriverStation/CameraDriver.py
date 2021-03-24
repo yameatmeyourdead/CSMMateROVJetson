@@ -48,16 +48,10 @@ def waitForImage(panel):
         Tk()
         output = ImageTk.PhotoImage(framePil)
 
-        # if panel doesnt exist yet, initialize it
-        if panel is None:
-            panel = Label(image=output)
-            panel.image = output
-            panel.pack(side="left", padx=10, pady=10)
 
-        # otherwise, simply update the panel
-        else:
-            panel.configure(image=output)
-            panel.image = output
+
+        panel.configure(image=output)
+        panel.image = output
 
 
 
@@ -77,7 +71,13 @@ class CameraDriver:
         '''
         DSM.log("Camera Driver Created")
         self.root = Tk()
-        self.panel = None
+        self.panel = Label()
+
+        output = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
+
+        panel = Label(image=output)
+        panel.image = output
+        panel.pack(side="left", padx=10, pady=10)
 
     def start(self):
         try:
