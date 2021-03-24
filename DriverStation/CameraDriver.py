@@ -41,7 +41,7 @@ def waitForImage():
         imageHub.send_reply(b'OK')
 
         # put the frame where it's supposed to go for stitching
-        if frame is np.ndarray:
+        if frame is not None:
             frames[cameraDesignation] = frame
 
         if (len(frames) == 0):
