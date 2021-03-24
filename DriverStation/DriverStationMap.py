@@ -29,7 +29,7 @@ def closeLogger():
 
 # Constructor creates file object named f
 ctime = getTimeFormatted('_')
-f = open("ROV/Logs/" + f"{ctime}" + ".txt", "w")
+f = open("DriverStation/Logs/" + f"{ctime}" + ".txt", "w")
 
 # =======================
 # =======================

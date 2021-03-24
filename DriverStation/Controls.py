@@ -2,6 +2,7 @@ import asyncio
 import evdev
 import json
 
+CONTROLLERNAME = "Xbox"
 
 async def do_forward_device(i, device):
 	async for event in device.async_read_loop():
@@ -13,6 +14,14 @@ async def forward_device(i, device):
 			await do_forward_device(i, device)
 	else:
 		await do_forward_device(i, device)
+
+def encode_device(device):
+	cap = device.capabilities()
+	del cap[0] # Filter out EV_SYN, otherwise we get OSError 22 Invalid argument
+	cap_json = {}
+	for k, v in cap.items():
+		cap_json[k] = [x if not isinstance(x, tuple) else [x[0], x[1]._asdict()] for x in v]
+	return {'name': device.name, 'capabilities': cap_json, 'vendor': device.info.vendor, 'product': device.info.product}
 
 async def run_forward():
 	# Find devices
@@ -28,8 +37,6 @@ async def run_forward():
 	for name in args.device_by_name:
 		devices.append(devices_by_name[name])
 	
-	# Report version
-	print(PROTOCOL_VERSION)
 	
 	# Report devices
 	print(json.dumps([encode_device(device) for device in devices]))

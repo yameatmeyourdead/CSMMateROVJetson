@@ -73,7 +73,7 @@ class CameraDriver:
         self.root = Tk()
         self.panel = Label()
 
-        temp_img = ImageTk.PhotoImage(Image.open("/Assets/NullFrame.png"))
+        temp_img = ImageTk.PhotoImage(Image.open("DriverStation/Assets/NullFrame.png"))
 
         panel = Label(image=temp_img)
         panel.image = temp_img
@@ -84,7 +84,7 @@ class CameraDriver:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage, args=self.panel)
+        self.cameraServer = Process(target=waitForImage, args=(self.panel,))
         self.cameraServer.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
