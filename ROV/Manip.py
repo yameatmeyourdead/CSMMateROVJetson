@@ -9,6 +9,8 @@ class Manip(Component):
         self.elbow_servo2 = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["ELBOW_SERVO_2"]]
         self.level_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["LEVEL_SERVO"]]
         self.wrist_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["WRIST_SERVO"]]
+        # TODO: IMPLEMENT
+        # self.clamp_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["CLAMP_SERVO"]]
 
         self.chicken = 0
         self.elbow_angle = 90       # deg
@@ -55,7 +57,6 @@ class Manip(Component):
         if(self.x_velocity >= -(self.global_velocity/10) and self.x_velocity <= (self.global_velocity/10)):
             self.x_velocity = 0
         
-        # TODO: Check this logic still works. I switched the 0 and 1 cases so i didnt have to type ==
         # Determines protocol based on if auto-leveling (chicken) is desired
         # Move all but elbow
         # Else moves elbow servos
@@ -68,7 +69,6 @@ class Manip(Component):
             self.wrist_angle = self.wrist_angle_old + self.x_velocity
 
         # Keeps velocities from overshooting 0 or 180 deg
-        # TODO: Ensure logic still works. Changed every other if to else if
         if(self.elbow_angle >= 180):
             self.elbow_angle = 180
         elif(self.elbow_angle <= 0):
@@ -87,7 +87,6 @@ class Manip(Component):
         # Always write the wrist_servo
         self.wrist_servo.angle = self.wrist_angle + self.wrist_tune
 
-        # TODO: Check this logic still works
         # Determines protocol based on if auto-leveling (chicken) is desired
         # Move only level servo
         # Else move all
@@ -107,7 +106,6 @@ class Manip(Component):
         ROVMap.updatePresses()
         self.button_new = ROVMap.getButtonPresses().ls
 
-        # TODO: GET DEVON TO LOOK AT THIS (do we need button_old??) due to implementation of getButtonPresses() it should only return 1 if it has been pressed since last check
         if(self.button_new):
             if(self.chicken):
                 self.chicken = 0

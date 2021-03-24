@@ -20,8 +20,8 @@ kit.servo[7].set_pulse_width_range(500,2500)
 
 # Constant dictionary for PCA9685 (e.g key = SERVO1 and value = pinout of the pins responsible)
 PCA9685PINOUT = {"FRONT_LEFT_THRUSTER_ESC": 0, "FRONT_RIGHT_THRUSTER_ESC": 1, "BACK_LEFT_THRUSTER_ESC": 2, "BACK_RIGHT_THRUSTER_ESC": 3, 
-                "ELBOW_SERVO": 4, "ELBOW_SERVO_2": 5, "WRIST_SERVO": 6, "LEVEL_SERVO": 7,
-                "MICRO_PLACEHOLDER_SERVO1": 8, "MICRO_PLACEHOLDER_SERVO2": 9, "MICRO_PLACEHOLDER_SERVO3": 10, "MICRO_PLACEHOLDER_DCMOTORESC": 11}
+                "ELBOW_SERVO": 4, "ELBOW_SERVO_2": 5, "WRIST_SERVO": 6, "LEVEL_SERVO": 7,"CLAMP_SERVO": 8, 
+                "MICRO_PLACEHOLDER_SERVO1": 9, "MICRO_PLACEHOLDER_SERVO2": 10, "MICRO_PLACEHOLDER_SERVO3": 11, "MICRO_PLACEHOLDER_DCMOTORESC": 12}
 
 # =======================
 # =======================
