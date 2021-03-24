@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageTk
 
-def waitForImage(root):
+def waitForImage():
     # Create the server
     imageHub = imagezmq.ImageHub()
 
@@ -83,7 +83,7 @@ class CameraDriver:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage, args=(self.root,))
+        self.cameraServer = Process(target=waitForImage)
         self.cameraServer.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
