@@ -1,12 +1,12 @@
-from .CameraServer import CameraServer
+from .CameraDriver import CameraDriver
 from . import DriverStationMap as DSM
 
-cameraServer = CameraServer()
+cameraDriver = CameraDriver()
 
-DSM.log("Attempt Camera Server Start")
+DSM.log("Attempt Camera Driver Start")
 print("bruh")
-cameraServer.start()
-DSM.log("Camera Server Started")
+cameraDriver.start()
+DSM.log("Camera Driver Started")
 input("Enter to stop")
-cameraServer.kill()
+cameraDriver.kill()
 DSM.log("Killing ", endO='')
