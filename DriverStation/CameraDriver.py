@@ -20,6 +20,10 @@ def waitForImage():
 
     # initialize empty opencv frames so stitching them together works.
     frames = [cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg")]
+    organized_frames = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
+    output = concat_tile_resize(organized_frames)
+    cv2.imshow("TEST", output)
+
 
     # start looping over all the frames
     while True:
