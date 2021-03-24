@@ -7,10 +7,11 @@ import numpy as np
 from PIL import Image
 from PIL import ImageTk
 
-def waitForImage():
+def waitForImage(root):
     # Create the server
     imageHub = imagezmq.ImageHub()
 
+    Tk()
     temp_img = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
 
     panel = Label(image=temp_img)
@@ -51,7 +52,6 @@ def waitForImage():
         output = concat_tile_resize(organized_frames)
         frame = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
         framePil = Image.fromarray(frame)
-        Tk()
         output = ImageTk.PhotoImage(framePil)
 
 
@@ -83,7 +83,7 @@ class CameraDriver:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage)
+        self.cameraServer = Process(target=waitForImage, args=(self.root,))
         self.cameraServer.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
