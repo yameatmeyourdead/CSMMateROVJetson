@@ -7,14 +7,13 @@ import numpy as np
 from PIL import Image
 from PIL import ImageTk
 
-def waitForImage():
+def waitForImage(panel):
     # Create the server
     imageHub = imagezmq.ImageHub()
 
     # initialize empty opencv frames so stitching them together works.
     frames = [np.zeros((400,400,3), np.uint8), np.zeros((400,400,3), np.uint8), np.zeros((400,400,3), np.uint8), np.zeros((400,400,3), np.uint8)]
 
-    # TODO REPLACE THIS WITH GUI CODE
     # start looping over all the frames
     while True:
         # receive client name and frame from the client and acknowledge the receipt
@@ -35,7 +34,8 @@ def waitForImage():
         imageHub.send_reply(b'OK')
 
         # put the frame where it's supposed to go for stitching
-        frames[cameraDesignation] = frame
+        if frame is np.ndarray:
+            frames[cameraDesignation] = frame
 
         if (len(frames) == 0):
             continue
@@ -84,7 +84,7 @@ class CameraDriver:
             set_start_method('spawn', force=True)
         except RuntimeError:
             pass
-        self.cameraServer = Process(target=waitForImage)
+        self.cameraServer = Process(target=waitForImage, args=self.panel)
         self.cameraServer.start()
         self.root.mainloop()  # start the tk window (hopefully)
 
