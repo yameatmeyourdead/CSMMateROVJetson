@@ -92,31 +92,32 @@ class CameraDriver:
         self.cameraServer.kill()
 
 
-# stacks cv2 images vertically (don't actually use this, use concat_tile_resize)
-def vconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
-    # take minimum width
-    w_min = min(img.shape[1] for img in img_list)
-    # resizing images
-    im_list_resize = [
-        cv2.resize(img, (w_min, int(img.shape[0] * w_min / img.shape[1])), interpolation=interpolation) for img
-        in img_list]
-    # return final image
-    return cv2.vconcat(im_list_resize)
-
-
-# stacks cv2 images horizontally (don't actually use this, use concat_tile_resize)
-def hconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
-    h_min = min(img.shape[0] for img in img_list)
-    im_list_resize = [
-        cv2.resize(img, (int(img.shape[1] * h_min / img.shape[0]), h_min), interpolation=interpolation) for img
-        in img_list]
-    return cv2.hconcat(im_list_resize)
-
 
 # use this to put multiple images into one! expects a 2d list of images, and will stack accordingly
 def concat_tile_resize(list_2d):
     # function calling for every
     # list of images
+
+    # stacks cv2 images vertically (don't actually use this, use concat_tile_resize)
+    def vconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
+        # take minimum width
+        w_min = min(img.shape[1] for img in img_list)
+        # resizing images
+        im_list_resize = [
+            cv2.resize(img, (w_min, int(img.shape[0] * w_min / img.shape[1])), interpolation=interpolation) for img
+            in img_list]
+        # return final image
+        return cv2.vconcat(im_list_resize)
+
+
+    # stacks cv2 images horizontally (don't actually use this, use concat_tile_resize)
+    def hconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
+        h_min = min(img.shape[0] for img in img_list)
+        im_list_resize = [
+            cv2.resize(img, (int(img.shape[1] * h_min / img.shape[0]), h_min), interpolation=interpolation) for img
+            in img_list]
+        return cv2.hconcat(im_list_resize)
+
     img_list_v = [hconcat_resize(list_h, interpolation=cv2.INTER_CUBIC) for list_h in list_2d]
 
     # return final image
