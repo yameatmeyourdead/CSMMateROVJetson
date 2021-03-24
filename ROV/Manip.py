@@ -60,12 +60,12 @@ class Manip(Component):
         # Move all but elbow
         # Else moves elbow servos
         if(self.chicken):
-            self.elbow_angle = self.elbow_angle_old + self.y_velocity / self.slow
-            self.level_angle = self.level_angle_old - self.y_velocity / self.slow
-            self.wrist_angle = self.wrist_angle_old + self.x_velocity / self.slow
+            self.elbow_angle = self.elbow_angle_old + self.y_velocity
+            self.level_angle = self.level_angle_old - self.y_velocity
+            self.wrist_angle = self.wrist_angle_old + self.x_velocity
         else:
-            self.level_angle = self.level_angle_old + self.y_velocity / self.slow
-            self.wrist_angle = self.wrist_angle_old + self.x_velocity / self.slow
+            self.level_angle = self.level_angle_old + self.y_velocity
+            self.wrist_angle = self.wrist_angle_old + self.x_velocity
 
         # Keeps velocities from overshooting 0 or 180 deg
         # TODO: Ensure logic still works. Changed every other if to else if
@@ -117,9 +117,7 @@ class Manip(Component):
         print("Manipulator Update")
 
         # (DEBUG)
-        # print("Elbow :", self.elbow_angle, "\nWrist :", self.wrist_angle, "\nLevel :", self.level_angle)
-
-        # TODO: implement LED?????? (super easy just make a pin in ROVMap.PCA9685PINOUT map to an LED and change its pulse width accordingly)
+        print("Elbow :", self.elbow_angle, "\nWrist :", self.wrist_angle, "\nLevel :", self.level_angle)
 
 
     def autoUpdate(self):

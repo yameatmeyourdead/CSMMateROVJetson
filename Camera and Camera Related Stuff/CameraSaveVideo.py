@@ -7,6 +7,9 @@ import time
 # create file for outputting camera data to
 currentTime = str(time.time_ns())
 CAMERA_OUTPUT_FILEPATH = "CameraTestingLogs\\" + currentTime + "." + "avi"
+
+
+
 if os.path.isfile(CAMERA_OUTPUT_FILEPATH):
     print("path is set to existing file. deleting and continuing")
     os.remove(CAMERA_OUTPUT_FILEPATH)
@@ -26,20 +29,19 @@ def returnCameraIndexes():
         i -= 1
     return arr
 
-print("(DEBUG) VALID CAMERA INDEXES :", returnCameraIndexes())
+# print("(DEBUG) VALID CAMERA INDEXES :", returnCameraIndexes())
 
 # Create Camera object and Video Writer Object
 capture = cv2.VideoCapture(0)
 fps = capture.get(cv2.CAP_PROP_FPS)
 fourcc = cv2.VideoWriter_fourcc(*'MPEG')
-output = cv2.VideoWriter(CAMERA_OUTPUT_FILEPATH, fourcc, fps, (640, 480))
+output = cv2.VideoWriter(CAMERA_OUTPUT_FILEPATH, fourcc, fps, (640, 480), True)
 
 # While the camera is capturing, show frames and record them into file
-start = time.time()
-while(capture.isOpened()):
+while(True):
     # capture and display frame
     ret, frame = capture.read()
-    cv2.imshow('your dumb face', frame)
+    cv2.imshow('frame', frame)
 
     # write output to file
     output.write(frame)
