@@ -1,5 +1,6 @@
 import imagezmq
 import cv2
+from zmq.sugar.constants import NULL
 from . import DriverStationMap as DSM
 from multiprocessing import Process, set_start_method
 from tkinter import *
@@ -11,19 +12,66 @@ def waitForImage():
     # Create the server
     imageHub = imagezmq.ImageHub()
 
-    Tk()
+    # Create TKinter Window
+    root = Tk()
+
+    # Create booleans to determine if a certain camera should be on
+    global camStates
+    camStates = [True, True, True, True]
+    
+    def getCamState(cam):
+        return camStates[cam]
+
+    def toggleCam0():
+        if(camStates[0]):
+            camStates[0] = False
+        else:
+            camStates[0] = True
+
+    def toggleCam1():
+        if(camStates[1]):
+            camStates[1] = False
+        else:
+            camStates[1] = True
+
+    def toggleCam2():
+        if(camStates[2]):
+            camStates[2] = False
+        else:
+            camStates[2] = True
+
+    def toggleCam3():
+        if(camStates[3]):
+            camStates[3] = False
+        else:
+            camStates[3] = True
+
+    TCAM0 = Button(root, text="Toggle Cam0", command=toggleCam0)
+    TCAM0.pack()
+    TCAM1 = Button(root, text="Toggle Cam1", command=toggleCam1)
+    TCAM1.pack()
+    TCAM2 = Button(root, text="Toggle Cam2", command=toggleCam2)
+    TCAM2.pack()
+    TCAM3 = Button(root, text="Toggle Cam3", command=toggleCam3)
+    TCAM3.pack()
+
+    LABEL = Label(root, text="Cams")
+    LABEL.pack()
+    root.update()
+
     temp_img = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
 
-    panel = Label(image=temp_img)
+    panel = Label(root, image=temp_img)
     panel.image = temp_img
     panel.pack(side="left", padx=10, pady=10)
+    root.update()
+
+    NULLFRAME = cv2.imread("DriverStation/Assets/NullFrame.jpg")
 
     # initialize empty opencv frames so stitching them together works.
-    frames = [cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg"), cv2.imread("DriverStation/Assets/NullFrame.jpg")]
+    frames = [NULLFRAME, NULLFRAME, NULLFRAME, NULLFRAME]
     organized_frames = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
     output = concat_tile_resize(organized_frames)
-    cv2.imshow("TEST", output)
-
 
     # start looping over all the frames
     while True:
@@ -33,20 +81,23 @@ def waitForImage():
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
             DSM.log("received image did not contain valid camera designation")
+            root.update()
             continue
 
         # grab camera designation
         cameraDesignation = int(clientName[6:])
 
+        if(not getCamState(cameraDesignation)):
+            frames[cameraDesignation] = NULLFRAME
+        elif frame is not None:
+            # put the frame where it's supposed to go for stitching
+            frames[cameraDesignation] = frame
+        
         # Uncomment below line for debug ONLY
         # DSM.log(f"received image from camera {cameraDesignation}")
-        cv2.imshow(cameraDesignation, frame)
+        # cv2.imshow(cameraDesignation, frame)
         # cv2.waitKey(1)
         imageHub.send_reply(b'OK')
-
-        # put the frame where it's supposed to go for stitching
-        if frame is not None:
-            frames[cameraDesignation] = frame
 
         if (len(frames) == 0):
             continue
@@ -58,10 +109,10 @@ def waitForImage():
         framePil = Image.fromarray(frame)
         output = ImageTk.PhotoImage(framePil)
 
-
-
         panel.configure(image=output)
         panel.image = output
+
+        root.update()
 
 
 
@@ -80,7 +131,6 @@ class CameraDriver:
                 (  Process is no longer running :)  )
         '''
         DSM.log("Camera Driver Created")
-        self.root = Tk()
 
     def start(self):
         try:
@@ -89,13 +139,10 @@ class CameraDriver:
             pass
         self.cameraServer = Process(target=waitForImage)
         self.cameraServer.start()
-        self.root.mainloop()  # start the tk window (hopefully)
+        print("camera server process")
 
     def kill(self):
-        self.root.quit()
         self.cameraServer.kill()
-
-
 
 # use this to put multiple images into one! expects a 2d list of images, and will stack accordingly
 def concat_tile_resize(list_2d):
