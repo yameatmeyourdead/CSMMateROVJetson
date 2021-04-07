@@ -172,4 +172,4 @@ while True:
 
     # (DEBUG)
     # print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
-    print(getLeftStick())
+    print(getButtonPresses().ls)
