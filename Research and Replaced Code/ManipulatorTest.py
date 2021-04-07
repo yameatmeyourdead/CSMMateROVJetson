@@ -110,7 +110,7 @@ y_velocity_old = 0
 y_velocity_tune = 0 # Tunes zeros of joystick
 global_velocity = 90
 
-DELTA_VELOCITY_IGNORE = .1 # Tunes how sensitive joystick is to changes
+DELTA_VELOCITY_IGNORE = .075 # Tunes how sensitive joystick is to changes
 ELBOW_ANGLE_MAX = 180
 ELBOW_ANGLE_MIN = 0
 LEVEL_ANGLE_MAX = 180
@@ -129,9 +129,9 @@ while True:
     y_velocity = (getLeftStick()[1]+1)/2*180 - 90
 
     # Disregard very low delta target velocities (< 10%)
-    if(abs(y_velocity - y_velocity_old) <= abs(y_velocity * DELTA_VELOCITY_IGNORE)):
+    if(abs(y_velocity) < DELTA_VELOCITY_IGNORE):
         y_velocity = 0
-    if(abs(x_velocity - x_velocity_old) <= abs(x_velocity * DELTA_VELOCITY_IGNORE)):
+    if(abs(x_velocity) < DELTA_VELOCITY_IGNORE):
         x_velocity = 0
 
     
