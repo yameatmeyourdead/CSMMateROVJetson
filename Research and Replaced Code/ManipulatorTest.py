@@ -119,8 +119,8 @@ slow = 200 # Slows speed of manipulator
 
 while True:
     # Read input from joystick and map it to velocity
-    x_velocity = (getLeftStick()[0]+1)/2*180
-    y_velocity = (getLeftStick()[1]+1)/2*180
+    x_velocity = (getLeftStick()[0]+1)/2*180 - 90
+    y_velocity = (getLeftStick()[1]+1)/2*180 - 90
 
     # Disregard very low velocities (< 10% max)
     if(y_velocity >= -(global_velocity/10) and y_velocity <= (global_velocity/10)):
@@ -170,6 +170,6 @@ while True:
             chicken = 1
 
     # (DEBUG)
-    # print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
+    print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
     if(getButtonPresses().ls):
         print("PRESSED")
