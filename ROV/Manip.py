@@ -25,8 +25,8 @@ class Manip(Component):
 
         self.elbow_tune = 0     # deg
         self.elbow_tune2 = 0    # deg
-        self.level_tune = 10    # deg
-        self.wrist_tune = 10    # deg
+        self.level_tune = 0    # deg
+        self.wrist_tune = 0    # deg
 
         self.x_velocity = 0
         self.x_velocity_tune = 2 # Tunes zeros of joystick
@@ -68,19 +68,6 @@ class Manip(Component):
             self.level_angle = self.level_angle_old + self.y_velocity
             self.wrist_angle = self.wrist_angle_old + self.x_velocity
 
-        # Always write the wrist_servo
-        self.wrist_servo.angle = self.wrist_angle + self.wrist_tune
-
-        # Determines protocol based on if auto-leveling (chicken) is desired
-        # Move only level servo
-        # Else move all
-        if(self.chicken):
-            self.elbow_servo.angle = self.elbow_angle + self.elbow_tune
-            # self.elbow_servo2.angle = 180 - self.elbow_angle + self.elbow_tune
-            self.level_servo.angle = self.level_angle + self.level_tune
-        else:
-            self.level_servo.angle = self.level_angle + self.level_tune
-        
         # Keeps velocities from overshooting 0 or 180 deg
         if(self.elbow_angle >= 180):
             self.elbow_angle = 180
@@ -97,6 +84,19 @@ class Manip(Component):
         elif(self.wrist_angle <= 0):
             self.wrist_angle = 0
 
+        # Always write the wrist_servo
+        self.wrist_servo.angle = self.wrist_angle + self.wrist_tune
+
+        # Determines protocol based on if auto-leveling (chicken) is desired
+        # Move only level servo
+        # Else move all
+        if(self.chicken):
+            self.elbow_servo.angle = self.elbow_angle + self.elbow_tune
+            # self.elbow_servo2.angle = 180 - self.elbow_angle + self.elbow_tune
+            self.level_servo.angle = self.level_angle + self.level_tune
+        else:
+            self.level_servo.angle = self.level_angle + self.level_tune
+            
         # Update old variables
         self.elbow_angle_old = self.elbow_angle
         self.level_angle_old = self.level_angle
