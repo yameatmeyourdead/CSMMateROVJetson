@@ -1,11 +1,11 @@
 from adafruit_servokit import ServoKit
 
-kit = ServoKit(channels=16)
+# kit = ServoKit(channels=16)
 
-kit.servo[4].set_pulse_width_range(500,2500)
+# kit.servo[4].set_pulse_width_range(500,2500)
 # kit.servo[5].set_pulse_width_range(500,2500)
-kit.servo[6].set_pulse_width_range(500,2500)
-kit.servo[7].set_pulse_width_range(500,2500)
+# kit.servo[6].set_pulse_width_range(500,2500)
+# kit.servo[7].set_pulse_width_range(500,2500)
 
 from approxeng.input.selectbinder import ControllerResource
     
@@ -91,21 +91,90 @@ def getButtonPresses():
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
 
+chicken = 0
+elbow_angle = 90       # deg
+elbow_angle_old = 90   # deg
+wrist_angle = 90       # deg
+wrist_angle_old = 90   # deg
+level_angle = 90       # deg
+level_angle_old = 90   # deg
 
+button_new = 1
 
-elbow_servo = kit.servo[4]
-level_servo = kit.servo[7]
-wrist_servo = kit.servo[6]
+elbow_tune = 0     # deg
+elbow_tune2 = 0    # deg
+level_tune = 0    # deg
+wrist_tune = 0    # deg
 
-elbow_servo.angle = 90
-level_servo.angle = 90
-wrist_servo.angle = 90
+x_velocity = 0
+x_velocity_tune = 0 # Tunes zeros of joystick
+y_velocity = 0
+y_velocity_tune = 0 # Tunes zeros of joystick
+global_velocity = 90
+
+slow = 200 # Slows speed of manipulator
+
+# Want to wait some time before shizzle starts to move?
+# sleep(3)
+
+def Update():
+    # Read input from joystick and map it to velocity
+    x_velocity = (getLeftStick()[0]+1)/2*180
+    y_velocity = (getLeftStick()[1]+1)/2*180
+
+    # Disregard very low velocities (< 10% max)
+    if(y_velocity >= -(global_velocity/10) and y_velocity <= (global_velocity/10)):
+        y_velocity = 0
+    if(x_velocity >= -(global_velocity/10) and x_velocity <= (global_velocity/10)):
+        x_velocity = 0
+    
+    # Determines protocol based on if auto-leveling (chicken) is desired
+    # Move all but elbow
+    # Else moves elbow servos
+    if(chicken):
+        elbow_angle = elbow_angle_old + y_velocity
+        level_angle = level_angle_old - y_velocity
+        wrist_angle = wrist_angle_old + x_velocity
+    else:
+        level_angle = level_angle_old + y_velocity
+        wrist_angle = wrist_angle_old + x_velocity
+
+    # Keeps velocities from overshooting 0 or 180 deg
+    if(elbow_angle >= 180):
+        elbow_angle = 180
+    elif(elbow_angle <= 0):
+        elbow_angle = 0
+
+    if(level_angle >= 140):
+        level_angle = 140
+    elif(level_angle <= 20):
+        level_angle = 20
+
+    if(wrist_angle >= 180):
+        wrist_angle = 180
+    elif(wrist_angle <= 0):
+        wrist_angle = 0
+        
+    # Update old variables
+    elbow_angle_old = elbow_angle
+    level_angle_old = level_angle
+    wrist_angle_old = wrist_angle
+
+    # Update chicken
+    updatePresses()
+    button_new = getButtonPresses().ls
+
+    if(button_new):
+        if(chicken):
+            chicken = 0
+        else:
+            chicken = 1
+        
+    print("Manipulator Update")
+
+    # (DEBUG)
+    print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
+
 
 while True:
-    angle1 = int(input("Elbow : "))
-    angle2 = int(input("Level : "))
-    angle3 = int(input("Wrist : "))
-
-    elbow_servo.angle = angle1
-    level_servo.angle = angle2
-    wrist_servo.angle = angle3
+    Update()
