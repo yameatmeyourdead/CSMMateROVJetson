@@ -1,11 +1,11 @@
 from adafruit_servokit import ServoKit
 
-# kit = ServoKit(channels=16)
+kit = ServoKit(channels=16)
 
-# kit.servo[4].set_pulse_width_range(500,2500)
-# kit.servo[5].set_pulse_width_range(500,2500)
-# kit.servo[6].set_pulse_width_range(500,2500)
-# kit.servo[7].set_pulse_width_range(500,2500)
+kit.servo[4].set_pulse_width_range(500,2500)
+kit.servo[5].set_pulse_width_range(500,2500)
+kit.servo[6].set_pulse_width_range(500,2500)
+kit.servo[7].set_pulse_width_range(500,2500)
 
 from approxeng.input.selectbinder import ControllerResource
     
@@ -87,6 +87,13 @@ def getButtonPresses():
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
 
+
+
+wrist_servo = kit.servo[6]
+level_servo = kit.servo[7]
+elbow_servo = kit.servo[4]
+
+
 chicken = 0
 elbow_angle = 90       # deg
 elbow_angle_old = 90   # deg
@@ -163,18 +170,18 @@ while True:
     
     # Update Positions
 
-    # # Always write the wrist_servo
-    # self.wrist_servo.angle = self.wrist_angle + self.wrist_tune
+    # Always write the wrist_servo
+    wrist_servo.angle = wrist_angle + wrist_tune
 
-    # # Determines protocol based on if auto-leveling (chicken) is desired
-    # # Move only level servo
-    # # Else move all
-    # if(self.chicken):
-    #     self.elbow_servo.angle = self.elbow_angle + self.elbow_tune
-    #     # self.elbow_servo2.angle = 180 - self.elbow_angle + self.elbow_tune
-    #     self.level_servo.angle = self.level_angle + self.level_tune
-    # else:
-    #     self.level_servo.angle = self.level_angle + self.level_tune
+    # Determines protocol based on if auto-leveling (chicken) is desired
+    # Move only level servo
+    # Else move all
+    if(chicken):
+        elbow_servo.angle = elbow_angle + elbow_tune
+        # elbow_servo2.angle = 180 - elbow_angle + elbow_tune
+        level_servo.angle = level_angle + level_tune
+    else:
+        level_servo.angle = level_angle + level_tune
 
     # Update old variables
     elbow_angle_old = elbow_angle
