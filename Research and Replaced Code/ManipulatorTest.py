@@ -111,6 +111,7 @@ y_velocity_tune = 0 # Tunes zeros of joystick
 global_velocity = 90
 
 DELTA_VELOCITY_IGNORE = .075 # Tunes how sensitive joystick is to changes
+VELOCITY_SCALING_FACTOR = 1.0
 ELBOW_ANGLE_MAX = 180
 ELBOW_ANGLE_MIN = 0
 LEVEL_ANGLE_MAX = 180
@@ -125,8 +126,8 @@ slow = 200 # Slows speed of manipulator
 
 while True:
     # Read input from joystick and map it to velocity
-    x_velocity = (getLeftStick()[0]+1)/2*180 - 90
-    y_velocity = (getLeftStick()[1]+1)/2*180 - 90
+    x_velocity = (getLeftStick()[0]) * VELOCITY_SCALING_FACTOR
+    y_velocity = (getLeftStick()[1]) * VELOCITY_SCALING_FACTOR
 
     # Disregard very low delta target velocities (< 10%)
     if(abs(y_velocity) < DELTA_VELOCITY_IGNORE):
