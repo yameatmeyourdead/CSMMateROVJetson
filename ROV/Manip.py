@@ -6,7 +6,7 @@ class Manip(Component):
     def __init__(self):
         # Grab the relevant servos from the map
         self.elbow_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["ELBOW_SERVO"]]
-        self.elbow_servo2 = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["ELBOW_SERVO_2"]]
+        # self.elbow_servo2 = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["ELBOW_SERVO_2"]]
         self.level_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["LEVEL_SERVO"]]
         self.wrist_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["WRIST_SERVO"]]
         # TODO: IMPLEMENT
@@ -92,7 +92,7 @@ class Manip(Component):
         # Else move all
         if(self.chicken):
             self.elbow_servo.angle = self.elbow_angle + self.elbow_tune
-            self.elbow_servo2.angle = 180 - self.elbow_angle + self.elbow_tune
+            # self.elbow_servo2.angle = 180 - self.elbow_angle + self.elbow_tune
             self.level_servo.angle = self.level_angle + self.level_tune
         else:
             self.level_servo.angle = self.level_angle + self.level_tune
