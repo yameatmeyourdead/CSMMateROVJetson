@@ -117,7 +117,7 @@ y_velocity_old = 0
 y_velocity_tune = 0 # Tunes zeros of joystick
 global_velocity = 90
 
-VELOCITY_SCALING_FACTOR = .02
+VELOCITY_SCALING_FACTOR = .1
 DELTA_VELOCITY_IGNORE = .075 * VELOCITY_SCALING_FACTOR # Tunes how sensitive joystick is to changes
 ELBOW_ANGLE_MAX = 180
 ELBOW_ANGLE_MIN = 0
