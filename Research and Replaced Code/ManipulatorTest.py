@@ -171,17 +171,17 @@ while True:
     # Update Positions
 
     # Always write the wrist_servo
-    wrist_servo.angle = wrist_angle + wrist_tune
+    wrist_servo.angle = wrist_angle
 
     # Determines protocol based on if auto-leveling (chicken) is desired
     # Move only level servo
     # Else move all
     if(chicken):
-        elbow_servo.angle = elbow_angle + elbow_tune
+        elbow_servo.angle = elbow_angle
         # elbow_servo2.angle = 180 - elbow_angle + elbow_tune
-        level_servo.angle = level_angle + level_tune
+        level_servo.angle = level_angle
     else:
-        level_servo.angle = level_angle + level_tune
+        level_servo.angle = level_angle
 
     # Update old variables
     elbow_angle_old = elbow_angle
@@ -201,7 +201,7 @@ while True:
 
     # (DEBUG)
     print("Elbow :", elbow_angle)
-    # print("Wrist :", wrist_angle)
-    # print("Level :", level_angle)
+    print("Wrist :", wrist_angle)
+    print("Level :", level_angle)
     if(button_new):
         print("PRESSED")
