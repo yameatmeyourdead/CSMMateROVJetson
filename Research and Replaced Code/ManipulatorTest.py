@@ -161,7 +161,7 @@ while True:
         wrist_angle = WRIST_ANGLE_MIN
     
     # Update Positions
-    
+
     # # Always write the wrist_servo
     # self.wrist_servo.angle = self.wrist_angle + self.wrist_tune
 
@@ -192,6 +192,8 @@ while True:
             chicken = 1
 
     # (DEBUG)
-    print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
+    print("Elbow :", elbow_angle)
+    # print("Wrist :", wrist_angle)
+    # print("Level :", level_angle)
     if(button_new):
         print("PRESSED")
