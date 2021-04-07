@@ -117,7 +117,7 @@ slow = 200 # Slows speed of manipulator
 # Want to wait some time before shizzle starts to move?
 # sleep(3)
 
-def Update():
+while True:
     # Read input from joystick and map it to velocity
     x_velocity = (getLeftStick()[0]+1)/2*180
     y_velocity = (getLeftStick()[1]+1)/2*180
@@ -174,7 +174,3 @@ def Update():
 
     # (DEBUG)
     print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
-
-
-while True:
-    Update()
