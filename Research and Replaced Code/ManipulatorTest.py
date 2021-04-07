@@ -171,4 +171,5 @@ while True:
             chicken = 1
 
     # (DEBUG)
-    print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
+    # print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
+    print(getLeftStick())
