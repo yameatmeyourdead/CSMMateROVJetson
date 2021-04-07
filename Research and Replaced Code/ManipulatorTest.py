@@ -167,5 +167,5 @@ while True:
 
     # (DEBUG)
     # print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
-    if(getButtonPresses().ls):
+    if(button_new):
         print("PRESSED")
