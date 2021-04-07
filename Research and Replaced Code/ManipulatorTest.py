@@ -161,7 +161,6 @@ while True:
     wrist_angle_old = wrist_angle
 
     # Update chicken
-    updatePresses()
     button_new = getButtonPresses().ls
 
     if(button_new):
