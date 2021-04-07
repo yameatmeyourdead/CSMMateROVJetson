@@ -169,8 +169,6 @@ while True:
             chicken = 0
         else:
             chicken = 1
-        
-    print("Manipulator Update")
 
     # (DEBUG)
     print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
