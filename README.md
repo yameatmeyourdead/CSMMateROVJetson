@@ -9,6 +9,7 @@ imageZMQ
 adafruit-circuitpython-servokit  
 xboxdrv  
 cv2  
+simple-pid  
   
 DriverStation:  
 imageZMQ  

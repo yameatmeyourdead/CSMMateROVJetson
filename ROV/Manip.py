@@ -103,7 +103,6 @@ class Manip(Component):
         self.wrist_angle_old = self.wrist_angle
 
         # Update chicken
-        ROVMap.updatePresses()
         self.button_new = ROVMap.getButtonPresses().ls
 
         if(self.button_new):

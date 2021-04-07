@@ -103,10 +103,14 @@ level_tune = 0    # deg
 wrist_tune = 0    # deg
 
 x_velocity = 0
+x_velocity_old = 0
 x_velocity_tune = 0 # Tunes zeros of joystick
 y_velocity = 0
+y_velocity_old = 0
 y_velocity_tune = 0 # Tunes zeros of joystick
 global_velocity = 90
+
+DELTA_VELOCITY_IGNORE = .1 # Tunes how sensitive joystick is to changes
 
 slow = 200 # Slows speed of manipulator
 
@@ -118,11 +122,12 @@ while True:
     x_velocity = (getLeftStick()[0]+1)/2*180 - 90
     y_velocity = (getLeftStick()[1]+1)/2*180 - 90
 
-    # Disregard very low velocities (< 10% max)
-    if(y_velocity >= -(global_velocity/10) and y_velocity <= (global_velocity/10)):
+    # Disregard very low delta target velocities (< 10%)
+    if(abs(y_velocity - y_velocity_old) <= abs(y_velocity * DELTA_VELOCITY_IGNORE)):
         y_velocity = 0
-    if(x_velocity >= -(global_velocity/10) and x_velocity <= (global_velocity/10)):
+    if(abs(x_velocity - x_velocity_old) <= abs(x_velocity * DELTA_VELOCITY_IGNORE)):
         x_velocity = 0
+
     
     # Determines protocol based on if auto-leveling (chicken) is desired
     # Move all but elbow
@@ -136,25 +141,13 @@ while True:
         wrist_angle = wrist_angle_old + x_velocity
 
     # Keeps velocities from overshooting 0 or 180 deg
-    if(elbow_angle >= 180):
-        elbow_angle = 180
-    elif(elbow_angle <= 0):
-        elbow_angle = 0
-
-    if(level_angle >= 140):
-        level_angle = 140
-    elif(level_angle <= 20):
-        level_angle = 20
-
-    if(wrist_angle >= 180):
-        wrist_angle = 180
-    elif(wrist_angle <= 0):
-        wrist_angle = 0
         
     # Update old variables
     elbow_angle_old = elbow_angle
     level_angle_old = level_angle
     wrist_angle_old = wrist_angle
+    x_velocity_old = x_velocity
+    y_velocity_old = y_velocity
 
     # Update chicken
     button_new = getButtonPresses().ls
@@ -166,6 +159,6 @@ while True:
             chicken = 1
 
     # (DEBUG)
-    # print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
+    print("Elbow :", elbow_angle, "\nWrist :", wrist_angle, "\nLevel :", level_angle)
     if(button_new):
         print("PRESSED")
