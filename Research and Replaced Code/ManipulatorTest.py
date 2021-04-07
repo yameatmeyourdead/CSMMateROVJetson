@@ -97,6 +97,10 @@ elbow_servo = kit.servo[4]
 level_servo = kit.servo[7]
 wrist_servo = kit.servo[6]
 
+elbow_servo.angle = 90
+level_servo.angle = 90
+wrist_servo.angle = 90
+
 while True:
     angle1 = int(input("Elbow : "))
     angle2 = int(input("Level : "))
