@@ -1,6 +1,7 @@
 # USE THIS TO CREATE "STATIC" VARIABLES / WHEN YOU WANT JAVA STYLE STATIC CLASSES
 
 from adafruit_servokit import ServoKit
+import os
 import time
 import board
 import busio
@@ -36,7 +37,8 @@ def log(strin, endO="\n"):
     Compatible with all data types capable of conversion to str through str(value)
     """
     strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
-    f.write(strin)
+    with open(LOGGER_FILE_PATH, 'a') as f:
+        f.write(strin)
 
 def getTimeFormatted(delim):
     """
@@ -46,13 +48,13 @@ def getTimeFormatted(delim):
     SYSTIME = time.localtime(time.time())
     return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
 
-# close file writer
-def closeLogger():
-    f.close()
+currentTime = getTimeFormatted('_')
+if(os.path.exists(f"ROV/Logs/{currentTime}.txt")):
+    os.remove(f"ROV/Logs/{currentTime}.txt")
+LOGGER_FILE_PATH = f"ROV/Logs/{currentTime}.txt"
 
-# Constructor creates file object named f
-ctime = getTimeFormatted('_')
-f = open("ROV/Logs/" + f"{ctime}" + ".txt", "w")
+with open(LOGGER_FILE_PATH, 'w') as f:
+    f.write(f"[{currentTime}] Logger Created")
 
 # =======================
 # =======================
