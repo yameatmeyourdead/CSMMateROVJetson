@@ -1,6 +1,7 @@
 import asyncio
 import evdev
 import json
+from . import DriverStationMap
 
 CONTROLLERNAME = "Xbox"
 

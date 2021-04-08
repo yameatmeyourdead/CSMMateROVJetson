@@ -49,10 +49,9 @@ def getTimeFormatted(delim):
     return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
 
 currentTime = getTimeFormatted('_')
-if(os.path.exists(f"ROV/Logs/{currentTime}.txt")):
-    os.remove(f"ROV/Logs/{currentTime}.txt")
 LOGGER_FILE_PATH = f"ROV/Logs/{currentTime}.txt"
-
+if(os.path.exists(LOGGER_FILE_PATH)):
+    os.remove(LOGGER_FILE_PATH)
 with open(LOGGER_FILE_PATH, 'w') as f:
     f.write(f"[{currentTime}] Logger Created")
 
