@@ -6,16 +6,11 @@ import sys
 import os
 import time
 import traceback
-from threading import Thread
+from multiprocessing import Process, set_start_method
 
-# Find something better? VVV
-# from pynput import keyboard
-# from pynput.keyboard import Listener, Key
-
-# TODO: IMPLEMENT without breaking stacktrace
 # Creation of EStop Exception and its Fatal counterpart (Fatal EStop completely shuts down computer)
-# class EStopInterruptFatal(Exception): args: True 
-# class EStopInterrupt(Exception): args: False
+class EStopInterruptFatal(Exception): args: True 
+class EStopInterrupt(Exception): ...
 
 parts = [] # Component list for ease of looping in autoOp/teleOp function
 operatingMode = True # Operate in Autonomous or TeleOp? True = TeleOp, False = Auto
@@ -41,47 +36,18 @@ def stop(FATAL = False):
     # Calmly deactivate all components
     for Comp in parts:
         Comp.kill()
-    # If EStop was triggered, shutdown Jetson immediately
+    # If EStop Fatal was triggered, shutdown Jetson immediately
     if(FATAL):
         ROVMap.log("Triggering system shutdown due to EStop", endO="")
-        ROVMap.closeLogger()
         os.system('shutdown /s /t 1')
-    ROVMap.log("ROV Successfully Shutdown....Closing Log", endO="")
-    ROVMap.closeLogger()
-
-# TODO: IMPLEMENT
-# .
-# .
-# Key listener (used for interrupts that arent ctrl+c)
-# def on_press(key):
-#     if(key == Key.enter):
-#         raise EStopInterruptFatal
-#     if(key == Key.space):
-#         raise EStopInterrupt
-
-    # # Setup keyboard listener for EStop
-    # def KeyListener():
-    #     try:
-    #         with Listener(on_press=on_press, on_release=None) as listener:
-    #             listener.join()
-    #     except(EStopInterruptFatal, EStopInterrupt) as e:
-    #         # Adding traceback to file in ./Logs/ directory before deciding if to force shutdown
-    #         SYSTIME = time.gmtime(time.time())
-    #         SYSTIME = str(SYSTIME.tm_mday) + "_" + str(SYSTIME.tm_hour) + "_" + str(SYSTIME.tm_min) + "_" + str(SYSTIME.tm_sec) + "_Traceback"
-    #         f = open("ROV/Logs/" + f"{SYSTIME}" + ".txt", "w")
-    #         f.write(traceback.format_exc())
-    #         f.close()
-
-    #         # Shutdown NOW (if needed)
-    #         stop(e.args)
+    ROVMap.log("ROV Successfully Shutdown", endO="")
 
 # Start the robot
 def start():
     """
     Start the Robot\n
-    Creates two child processes, one for keyboard stop/estop and one for actually doing robo
+    
     """
-    # TODO CONSIDER ADDING TICKRATE HERE??
     while True:
         # Update each component of the robot depending on the operating mode
         if(operatingMode):
@@ -93,17 +59,30 @@ def start():
             for Comp in parts:
                 Comp.autoUpdate()
 
-try:
-    # TODO: IMPLEMENT??? (Or am I just being stupid?)
-    # Thread for keyboard listener (EStop etc)
-    # keyboardThread = Thread(target=KeyListener)
-    # keyboardThread.start()
 
-    # Thread for actually doing things
-    # functionalThread = Thread(target=start)
-    # functionalThread.start()
-    start()
+def eStopListener():
+    while True:
+        packet = repr(ROVMap.recvPacket)
+        if(packet == 'ES' or packet == 'S'):
+            functionalProcess.kill()
+            stop(packet == 'ES')
+
+
+# Creates two processes, one for keyboard stop/estop and one for actually doing robo
+try:
+    try:
+        set_start_method('spawn', force=True)
+    except RuntimeError:
+        pass
+    
+    # Process for keyboard listener (EStop etc)
+    EStopListener = Process(target=ROVMap.recvPacket)
+
+    # Thread for actually running robo code
+    functionalProcess = Process(target=start)
+    functionalProcess.start()
 # If keyboard interrupt, shut down every single part
-except (KeyboardInterrupt):
+except (KeyboardInterrupt, EStopInterrupt, EStopInterruptFatal) as e:
     ROVMap.log("Received Keyboard Interrupt.....Stopping")
-    stop()
+    stop(e.args)
+    
