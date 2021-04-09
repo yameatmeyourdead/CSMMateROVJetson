@@ -1,6 +1,4 @@
-from adafruit_motor.servo import ContinuousServo
 from adafruit_servokit import ServoKit
-from . import Controller
 
 kit = ServoKit(channels=16)
 
