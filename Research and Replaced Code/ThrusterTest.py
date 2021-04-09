@@ -14,7 +14,7 @@ motorChannel = pca.channels[0]
 motorChannel.duty_cycle = 0x7fff
 
 while True:
-    motorChannel.duty_cycle = hex(int(input("Throttle : "), 16))
+    motorChannel.duty_cycle = int(input("Throttle : "), 16)
 
 
 # # initialize pca9685
