@@ -13,4 +13,4 @@ ESC.set_pulse_width_range(1100,1900)
 
 # allow myself to control it
 while True:
-    ESC.throttle = int(input("OUT> "))
+    ESC.throttle = float(input("OUT> "))
