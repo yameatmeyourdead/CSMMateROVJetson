@@ -11,7 +11,7 @@ pca.frequency=300
 
 pca.channels[0].duty_cycle = 0xFFFF
 
-motor1 = motor.DCMotor(1900,1100)
+motor1 = motor.DCMotor(pca.channels[4],pca.channels[6])
 
 motor1.throttle = 0
 
