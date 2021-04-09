@@ -9,7 +9,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 pca = adafruit_pca9685.PCA9685(i2c, address=0x40)
 pca.frequency=300
 
-servo1 = pca.channels[4]
+servo1 = pca.channels[7]
 
 servo1.duty_cycle = 0x7fff
 
