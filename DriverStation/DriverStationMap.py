@@ -1,4 +1,5 @@
 import time
+import os
 
 # =======================
 # =======================
@@ -13,7 +14,8 @@ def log(strin, endO="\n"):
     Compatible with all data types capable of conversion to str through str(value)
     """
     strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
-    f.write(strin)
+    with open(LOGGER_FILE_PATH, 'a') as f:
+        f.write(strin)
 
 def getTimeFormatted(delim):
     """
@@ -23,13 +25,13 @@ def getTimeFormatted(delim):
     SYSTIME = time.localtime(time.time())
     return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
 
-# close file writer
-def closeLogger():
-    f.close()
-
 # Constructor creates file object named f
-ctime = getTimeFormatted('_')
-f = open("DriverStation/Logs/" + f"{ctime}" + ".txt", "w")
+currentTime = getTimeFormatted('_')
+LOGGER_FILE_PATH = f"DriverStation/Logs/{currentTime}.txt"
+if(os.path.exists(LOGGER_FILE_PATH)):
+    os.remove(LOGGER_FILE_PATH)
+with open("DriverStation/Logs/" + f"{currentTime}" + ".txt", "w") as f:
+    f.write(f"[{currentTime}] Logger Created")
 
 # =======================
 # =======================

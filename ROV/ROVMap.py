@@ -1,7 +1,9 @@
 # USE THIS TO CREATE "STATIC" VARIABLES / WHEN YOU WANT JAVA STYLE STATIC CLASSES
 
 from adafruit_servokit import ServoKit
+import os
 import time
+import numpy
 import board
 import busio
 import adafruit_pca9685
@@ -36,7 +38,8 @@ def log(strin, endO="\n"):
     Compatible with all data types capable of conversion to str through str(value)
     """
     strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
-    f.write(strin)
+    with open(LOGGER_FILE_PATH, 'a') as f:
+        f.write(strin)
 
 def getTimeFormatted(delim):
     """
@@ -46,13 +49,12 @@ def getTimeFormatted(delim):
     SYSTIME = time.localtime(time.time())
     return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
 
-# close file writer
-def closeLogger():
-    f.close()
-
-# Constructor creates file object named f
-ctime = getTimeFormatted('_')
-f = open("ROV/Logs/" + f"{ctime}" + ".txt", "w")
+currentTime = getTimeFormatted('_')
+LOGGER_FILE_PATH = f"ROV/Logs/{currentTime}.txt"
+if(os.path.exists(LOGGER_FILE_PATH)):
+    os.remove(LOGGER_FILE_PATH)
+with open(LOGGER_FILE_PATH, 'w') as f:
+    f.write(f"[{currentTime}] Logger Created")
 
 # =======================
 # =======================
@@ -140,6 +142,53 @@ def getButtonPresses():
 
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
+# =======================
+# =======================
+# =======================
+# =======================
+
+# NETWORK STUFF!!!!!! (boo)
+
+# Complete Port Map
+# 5555 ImageZMQ (look at replacing)
+# 6666 Data Transmission Port
+
+import socket
+IP = "10.0.0.1"
+PORT = "6666"
+
+def sendPacket(data):
+    """
+    Writes data to socket
+    """
+    SOC.send(data)
+
+# TODO: Implement support for numpy ndarray
+def recvPacket(closer):
+    """
+    Read data from socket
+    Usage recvPacket(">") where > denotes end of data chunk
+    Packets received must be denoted as valuable info with data variable closer else they will be thrown away
+    e.g. relevantdata(closer) will grab relevant data but relevant(closer)data  or (closer)relevantdata will miss data
+    """
+    buffer = ""
+    while not closer in buffer:
+        buffer += SOC.recv(1024)
+    
+    pos = buffer.find(closer)
+    rval = buffer[:pos + len(closer)]
+    buffer = buffer[pos + len(closer):]
+
+    return rval
+
+# TODO: Look at this implementation for aforementioned problem
+def sendImage(image):
+    # Get pickle of array and turn it into byte string, then add relevant closer to denote IMAGE
+    SOC.send(image.dumps())
+
+SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+SOC.connect((IP, PORT))
+
 # =======================
 # =======================
 # =======================
