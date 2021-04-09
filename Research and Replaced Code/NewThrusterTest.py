@@ -12,4 +12,4 @@ ESC.set_pulse_width_range(1100,1900)
 
 # allow myself to control it
 while True:
-    ESC._pwm_out = int(input("PWM OUT> "))
+    ESC.throttle = int(input("OUT> "))
