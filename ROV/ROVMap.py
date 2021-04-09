@@ -10,20 +10,25 @@ import adafruit_pca9685
 
 # PCA9685 should be connected to jetson on J41 pins 27(SDA)/28(SCL) for Bus0 or pins 3(SDA)/5(SCL) for Bus1 as well as relevant voltage (pin1 3.3v)
 # Default I2C address is 0x40
-
 kit = ServoKit(channels=16)
+
+# Constant dictionary for PCA9685
+# "FRONT_LEFT_THRUSTER_ESC": 0, "FRONT_RIGHT_THRUSTER_ESC": 1, "BACK_LEFT_THRUSTER_ESC": 2, "BACK_RIGHT_THRUSTER_ESC": 3 
+# "Z_THRUSTER_0_ESC": 4, "Z_THRUSTER_0_ESC": 5, "Z_THRUSTER_0_ESC": 6, "Z_THRUSTER_0_ESC": 7
+# "ELBOW_SERVO": 8, "ELBOW_SERVO_2": 9, "WRIST_SERVO": 10, "LEVEL_SERVO": 11,"CLAMP_SERVO": 12
+# "MICRO_PLACEHOLDER_SERVO1": 13, "MICRO_PLACEHOLDER_SERVO2": 14, "MICRO_PLACEHOLDER_SERVO3": 15
+PCA9685PINOUT = {
+    # Thrusters Front Left, Front Rright, Back Left, Back Right, Z Left, Z Front, Z Right, Z Back
+    0:[kit.continuous_servo[0], kit.continuous_servo[1], kit.continuous_servo[2], kit.continuous_servo[3], kit.continuous_servo[4], kit.continuous_servo[5], kit.continuous_servo[6], kit.continuous_servo[7]],
+    # Manip Servos
+    1:[kit.servo[8], kit.servo[9], kit.servo[10], kit.servo[11], kit.servo[12]],
+    2:[],
+}
 
 # PLACE ALL MODIFICATIONS TO SPECIFIC CHANNEL'S PULSE WIDTH BELOW
 # Manip Servo Mods
-kit.servo[4].set_pulse_width_range(500,2500)
-kit.servo[5].set_pulse_width_range(500,2500)
-kit.servo[6].set_pulse_width_range(500,2500)
-kit.servo[7].set_pulse_width_range(500,2500)
-
-# Constant dictionary for PCA9685 (e.g key = SERVO1 and value = pinout of the pins responsible)
-PCA9685PINOUT = {"FRONT_LEFT_THRUSTER_ESC": 0, "FRONT_RIGHT_THRUSTER_ESC": 1, "BACK_LEFT_THRUSTER_ESC": 2, "BACK_RIGHT_THRUSTER_ESC": 3, 
-                "ELBOW_SERVO": 4, "ELBOW_SERVO_2": 5, "WRIST_SERVO": 6, "LEVEL_SERVO": 7,"CLAMP_SERVO": 8, 
-                "MICRO_PLACEHOLDER_SERVO1": 9, "MICRO_PLACEHOLDER_SERVO2": 10, "MICRO_PLACEHOLDER_SERVO3": 11, "MICRO_PLACEHOLDER_DCMOTORESC": 12}
+for servo in PCA9685PINOUT[1]:
+    servo.set_pulse_width_range(500,2500)
 
 # =======================
 # =======================
@@ -183,7 +188,7 @@ def recvPacket(closer):
 
 # TODO: Look at this implementation for aforementioned problem
 def sendImage(image):
-    # Get pickle of array and turn it into byte string, then add relevant closer to denote IMAGE
+    # Get array 
     SOC.send(image.dumps())
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

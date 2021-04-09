@@ -13,6 +13,12 @@ class Drive(Component):
         print("Drive autoUpdate")
     
     def kill(self):
+        for ESCS in ROVMap.PCA9685PINOUT[0]:
+            for ESC in ESCS.values():
+                try:
+                    ROVMap.kit._items[ESC].duty_cycle = 0
+                except:
+                    pass
         print("Drive received kill command")
 
     def logEvent(string):

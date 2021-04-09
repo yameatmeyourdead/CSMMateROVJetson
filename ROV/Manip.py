@@ -5,13 +5,13 @@ from . import ROVMap
 class Manip(Component):
     def __init__(self):
         # Grab the relevant servos from the map
-        self.elbow_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["ELBOW_SERVO"]]
+        self.elbow_servo = ROVMap.PCA9685PINOUT[1][0]
         # TODO: IMPLEMENT
-        # self.elbow_servo2 = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["ELBOW_SERVO_2"]]
-        self.level_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["LEVEL_SERVO"]]
-        self.wrist_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["WRIST_SERVO"]]
+        # self.elbow_servo2 = ROVMap.PCA9685PINOUT[1][1]
+        self.level_servo = ROVMap.PCA9685PINOUT[1][2]
+        self.wrist_servo = ROVMap.PCA9685PINOUT[1][3]
         # TODO: IMPLEMENT
-        # self.clamp_servo = ROVMap.kit.servo[ROVMap.PCA9685PINOUT["CLAMP_SERVO"]]
+        # self.clamp_servo = ROVMap.PCA9685PINOUT[1][4]
 
         self.chicken = 0
         self.elbow_angle = 90       # deg
@@ -127,7 +127,9 @@ class Manip(Component):
         print("Manipulator autoUpdate")
     
     def kill(self):
-        print("Manipulator received kill command")
+        for servo in ROVMap.PCA9685PINOUT[1]:
+            servo.duty_cycle = 0
+        print("Manipulator duty cycles 0'd")
 
     def logEvent(string):
         ROVMap.log(string)
