@@ -9,14 +9,12 @@ i2c = busio.I2C(board.SCL, board.SDA)
 pca = adafruit_pca9685.PCA9685(i2c, address=0x40)
 pca.frequency=300
 
-pca.channels[0].duty_cycle = 0xFFFF
+motorChannel = pca.channels[0]
 
-motor1 = motor.DCMotor(pca.channels[4],pca.channels[6])
-
-motor1.throttle = 0
+motorChannel.duty_cycle = 0x7fff
 
 while True:
-    motor1.throttle = float(input("Throttle : "))
+    motorChannel.duty_cycle = int(input("Throttle : "), 16)
 
 
 # # initialize pca9685
