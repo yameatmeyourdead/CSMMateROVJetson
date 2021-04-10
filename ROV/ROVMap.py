@@ -183,7 +183,7 @@ def getButtonPresses():
 
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
-log("Joystick object created")
+print("Joystick object created")
 # =======================
 # =======================
 # =======================
