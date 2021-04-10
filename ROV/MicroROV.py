@@ -4,7 +4,7 @@ from . import ROVMap
 class MicroROV(Component):
     def __init__(self):
         # Do setup things
-        MicroROV.logEvent("MICROROV CONSTRUCTED")
+        ROVMap.log("MICROROV CONSTRUCTED")
 
     def Update(self):
         # (DEBUG)
@@ -16,6 +16,3 @@ class MicroROV(Component):
     
     def kill(self):
         print("MicroROV received kill command")
-    
-    def logEvent(string):
-        ROVMap.log(string)

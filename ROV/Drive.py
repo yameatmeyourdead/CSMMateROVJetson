@@ -28,7 +28,7 @@ class Drive(Component):
 
         self.VELOCITY_SCALING_FACTOR = .5
         # IMPLEMENT PID
-        Drive.logEvent("DRIVE CONSTRUCTED")
+        ROVMap.log("DRIVE CONSTRUCTED")
 
     def Update(self):
         # Poll the stick

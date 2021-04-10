@@ -45,7 +45,7 @@ class Manip(Component):
         # Want to wait some time before shizzle starts to move?
         # sleep(3)
 
-        Manip.logEvent("MANIPULATOR CONSTRUCTED")
+        ROVMap.log("MANIPULATOR CONSTRUCTED")
 
     def Update(self):
         # Read input from joystick and map it to velocity
