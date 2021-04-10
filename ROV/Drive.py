@@ -33,12 +33,13 @@ class Drive(Component):
     def Update(self):
         # Poll the stick
         poll = ROVMap.getRightStick()
-        print(poll)
+        # print(poll)
+        print(ROVMap.getLeftStick())
         self.x_velocity = poll[0]
         self.y_velocity = poll[1]
         
         # Update Throttles
-        self.thruster_front_left.throttle = self.x_velocity
+        # self.thruster_front_left.throttle = self.x_velocity
 
         # (DEBUG)
         # print("Drive Update")
