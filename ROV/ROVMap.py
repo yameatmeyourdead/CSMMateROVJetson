@@ -111,38 +111,38 @@ def getLeftStick():
     Returns tuple of type int,int ranging from -1 to 1  \n
     -> (x, y)
     """
-    return joystick.l
+    return JOYSTICK.l
 
 def getRightStick():
     """
     Returns tuple of type int,int ranging from -1 to 1  \n
     -> (x, y)
     """
-    return joystick.r
+    return JOYSTICK.r
 
 def getLeftTrigger():
     """
     Returns current value from -1 to 1  \n
     """
-    return joystick.lt
+    return JOYSTICK.lt
 
 def getRightTrigger():
     """
     Returns current value from -1 to 1  \n
     """
-    return joystick.rt
+    return JOYSTICK.rt
 
 def getLeftBumper():
     """
     Returns 1 if pressed else 0  \n
     """
-    return joystick.l1
+    return JOYSTICK.l1
 
 def getRightBumper():
     """
     Returns 1 if pressed else 0  \n
     """
-    return joystick.r1
+    return JOYSTICK.r1
 
 def getDPad():
     """
@@ -177,12 +177,12 @@ def getButtonPresses():
     To determine if one of these buttons are pressed, use .held(standard name) \n
     returns none if not held otherwise number of seconds held
     """
-    return joystick.check_presses()
+    return JOYSTICK.check_presses()
 
 
 
 # Constructor creates instance of joystick
-joystick = ControllerResource().__enter__()
+JOYSTICK = ControllerResource().__enter__()
 print("Joystick object created")
 # =======================
 # =======================
