@@ -72,7 +72,7 @@ try:
         # EStopListener = Process(target=ROVMap.recvPacket)
         # EStopListener.start()
         
-        # Thread for actually running robo code
+        # Thread for actually running robo code (DEPRECATED PROBABLY)
         # functionalProcess = Process(target=start)
         # functionalProcess.start()
         start()
