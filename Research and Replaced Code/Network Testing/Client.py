@@ -27,8 +27,8 @@ def recvPacket(closer):
     return rval
 
 def sendImage(image):
-    # Get array 
-    SOC.send(image.dumps())
+    # TODO: IMPLEMENT
+    SOC.sendall(b"IMAGE_GOES_HERE")
 
 def startNetworkListener():
     SOC.connect((IP, PORT))
@@ -37,15 +37,11 @@ def startNetworkListener():
         if(packet.find("ES")):
             print("FATAL INTERRUPT")
             input()
+            break
         elif(packet.find("S")):
             print("INTERRUPT")
             input()
+            break
+    SOC.close()
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((IP, PORT))
-    s.sendall(b'Hello World')
-    data = s.recv(1024)
-
-print("Received", data)
