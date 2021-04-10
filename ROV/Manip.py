@@ -130,6 +130,7 @@ class Manip(Component):
     def kill(self):
         for servo in ROVMap.MANIP_SERVOS:
             servo.duty_cycle = 0
+        ROVMap.log("Manipulator Servos Successfully Killed")
         print("Manipulator duty cycles zeroed")
 
     def logEvent(string):

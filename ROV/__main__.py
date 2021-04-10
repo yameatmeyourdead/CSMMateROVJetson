@@ -63,16 +63,16 @@ print(globals()["start"])
 
 # Creates two processes, one for keyboard stop/estop and one for actually doing robo
 try:
-    try:
-        set_start_method('spawn', force=True)
-    except RuntimeError:
-        pass
+    # try:
+    #     set_start_method('spawn', force=True)
+    # except RuntimeError:
+    #     pass
 
     if __name__ == "__main__":
         # Process for keyboard listener (EStop etc)
         # EStopListener = Process(target=ROVMap.recvPacket)
         # EStopListener.start()
-
+        
         # Thread for actually running robo code
         functionalProcess = Process(target=start)
         functionalProcess.start()
