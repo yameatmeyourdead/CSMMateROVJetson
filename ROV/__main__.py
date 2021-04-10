@@ -30,7 +30,7 @@ def stop(FATAL = False):
     """
     ROVMap.log(f"Received Stop Command.....Fatal? => {FATAL}")
     # Calmly deactivate all components
-    ROVMap.joystick.__exit__()
+    ROVMap.JOYSTICK.__exit__()
     for Comp in parts:
         Comp.kill()
     # If EStop Fatal was triggered, shutdown Jetson immediately
@@ -73,8 +73,9 @@ try:
         # EStopListener.start()
         
         # Thread for actually running robo code
-        functionalProcess = Process(target=start)
-        functionalProcess.start()
+        # functionalProcess = Process(target=start)
+        # functionalProcess.start()
+        start()
 # If keyboard interrupt, shut down every single part
 except (KeyboardInterrupt, ROVMap.EStopInterrupt, ROVMap.EStopInterruptFatal) as e:
     ROVMap.log("Received Keyboard Interrupt.....Stopping")
