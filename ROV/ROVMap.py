@@ -223,8 +223,9 @@ def sendImage(image):
     # Get array 
     SOC.send(image.dumps())
 
+# TODO: IMPLEMENT
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-SOC.connect((IP, PORT))
+# SOC.connect((IP, PORT))
 
 # =======================
 # =======================
