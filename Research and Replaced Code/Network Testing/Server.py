@@ -14,8 +14,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print("Connected to", addr) # print who we are connected with
         while True: # while we are connected, read data
-            data = conn.recv(1024) # read data sent to port (THIS IS BLOCKING)
-            if not data: # if we receive empty byte string, connection has been closed from other end
-                break
+            # data = conn.recv(1024) # read data sent to port (THIS IS BLOCKING)
+            # if not data: # if we receive empty byte string, connection has been closed from other end
+            #     break
             # do stuff with data
             conn.sendall(b"ES>") # attempt emergency stop

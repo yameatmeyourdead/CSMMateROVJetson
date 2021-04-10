@@ -34,11 +34,11 @@ def startNetworkListener():
     SOC.connect((IP, PORT))
     while True:
         packet = recvPacket(">")
-        if(packet.find("ES")):
+        if(packet.find(b"ES>")):
             print("FATAL INTERRUPT")
             input()
             break
-        elif(packet.find("S")):
+        elif(packet.find(b"S>")):
             print("INTERRUPT")
             input()
             break
