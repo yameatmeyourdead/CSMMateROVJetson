@@ -48,6 +48,7 @@ class Manip(Component):
         ROVMap.log("MANIPULATOR CONSTRUCTED")
 
     def Update(self):
+        return
         # Read input from joystick and map it to velocity
         poll = ROVMap.getLeftStick()
         self.x_velocity = (poll[0]) * self.VELOCITY_SCALING_FACTOR

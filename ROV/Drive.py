@@ -39,8 +39,8 @@ class Drive(Component):
         self.y_velocity = poll[1]
         
         # Update Throttles
-        # self.thruster_front_left.throttle = self.x_velocity
-        
+        self.thruster_front_left.throttle = self.x_velocity
+
         # (DEBUG)
         # print("Drive Update")
     
