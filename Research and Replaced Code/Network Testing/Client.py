@@ -16,7 +16,7 @@ def recvPacket(closer):
     Packets received must be denoted as valuable info with data variable closer else they will be thrown away
     e.g. relevantdata(closer) will grab relevant data but relevant(closer)data  or (closer)relevantdata will miss data
     """
-    buffer = ""
+    buffer = b""
     while not closer in buffer:
         buffer += SOC.recv(1024)
     
@@ -33,7 +33,7 @@ def sendImage(image):
 def startNetworkListener():
     SOC.connect((IP, PORT))
     while True:
-        packet = recvPacket(">")
+        packet = recvPacket(b">")
         if(packet.find(b"ES>")):
             print("FATAL INTERRUPT")
             input()
