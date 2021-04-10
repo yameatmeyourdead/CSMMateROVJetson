@@ -77,3 +77,6 @@ def getButtonPresses():
 
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
+
+while True:
+    print(getRightStick())
