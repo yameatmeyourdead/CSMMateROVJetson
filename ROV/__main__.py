@@ -30,6 +30,7 @@ def stop(FATAL = False):
     """
     ROVMap.log(f"Received Stop Command.....Fatal? => {FATAL}")
     # Calmly deactivate all components
+    ROVMap.joystick.__exit__()
     for Comp in parts:
         Comp.kill()
     # If EStop Fatal was triggered, shutdown Jetson immediately
