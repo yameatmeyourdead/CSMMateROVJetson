@@ -67,8 +67,8 @@ try:
         pass
     
     # Process for keyboard listener (EStop etc)
-    EStopListener = Process(target=ROVMap.recvPacket)
-    EStopListener.start()
+    # EStopListener = Process(target=ROVMap.recvPacket)
+    # EStopListener.start()
 
     # Thread for actually running robo code
     functionalProcess = Process(target=start)
