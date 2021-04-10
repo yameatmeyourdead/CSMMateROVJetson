@@ -65,6 +65,8 @@ try:
     except RuntimeError:
         pass
     
+    print(globals()["start"])
+
     if __name__ == "__main__":
         # Process for keyboard listener (EStop etc)
         # EStopListener = Process(target=ROVMap.recvPacket)
