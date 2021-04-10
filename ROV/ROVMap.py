@@ -12,23 +12,55 @@ import adafruit_pca9685
 # Default I2C address is 0x40
 kit = ServoKit(channels=16)
 
-# Constant dictionary for PCA9685
-# "FRONT_LEFT_THRUSTER_ESC": 0, "FRONT_RIGHT_THRUSTER_ESC": 1, "BACK_LEFT_THRUSTER_ESC": 2, "BACK_RIGHT_THRUSTER_ESC": 3 
-# "Z_THRUSTER_0_ESC": 4, "Z_THRUSTER_0_ESC": 5, "Z_THRUSTER_0_ESC": 6, "Z_THRUSTER_0_ESC": 7
-# "ELBOW_SERVO": 8, "ELBOW_SERVO_2": 9, "WRIST_SERVO": 10, "LEVEL_SERVO": 11,"CLAMP_SERVO": 12
-# "MICRO_PLACEHOLDER_SERVO1": 13, "MICRO_PLACEHOLDER_SERVO2": 14, "MICRO_PLACEHOLDER_SERVO3": 15
-PCA9685PINOUT = {
-    # Thrusters Front Left, Front Rright, Back Left, Back Right, Z Left, Z Front, Z Right, Z Back
-    0:[kit.continuous_servo[0], kit.continuous_servo[1], kit.continuous_servo[2], kit.continuous_servo[3], kit.continuous_servo[4], kit.continuous_servo[5], kit.continuous_servo[6], kit.continuous_servo[7]],
-    # Manip Servos
-    1:[kit.servo[8], kit.servo[9], kit.servo[10], kit.servo[11], kit.servo[12]],
-    2:[],
-}
+# Constant "dictionary" for PCA9685
+# Thrusters
+THRUSTER_FRONT_LEFT = kit.continuous_servo[0]
+# NOT YET IMPLEMENTED TODO: UNCOMMENT
+# THRUSTER_FRONT_RIGHT = kit.continuous_servo[1]
+# THRUSTER_BACK_LEFT = kit.continuous_servo[2]
+# THRUSTER_BACK_RIGHT = kit.continuous_servo[3]
+# THRUSTER_Z_LEFT = kit.continuous_servo[4]
+# THRUSTER_Z_FRONT = kit.continuous_servo[5]
+# THRUSTER_Z_RIGHT = kit.continuous_servo[6]
+# THRUSTER_Z_BACK = kit.continuous_servo[7]
+# THRUSTERS = [THRUSTER_FRONT_LEFT,THRUSTER_FRONT_RIGHT,THRUSTER_BACK_LEFT,THRUSTER_BACK_RIGHT,THRUSTER_Z_LEFT,THRUSTER_Z_FRONT,THRUSTER_Z_RIGHT,THRUSTER_Z_BACK]
+# Manipulator
+MANIP_ELBOW_SERVO = kit.servo[8]
+# MANIP_ELBOW_SERVO_2 = kit.servo[9]
+MANIP_WRIST_SERVO = kit.servo[10]
+MANIP_LEVEL_SERVO = kit.servo[11]
+# MANIP_CLAMP_SERVO = kit.servo[12]
+# MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
+MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO]
+# MicroROV THIS MAY BE REPLACED BY USB SERVO HUB TODO: IMPLEMENT IF TRUE
+# NOT YET IMPLEMENTED TODO: UNCOMMENT
+# MICRO_SERVO_0 = kit.servo[13]
+# MICRO_SERVO_1 = kit.servo[14]
+# MICRO_ESC = kit.continuous_servo[15]
+# MICRO_SERVOS = [MICRO_SERVO_0, MICRO_SERVO_1]
+# MICRO_ESCS = [MICRO_ESC]
 
 # PLACE ALL MODIFICATIONS TO SPECIFIC CHANNEL'S PULSE WIDTH BELOW
-# Manip Servo Mods
-for servo in PCA9685PINOUT[1]:
-    servo.set_pulse_width_range(500,2500)
+# Manip Servo Mods (Rated pulse width)
+MANIP_ELBOW_SERVO.set_pulse_width_range(500,2500)
+# NOT YET IMPLEMENTED TODO: UNCOMMENT
+# MANIP_ELBOW_SERVO_2.set_pulse_width_range(500,2500)
+MANIP_WRIST_SERVO.set_pulse_width_range(500,2500)
+MANIP_LEVEL_SERVO.set_pulse_width_range(500,2500)
+# NOT YET IMPLEMENTED TODO: UNCOMMENT
+# MANIP_CLAMP_SERVO.set_pulse_width_range(500,2500)
+# Thruster Mods (Experimentally found pulse width because specs lied to us :) ) 
+# (in reality its probably a library thing but i dont want to debug/rewrite ServoKit.continuous_servo :P )
+THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
+# NOT YET IMPLEMENTED TODO: UNCOMMENT
+# THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
+# THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
+# THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_LEFT.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_FRONT.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_RIGHT.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_BACK.set_pulse_width_range(1200,2000)
+
 
 # =======================
 # =======================

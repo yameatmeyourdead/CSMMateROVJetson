@@ -5,13 +5,13 @@ from . import ROVMap
 class Manip(Component):
     def __init__(self):
         # Grab the relevant servos from the map
-        self.elbow_servo = ROVMap.PCA9685PINOUT[1][0]
+        self.elbow_servo = ROVMap.MANIP_ELBOW_SERVO
         # TODO: IMPLEMENT
-        # self.elbow_servo2 = ROVMap.PCA9685PINOUT[1][1]
-        self.level_servo = ROVMap.PCA9685PINOUT[1][2]
-        self.wrist_servo = ROVMap.PCA9685PINOUT[1][3]
+        # self.elbow_servo2 = ROVMap.MANIP_ELBOW_SERVO_2
+        self.level_servo = ROVMap.MANIP_LEVEL_SERVO
+        self.wrist_servo = ROVMap.MANIP_WRIST_SERVO
         # TODO: IMPLEMENT
-        # self.clamp_servo = ROVMap.PCA9685PINOUT[1][4]
+        # self.clamp_servo = ROVMap.MANIP_CLAMP_SERVO
 
         self.chicken = 0
         self.elbow_angle = 90       # deg
@@ -49,8 +49,9 @@ class Manip(Component):
 
     def Update(self):
         # Read input from joystick and map it to velocity
-        self.x_velocity = (ROVMap.getLeftStick()[0]) * self.VELOCITY_SCALING_FACTOR
-        self.y_velocity = (ROVMap.getLeftStick()[1]) * self.VELOCITY_SCALING_FACTOR
+        poll = ROVMap.getLeftStick()
+        self.x_velocity = (poll[0]) * self.VELOCITY_SCALING_FACTOR
+        self.y_velocity = (poll[1]) * self.VELOCITY_SCALING_FACTOR
 
         # Disregard very low delta target velocities (< 10%)
         if(abs(self.y_velocity) < self.DELTA_VELOCITY_IGNORE):
@@ -127,9 +128,9 @@ class Manip(Component):
         print("Manipulator autoUpdate")
     
     def kill(self):
-        for servo in ROVMap.PCA9685PINOUT[1]:
+        for servo in ROVMap.MANIP_SERVOS:
             servo.duty_cycle = 0
-        print("Manipulator duty cycles 0'd")
+        print("Manipulator duty cycles zeroed")
 
     def logEvent(string):
         ROVMap.log(string)
