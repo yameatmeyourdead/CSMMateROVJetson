@@ -1,3 +1,4 @@
+from ROV.ROVMap import EStopInterrupt
 import socket
 IP = "10.0.0.1"
 PORT = 6666
@@ -8,7 +9,6 @@ def sendPacket(data):
     """
     SOC.send(data)
 
-# TODO: Implement support for numpy ndarray
 def recvPacket(closer):
     """
     Read data from socket
@@ -26,26 +26,27 @@ def recvPacket(closer):
 
     return rval
 
-def sendImage(image):
-    # TODO: IMPLEMENT
-    SOC.sendall(b"IMAGE_GOES_HERE")
-
 def startNetworkListener():
+    """
+    Attempts to connect to IP, PORT  
+    
+    """
     SOC.connect((IP, PORT))
     while True:
         packet = recvPacket(b">")
         print("Received packet: ", packet)
         if(packet.find(b'XXESF>') != -1):
-            print("FATAL INTERRUPT")
-            input()
-            break
+            SOC.close()
+            raise EStopInterrupt
         elif(packet.find(b'XXS>') != -1):
-            print("INTERRUPT")
-            input()
-            break
-    SOC.close()
+            SOC.close()
+            raise EStopInterrupt
+    
 
+# creation of socket object
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-print("Attempt to start network listener")
-startNetworkListener()
+# if this module is not run as a script, do not auto start network listener :)
+if __name__ == "__main__":
+    print("Attempt to start network listener")
+    startNetworkListener()

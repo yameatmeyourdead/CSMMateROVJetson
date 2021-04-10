@@ -4,6 +4,8 @@ from adafruit_servokit import ServoKit
 from adafruit_motor import servo
 import os
 import time
+import multiprocessing
+import traceback
 import numpy
 import board
 import busio
@@ -78,10 +80,17 @@ def log(strin, endO="\n"):
     """
     Call this method to log something  \n
     Compatible with all data types capable of conversion to str through str(value)
+    NOTE: UNDER NO CIRCUMSTANCE USE THE CHARACTER >
     """
     strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
     with open(LOGGER_FILE_PATH, 'a') as f:
         f.write(strin)
+
+def log_debug(feedback_queue, error, name):
+    pass
+
+def log_error(feedback_queue, error, name):
+    pass
 
 def getTimeFormatted(delim):
     """
@@ -244,3 +253,32 @@ SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # =======================
 # =======================
 # =======================
+
+# Error-Safe Processes
+class EtlStepProcess(multiprocessing.Process):
+
+    def __init__(self, feedback_queue):
+        multiprocessing.Process.__init__(self)
+        self.feedback_queue = feedback_queue
+
+    def log_info(self, message):
+        log(message)
+
+    def log_debug(self, message):
+        log_debug(self.feedback_queue, message, self.name)
+
+    def log_error(self, err):
+        log_error(self.feedback_queue, err, self.name)
+
+    def saferun(self):
+        """Method to be run in sub-process; can be overridden in sub-class"""
+        if self._target:
+            self._target(*self._args, **self._kwargs)
+
+    def run(self):
+        try:
+            self.saferun()
+        except Exception as e:
+            self.log_error(e)
+            raise e
+        return

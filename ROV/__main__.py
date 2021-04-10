@@ -28,7 +28,7 @@ def stop(FATAL = False):
     WARNING: IF TESTING THIS FATAL FUNCTIONALITY, IT WILL SHUTDOWN YOUR COMPUTER... YOU HAVE BEEN WARNED\n
     usage: stop(FATAL) Fatal=False by default
     """
-    ROVMap.log(f"Received Stop Command.....Fatal? => {FATAL}")
+    ROVMap.log(f"Received Stop Command.....Fatal? = {FATAL}")
     # Calmly deactivate all components
     ROVMap.JOYSTICK.__exit__()
     for Comp in parts:
