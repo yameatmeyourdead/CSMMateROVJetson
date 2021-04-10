@@ -35,11 +35,11 @@ def startNetworkListener():
     while True:
         packet = recvPacket(b">")
         print("Received packet: ", packet)
-        if(packet.find(b"ES>")):
+        if(packet.find(b'XXESF>')):
             print("FATAL INTERRUPT")
             input()
             break
-        elif(packet.find(b"S>")):
+        elif(packet.find(b'XXS>')):
             print("INTERRUPT")
             input()
             break

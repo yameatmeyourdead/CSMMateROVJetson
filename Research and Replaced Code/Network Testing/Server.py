@@ -21,6 +21,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #     break
                 # do stuff with data
                 time.sleep(5)
-                conn.sendall(b"ES>") # attempt emergency stop
+                conn.sendall(b"XXESF>") # attempt emergency stop
     except ConnectionResetError:
         print("Connection with", addr, " forcibly closed")
