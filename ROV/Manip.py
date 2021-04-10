@@ -120,7 +120,7 @@ class Manip(Component):
         # print("Level :", self.level_angle)
         # if(self.button_new):
         #     print("PRESSED")
-        # print("Manipulator Update")
+        print("Manipulator Update")
 
 
     def autoUpdate(self):

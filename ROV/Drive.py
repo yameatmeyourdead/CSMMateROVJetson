@@ -33,8 +33,8 @@ class Drive(Component):
     def Update(self):
         # Poll the stick
         poll = ROVMap.getRightStick()
-        # print(poll)
-        
+        print(poll)
+
         self.x_velocity = poll[0]
         self.y_velocity = poll[1]
         
