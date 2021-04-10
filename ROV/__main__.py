@@ -59,8 +59,6 @@ def start():
             for Comp in parts:
                 Comp.autoUpdate()
 
-print(globals()["start"])
-
 # Creates two processes, one for keyboard stop/estop and one for actually doing robo
 try:
     # try:

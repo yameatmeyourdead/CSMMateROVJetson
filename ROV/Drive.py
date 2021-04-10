@@ -34,7 +34,7 @@ class Drive(Component):
         # Poll the stick
         poll = ROVMap.getRightStick()
         # print(poll)
-        print(ROVMap.getLeftStick())
+        
         self.x_velocity = poll[0]
         self.y_velocity = poll[1]
         

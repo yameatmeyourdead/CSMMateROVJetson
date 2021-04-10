@@ -95,7 +95,7 @@ LOGGER_FILE_PATH = f"ROV/Logs/{currentTime}.txt"
 if(os.path.exists(LOGGER_FILE_PATH)):
     os.remove(LOGGER_FILE_PATH)
 with open(LOGGER_FILE_PATH, 'w') as f:
-    f.write(f"[{currentTime}] Logger Created")
+    f.write(f"[{currentTime}] Logger Created\n")
 
 # =======================
 # =======================
