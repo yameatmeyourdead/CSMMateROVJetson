@@ -26,7 +26,7 @@ def stop(FATAL = False):
     """
     Stop the robot. Contains Capability for auto-shutdown of computer\n
     WARNING: IF TESTING THIS FATAL FUNCTIONALITY, IT WILL SHUTDOWN YOUR COMPUTER... YOU HAVE BEEN WARNED\n
-    usage stop(FATAL) Fatal=False by default
+    usage: stop(FATAL) Fatal=False by default
     """
     ROVMap.log(f"Received Stop Command.....Fatal? => {FATAL}")
     # Calmly deactivate all components
@@ -38,7 +38,6 @@ def stop(FATAL = False):
         os.system('shutdown /s /t 1')
     ROVMap.log("ROV Successfully Shutdown", endO="")
 
-# Start the robot
 def start():
     """
     Start the Robot\n
@@ -66,13 +65,14 @@ try:
     except RuntimeError:
         pass
     
-    # Process for keyboard listener (EStop etc)
-    # EStopListener = Process(target=ROVMap.recvPacket)
-    # EStopListener.start()
+    if __name__ == "__main__":
+        # Process for keyboard listener (EStop etc)
+        # EStopListener = Process(target=ROVMap.recvPacket)
+        # EStopListener.start()
 
-    # Thread for actually running robo code
-    functionalProcess = Process(target=start)
-    functionalProcess.start()
+        # Thread for actually running robo code
+        functionalProcess = Process(target=start)
+        functionalProcess.start()
 # If keyboard interrupt, shut down every single part
 except (KeyboardInterrupt, ROVMap.EStopInterrupt, ROVMap.EStopInterruptFatal) as e:
     ROVMap.log("Received Keyboard Interrupt.....Stopping")
