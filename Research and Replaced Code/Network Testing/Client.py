@@ -45,3 +45,6 @@ def startNetworkListener():
     SOC.close()
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+print("Attempt to start network listener")
+startNetworkListener()
