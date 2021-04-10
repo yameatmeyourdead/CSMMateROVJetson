@@ -8,6 +8,10 @@ import board
 import busio
 import adafruit_pca9685
 
+# Creation of EStop Exception and its Fatal counterpart (Fatal EStop completely shuts down computer)
+class EStopInterruptFatal(Exception): args: True 
+class EStopInterrupt(Exception): ...
+
 # PCA9685 should be connected to jetson on J41 pins 27(SDA)/28(SCL) for Bus0 or pins 3(SDA)/5(SCL) for Bus1 as well as relevant voltage (pin1 3.3v)
 # Default I2C address is 0x40
 kit = ServoKit(channels=16)
@@ -223,9 +227,17 @@ def sendImage(image):
     # Get array 
     SOC.send(image.dumps())
 
+def startNetworkListener():
+    SOC.connect((IP, PORT))
+    while True:
+        packet = recvPacket(">")
+        if(packet.find("ES")):
+            raise EStopInterruptFatal
+        elif(packet.find("S")):
+            raise EStopInterrupt
+
 # TODO: IMPLEMENT
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# SOC.connect((IP, PORT))
 
 # =======================
 # =======================

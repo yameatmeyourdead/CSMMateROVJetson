@@ -8,10 +8,6 @@ import time
 import traceback
 from multiprocessing import Process, set_start_method
 
-# Creation of EStop Exception and its Fatal counterpart (Fatal EStop completely shuts down computer)
-class EStopInterruptFatal(Exception): args: True 
-class EStopInterrupt(Exception): ...
-
 parts = [] # Component list for ease of looping in autoOp/teleOp function
 operatingMode = True # Operate in Autonomous or TeleOp? True = TeleOp, False = Auto
 
@@ -61,12 +57,7 @@ def start():
 
 
 def eStopListener():
-    while True:
-        packet = repr(ROVMap.recvPacket)
-        if(packet == 'ES' or packet == 'S'):
-            functionalProcess.kill()
-            stop(packet == 'ES')
-
+    ROVMap.startNetworkListener()
 
 # Creates two processes, one for keyboard stop/estop and one for actually doing robo
 try:
@@ -77,12 +68,13 @@ try:
     
     # Process for keyboard listener (EStop etc)
     EStopListener = Process(target=ROVMap.recvPacket)
+    EStopListener.start()
 
     # Thread for actually running robo code
     functionalProcess = Process(target=start)
     functionalProcess.start()
 # If keyboard interrupt, shut down every single part
-except (KeyboardInterrupt, EStopInterrupt, EStopInterruptFatal) as e:
+except (KeyboardInterrupt, ROVMap.EStopInterrupt, ROVMap.EStopInterruptFatal) as e:
     ROVMap.log("Received Keyboard Interrupt.....Stopping")
     stop(e.args)
     
