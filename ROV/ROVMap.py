@@ -1,6 +1,7 @@
 # USE THIS TO CREATE "STATIC" VARIABLES / WHEN YOU WANT JAVA STYLE STATIC CLASSES
 
 from adafruit_servokit import ServoKit
+from adafruit_motor import servo
 import os
 import time
 import numpy
@@ -18,7 +19,7 @@ kit = ServoKit(channels=16)
 
 # Constant "dictionary" for PCA9685
 # Thrusters
-THRUSTER_FRONT_LEFT = kit.continuous_servo[0]
+THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
 # NOT YET IMPLEMENTED TODO: UNCOMMENT
 # THRUSTER_FRONT_RIGHT = kit.continuous_servo[1]
 # THRUSTER_BACK_LEFT = kit.continuous_servo[2]
@@ -29,10 +30,10 @@ THRUSTER_FRONT_LEFT = kit.continuous_servo[0]
 # THRUSTER_Z_BACK = kit.continuous_servo[7]
 # THRUSTERS = [THRUSTER_FRONT_LEFT,THRUSTER_FRONT_RIGHT,THRUSTER_BACK_LEFT,THRUSTER_BACK_RIGHT,THRUSTER_Z_LEFT,THRUSTER_Z_FRONT,THRUSTER_Z_RIGHT,THRUSTER_Z_BACK]
 # Manipulator
-MANIP_ELBOW_SERVO = kit.servo[8]
+MANIP_ELBOW_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[8])
 # MANIP_ELBOW_SERVO_2 = kit.servo[9]
-MANIP_WRIST_SERVO = kit.servo[10]
-MANIP_LEVEL_SERVO = kit.servo[11]
+MANIP_WRIST_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[10])
+MANIP_LEVEL_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[11])
 # MANIP_CLAMP_SERVO = kit.servo[12]
 # MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
 MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO]
