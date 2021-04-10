@@ -192,7 +192,7 @@ joystick = ControllerResource().__enter__()
 
 import socket
 IP = "10.0.0.1"
-PORT = "6666"
+PORT = 6666
 
 def sendPacket(data):
     """
