@@ -38,6 +38,11 @@ def stop(FATAL = False):
         os.system('shutdown /s /t 1')
     ROVMap.log("ROV Successfully Shutdown", endO="")
 
+
+def eStopListener():
+    ROVMap.startNetworkListener()
+
+
 def start():
     """
     Start the Robot\n
@@ -54,9 +59,7 @@ def start():
             for Comp in parts:
                 Comp.autoUpdate()
 
-
-def eStopListener():
-    ROVMap.startNetworkListener()
+print(globals()["start"])
 
 # Creates two processes, one for keyboard stop/estop and one for actually doing robo
 try:
@@ -64,8 +67,6 @@ try:
         set_start_method('spawn', force=True)
     except RuntimeError:
         pass
-    
-    print(globals()["start"])
 
     if __name__ == "__main__":
         # Process for keyboard listener (EStop etc)
