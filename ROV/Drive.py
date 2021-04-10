@@ -26,7 +26,7 @@ class Drive(Component):
         self.z3_velocity = 0.0
         #TODO: ADD THE REST
 
-        self.VELOCITY_SCALING_FACTOR = .5
+        self.VELOCITY_SCALING_FACTOR = .75
         # IMPLEMENT PID
         ROVMap.log("DRIVE CONSTRUCTED")
 
