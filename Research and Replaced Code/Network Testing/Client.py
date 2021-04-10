@@ -34,6 +34,7 @@ def startNetworkListener():
     SOC.connect((IP, PORT))
     while True:
         packet = recvPacket(b">")
+        print("Received packet: ", packet)
         if(packet.find(b"ES>")):
             print("FATAL INTERRUPT")
             input()
