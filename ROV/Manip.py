@@ -115,13 +115,12 @@ class Manip(Component):
                 self.chicken = 1
 
         # (DEBUG)
-        print("Elbow :", self.elbow_angle)
-        print("Wrist :", self.wrist_angle)
-        print("Level :", self.level_angle)
-        if(self.button_new):
-            print("PRESSED")
-        
-        print("Manipulator Update")
+        # print("Elbow :", self.elbow_angle)
+        # print("Wrist :", self.wrist_angle)
+        # print("Level :", self.level_angle)
+        # if(self.button_new):
+        #     print("PRESSED")
+        # print("Manipulator Update")
 
 
     def autoUpdate(self):
@@ -132,6 +131,3 @@ class Manip(Component):
             servo.duty_cycle = 0
         ROVMap.log("Manipulator Servos Successfully Killed")
         print("Manipulator duty cycles zeroed")
-
-    def logEvent(string):
-        ROVMap.log(string)

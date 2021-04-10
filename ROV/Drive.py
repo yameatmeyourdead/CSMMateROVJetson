@@ -33,21 +33,18 @@ class Drive(Component):
     def Update(self):
         # Poll the stick
         poll = ROVMap.getRightStick()
-
+        print(poll)
         self.x_velocity = poll[0]
         self.y_velocity = poll[1]
         
         # Update Throttles
         self.thruster_front_left.throttle = self.x_velocity
 
-        print("Drive Update")
+        # (DEBUG)
+        # print("Drive Update")
     
     def autoUpdate(self):
         print("Drive autoUpdate")
     
     def kill(self):
         print("Drive received kill command")
-
-    def logEvent(string):
-        ROVMap.log(string)
-

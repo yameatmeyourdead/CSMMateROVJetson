@@ -7,7 +7,9 @@ class MicroROV(Component):
         MicroROV.logEvent("MICROROV CONSTRUCTED")
 
     def Update(self):
-        print("MicroROV Update")
+        # (DEBUG)
+        # print("MicroROV Update")
+        pass
     
     def autoUpdate(self):
         print("MicroROV autoUpdate")
