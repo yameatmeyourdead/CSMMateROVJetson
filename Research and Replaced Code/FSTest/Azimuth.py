@@ -5,8 +5,9 @@ from . import Controller
 
 SQRT2 = 1.4142136
 
-print("AZIMUTH ROTATION SCRIPT")
+
 def start():
+    print("AZIMUTH ROTATION SCRIPT")
     kit = ServoKit(channels=16)
 
     VELOCITY_MOD = .5

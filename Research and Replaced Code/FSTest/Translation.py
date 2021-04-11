@@ -5,8 +5,9 @@ from . import Controller
 
 SQRT2 = 1.4142136
 
-print("TRANSLATION SCRIPT")
+
 def start():
+    print("TRANSLATION SCRIPT")
     kit = ServoKit(channels=16)
 
     VELOCITY_MOD = .75
