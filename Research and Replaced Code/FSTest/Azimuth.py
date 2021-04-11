@@ -28,7 +28,7 @@ def start():
     THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
 
     while True:
-        poll = Controller.getDPad()
+        poll = Controller.getButtonPresses()
         target = Vector()
         if(poll[0] == 1):
             del target
