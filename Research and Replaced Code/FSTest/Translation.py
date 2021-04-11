@@ -5,6 +5,7 @@ from . import Controller
 
 SQRT2 = 1.4142136
 
+print("TRANSLATION SCRIPT")
 def start():
     kit = ServoKit(channels=16)
 

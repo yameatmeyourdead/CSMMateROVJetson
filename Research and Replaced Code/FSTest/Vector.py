@@ -22,6 +22,11 @@ class Vector:
     
     def dotProduct(self, vector):
         return self.getX() * vector.getX() + self.getY() * vector.getY() + self.getZ() * vector.getZ()
+    
+    def crossProduct(self, vector):
+        return Vector((self.getY() * vector.getZ() - self.getZ() * vector.getY()),
+                      (self.getZ() * vector.getX() - self.getX() * vector.getZ()),
+                      (self.getX() * vector.getY() - self.getY() * vector.getX()))
 
     def toString(self):
         return self.components
