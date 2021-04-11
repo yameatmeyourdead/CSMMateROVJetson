@@ -19,4 +19,4 @@ def start():
         target = Vector(poll[0], poll[1], 0)
         print(target.toString())
         THRUSTER_FRONT_LEFT.throttle = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(target)
-        THRUSTER_FRONT_RIGHT.throttle = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(target)
+        THRUSTER_FRONT_RIGHT.throttle = -THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(target)
