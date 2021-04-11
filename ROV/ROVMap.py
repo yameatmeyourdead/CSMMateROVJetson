@@ -89,7 +89,7 @@ def log(strin, endO="\n"):
 def log_debug(feedback_queue, error, name):
     pass
 
-def log_error(feedback_queue, error, name):
+def log_error(feedback_queue, traceback, name):
     pass
 
 def getTimeFormatted(delim):
