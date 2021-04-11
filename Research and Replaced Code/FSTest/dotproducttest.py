@@ -13,6 +13,6 @@ def start():
 
     while True:
         print("Input target velocity")
-        target = Vector.Vector(input("X> "), input("Y> "), input("Z> "))
+        target = Vector(input("X> "), input("Y> "), input("Z> "))
         throttle = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(target)
         print(throttle)
