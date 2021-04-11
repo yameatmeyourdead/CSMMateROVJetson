@@ -25,11 +25,12 @@ class Vector:
 
 SQRT2 = 1.4142136
 
-Thruster1 = Vector(0,0,1)
-Thruster2 = Vector(SQRT2/2,SQRT2/2,0)
-Thruster3 = Vector(SQRT2/2,-SQRT2/2,0)
-velocity = Vector(0,1,0)
+if __name__ == "__main__":
+    Thruster1 = Vector(0,0,1)
+    Thruster2 = Vector(SQRT2/2,SQRT2/2,0)
+    Thruster3 = Vector(SQRT2/2,-SQRT2/2,0)
+    velocity = Vector(0,1,0)
 
-print("Vector 1 dot product", Thruster1.dotProduct(velocity))
-print("Thruster 2 dot product", Thruster2.dotProduct(velocity))
-print("Thruster 3 dot product", -Thruster3.dotProduct(velocity))
+    print("Vector 1 dot product", Thruster1.dotProduct(velocity))
+    print("Thruster 2 dot product", Thruster2.dotProduct(velocity))
+    print("Thruster 3 dot product", -Thruster3.dotProduct(velocity))
