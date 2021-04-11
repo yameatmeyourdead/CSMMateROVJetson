@@ -12,7 +12,8 @@ def start():
     THRUSTER_FRONT_LEFT_THRUST_VECTOR = Vector(SQRT2/2, SQRT2/2, 0)
     THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
     THRUSTER_FRONT_RIGHT_THRUST_VECTOR = Vector(SQRT2/2, -SQRT2/2, 0)
-
+    THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
+    THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
     while True:
         print("Input target velocity")
         poll = Controller.getRightStick()
