@@ -39,10 +39,10 @@ def start():
 
         if(TURN):
             print(target.toString())
-            THRUSTER_FRONT_LEFT.throttle = -(THRUSTER_FRONT_LEFT_THRUST_VECTOR.crossProduct(target) * VELOCITY_MOD)
-            THRUSTER_FRONT_RIGHT.throttle = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.crossProduct(target) * VELOCITY_MOD
-            THRUSTER_BACK_LEFT.throttle = THRUSTER_BACK_LEFT_THRUST_VECTOR.crossProduct(target) * VELOCITY_MOD
-            THRUSTER_BACK_RIGHT.throttle = -(THRUSTER_BACK_RIGHT_THRUST_VECTOR.crossProduct(target) * VELOCITY_MOD)
+            THRUSTER_FRONT_LEFT.throttle = -(THRUSTER_FRONT_LEFT_THRUST_VECTOR.crossProduct(target).getMagnitude() * VELOCITY_MOD)
+            THRUSTER_FRONT_RIGHT.throttle = (THRUSTER_FRONT_RIGHT_THRUST_VECTOR.crossProduct(target).getMagnitude() * VELOCITY_MOD)
+            THRUSTER_BACK_LEFT.throttle = (THRUSTER_BACK_LEFT_THRUST_VECTOR.crossProduct(target).getMagnitude() * VELOCITY_MOD)
+            THRUSTER_BACK_RIGHT.throttle = -(THRUSTER_BACK_RIGHT_THRUST_VECTOR.crossProduct(target).getMagnitude() * VELOCITY_MOD)
 
         if(Controller.getButtonPresses().rs):
             if(TURN):
