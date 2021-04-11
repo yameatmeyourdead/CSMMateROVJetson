@@ -9,7 +9,7 @@ print("AZIMUTH ROTATION SCRIPT")
 def start():
     kit = ServoKit(channels=16)
 
-    VELOCITY_MOD = .75
+    VELOCITY_MOD = .5
 
     TURN = False
     
@@ -25,6 +25,7 @@ def start():
     THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
     THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
     THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
+
     while True:
         poll = Controller.getDPad()
         target = Vector()
