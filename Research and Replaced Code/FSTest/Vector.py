@@ -1,6 +1,6 @@
 class Vector:
-    def __init__(self, x=0, y=0, z=0):
-        self.components = (x,y,z)
+    def __init__(self, x=0.0, y=0.0, z=0.0):
+        self.components = (float(x),float(y),float(z))
     
     def setX(self, x):
         self.components[0] = x
