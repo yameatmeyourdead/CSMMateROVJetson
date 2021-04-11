@@ -23,6 +23,9 @@ class Vector:
     def dotProduct(self, vector):
         return self.getX() * vector.getX() + self.getY() * vector.getY() + self.getZ() * vector.getZ()
 
+    def toString(self):
+        return self.components
+
 SQRT2 = 1.4142136
 
 if __name__ == "__main__":

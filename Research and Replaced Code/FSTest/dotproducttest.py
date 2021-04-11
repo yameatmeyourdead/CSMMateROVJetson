@@ -15,8 +15,8 @@ def start():
     THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
     THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
     while True:
-        print("Input target velocity")
         poll = Controller.getRightStick()
         target = Vector(poll[0], poll[1], 0)
+        print(target.toString())
         THRUSTER_FRONT_LEFT.throttle = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(target)
         THRUSTER_FRONT_RIGHT.throttle = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(target)
