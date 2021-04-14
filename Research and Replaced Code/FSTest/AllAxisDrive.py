@@ -1,5 +1,5 @@
-# from adafruit_servokit import ServoKit
-# from adafruit_motor import servo
+from adafruit_servokit import ServoKit
+from adafruit_motor import servo
 from .Vector import Vector
 from . import Controller
 import math
@@ -43,29 +43,29 @@ THRUSTER_BACK_RIGHT_THRUST_VECTOR = Vector(-SQRT2/2, -SQRT2/2, 0)
 
 def start(debug=False):
     print("3 Axis Drive / Rotation Script Started")
-    # kit = ServoKit(channels=16)
+    kit = ServoKit(channels=16)
 
     turn = False
     zup = False
     zdown = False
 
     # creating all of the thrusters
-    # THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
-    # THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
-    # THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
-    # THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
-    # THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
-    # THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
-    # THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
-    # THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
-    # THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
-    # THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
-    # THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
-    # THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_0.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_1.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_2.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_3.set_pulse_width_range(1200,2000)
+    THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
+    THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
+    THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
+    THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
+    THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
+    THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
+    THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
+    THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
+    THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
+    THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
+    THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
+    THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_0.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_1.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_2.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_3.set_pulse_width_range(1200,2000)
 
     while True:
         # poll the controller
@@ -147,8 +147,9 @@ def start(debug=False):
                 throttleValue = -1
             throttleValue *= VELOCITY_MOD
         
-        # for Thruster in range(8):
-        #     kit._items[Thruster].throttle = targetThrottles[Thruster]
+        # always write thrusters (defaults are 0)
+        for Thruster in range(8):
+            kit._items[Thruster].throttle = targetThrottles[Thruster]
 
         # if(debug):
         #     # shouldnt really have to ever uncomment this one (these values shouldnt change once set)
