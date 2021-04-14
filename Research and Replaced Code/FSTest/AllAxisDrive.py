@@ -64,6 +64,7 @@ def start(debug=False):
 
     while True:
         # poll the controller
+        Controller.updateController()
         presses = Controller.getButtonPresses()
         RS = Controller.getRightStick()
         turn = False
