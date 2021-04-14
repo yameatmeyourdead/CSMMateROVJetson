@@ -87,6 +87,8 @@ def start(debug=False):
 
             if(debug):
                 print(targetTranslation.toString())
+            
+            # TODO: consider changing this to slave thrusters together (kinda hard with this implementation)
             targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
             targetThrottles[1] = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation)
             targetThrottles[2] = THRUSTER_BACK_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
