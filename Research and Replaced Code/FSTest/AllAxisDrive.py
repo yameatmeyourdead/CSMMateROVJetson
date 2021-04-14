@@ -80,9 +80,9 @@ def start(debug=False):
             targetTranslation = Vector(RS[0], RS[1], 0)
 
             # Ignore small values (without this we would get unwanted torques)
-            if(targetTranslation.getX() < .1):
+            if(abs(targetTranslation.getX()) < .1):
                 targetTranslation.setX(0)
-            if(targetTranslation.getY() < .1):
+            if(abs(targetTranslation.getY()) < .1):
                 targetTranslation.setY(0)
 
             if(debug):
@@ -104,9 +104,9 @@ def start(debug=False):
                 targetTorque.setZ(-SQRT05)
             
             # Ignore small values (without this we would get unwanted torques)
-            if(targetTranslation.getX() < .1):
+            if(abs(targetTranslation.getX()) < .1):
                 targetTranslation.setX(0)
-            if(targetTranslation.getY() < .1):
+            if(abs(targetTranslation.getY()) < .1):
                 targetTranslation.setY(0)
 
             # Explanation incoming.....
