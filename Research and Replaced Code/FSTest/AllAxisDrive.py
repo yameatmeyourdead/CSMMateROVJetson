@@ -14,7 +14,7 @@ import math
 VELOCITY_MOD = .5
 SQRT2 = math.sqrt(2)
 SQRT05 = math.sqrt(.5)
-turn = False
+
 
 THRUSTER_FRONT_LEFT_THRUST_VECTOR = Vector(SQRT2/2, SQRT2/2, 0)
 THRUSTER_FRONT_RIGHT_THRUST_VECTOR = Vector(-SQRT2/2, SQRT2/2, 0)
@@ -44,6 +44,8 @@ THRUSTER_BACK_RIGHT_THRUST_VECTOR = Vector(-SQRT2/2, -SQRT2/2, 0)
 def start(debug=False):
     print("3 Axis Drive / Rotation Script Started")
     # kit = ServoKit(channels=16)
+
+    turn = False
 
     # creating all of the thrusters
     # THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
