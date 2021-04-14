@@ -163,6 +163,9 @@ def getDPad():
     buttonStates = getButtonPresses()
     return [buttonStates.dleft, buttonStates.dup, buttonStates.dright, buttonStates.ddown]
 
+def updateController():
+    JOYSTICK.check_presses()
+
 def getButtonPresses():
     """
     Returns object of all buttons indexed as follows \n 
@@ -187,7 +190,7 @@ def getButtonPresses():
     To determine if one of these buttons are pressed, use .held(standard name) \n
     returns none if not held otherwise number of seconds held
     """
-    return JOYSTICK.check_presses()
+    return JOYSTICK.presses
 
 
 

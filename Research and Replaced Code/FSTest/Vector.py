@@ -3,40 +3,100 @@ class Vector:
         self.components = (float(x),float(y),float(z))
         self.magnitude = float(float(x) ** 2 + float(y) ** 2 + float(z) ** 2)
     
+    @classmethod
+    def unitVector(cls, x=0.0, y=0.0, z=0.0):
+        """
+        Create new unit vector
+        """
+        magnitude = x**2 + y**2 + z**2
+        return cls(x/magnitude, y/magnitude, z/magnitude)
+
     def setX(self, x):
+        """
+        Set X Component
+        """
         self.components[0] = x
-        self.magnitude = float(float(x) ** 2 + float(self.getY()) ** 2 + float(self.getZ()) ** 2)
 
     def setY(self, y):
+        """
+        Set Y Component
+        """
         self.components[1] = y
-        self.magnitude = float(float(self.getX()) ** 2 + float(y) ** 2 + float(self.getZ()) ** 2)
     
     def setZ(self, z):
+        """
+        Set Z Component
+        """
         self.components[2] = z
-        self.magnitude = float(float(self.getX()) ** 2 + float(self.getY()) ** 2 + float(z) ** 2)
 
     def getX(self):
+        """
+        Get X Component
+        """
         return self.components[0]
     
     def getY(self):
+        """
+        Get Y Component
+        """
         return self.components[1]
     
     def getZ(self):
+        """
+        Get Z Component
+        """
         return self.components[2]
-    
+
+    def toUnitVector(self):
+        """
+        Convert Vector to its Unit Vector equivalent
+        """
+        magnitude = self.getMagnitude()
+        return Vector(self.getX()/magnitude, self.getY()/magnitude, self.getZ()/magnitude)
+
     def dotProduct(self, vector):
+        """
+        Get the dot product of this vector * other
+        """
         return self.getX() * vector.getX() + self.getY() * vector.getY() + self.getZ() * vector.getZ()
     
     def crossProduct(self, vector):
+        """
+        Get the cross product of this vector x other
+        """
         return Vector((self.getY() * vector.getZ() - self.getZ() * vector.getY()),
                       (self.getZ() * vector.getX() - self.getX() * vector.getZ()),
                       (self.getX() * vector.getY() - self.getY() * vector.getX()))
 
     def getMagnitude(self):
-        return self.magnitude
+        """
+        Get magnitude of vector
+        """
+        return (float(self.getX()) ** 2 + float(self.getY()) ** 2 + float(self.getZ()) ** 2)
 
     def toString(self):
-        return self.components
+        """
+        Returns components as a formatted string (x,y,z)
+        """
+        return str(self.components)
+
+    # "overloading" functions
+
+    def __str__(self):
+        return self.toString()
+    
+    def __add__(self, vector):
+        return Vector(self.getX() + vector.getX(), self.getY() + vector.getY(), self.getZ() + vector.getZ())
+    
+    def __sub__(self, vector):
+        return Vector(self.getX() - vector.getX(), self.getY() - vector.getY(), self.getZ() - vector.getZ())
+    
+    def __mul__(self, val):
+        return Vector(self.getX() * val, self.getY() * val, self.getZ() * val)
+    
+    def __truediv__(self, val):
+        return Vector(self.getX() / val, self.getY() / val, self.getZ() / val)
+
 
 SQRT2 = 1.4142136
 

@@ -28,13 +28,11 @@ def start():
     THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
 
     while True:
-        poll = Controller.getButtonPresses()
+        rightStick = Controller.getRightStick()
         target = Vector()
-        if(poll[0] == 1):
-            del target
+        if(Controller.getButtonPresses == 1):
             target = Vector(0,0,1)
-        elif(poll[2] == 1):
-            del target
+        elif(rightStick[2] == 1):
             target = Vector(0,0,0)
 
         if(TURN):

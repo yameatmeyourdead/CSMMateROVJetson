@@ -51,6 +51,7 @@ def start():
     """
     while True:
         # Update each component of the robot depending on the operating mode
+        ROVMap.updateController()
         if(operatingMode):
             # Teleop
             for Comp in parts:
