@@ -64,14 +64,15 @@ def start(debug=False):
         presses = Controller.getButtonPresses()
         RS = Controller.getRightStick()
         turn = False
+        targetTorque = Vector()
+        targetTranslation = Vector()
 
         if(presses.rs):
             turn = not turn
 
         # Turning
         if(not turn):
-            poll = Controller.getRightStick()
-            targetTranslation = Vector(poll[0], poll[1], 0)
+            targetTranslation = Vector(RS[0], RS[1], 0)
             if(debug):
                 print(targetTranslation.toString())
             # THRUSTER_FRONT_LEFT.throttle = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
@@ -79,7 +80,6 @@ def start(debug=False):
             # THRUSTER_BACK_LEFT.throttle = THRUSTER_BACK_LEFT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
             # THRUSTER_BACK_RIGHT.throttle = THRUSTER_BACK_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
         else:
-            targetTorque = Vector()
             # set X
             targetTorque.setX(RS[0])
             # set Y
