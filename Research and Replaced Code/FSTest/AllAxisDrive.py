@@ -14,6 +14,7 @@ import math
 VELOCITY_MOD = .5
 SQRT2 = math.sqrt(2)
 SQRT05 = math.sqrt(.5)
+turn = False
 
 THRUSTER_FRONT_LEFT_THRUST_VECTOR = Vector(SQRT2/2, SQRT2/2, 0)
 THRUSTER_FRONT_RIGHT_THRUST_VECTOR = Vector(-SQRT2/2, SQRT2/2, 0)
@@ -67,18 +68,12 @@ def start(debug=False):
         Controller.updateController()
         presses = Controller.getButtonPresses()
         RS = Controller.getRightStick()
-        turn = False
         targetTorque = Vector()
         targetTranslation = Vector()
         targetThrottles = [0 for i in range(8)]
 
         if(presses.rs):
-            if(turn == True):
-                print("set to false")
-                turn = False
-            else:
-                print("set to true")
-                turn = True
+            turn = not turn
             print(turn)
 
         # Translation
