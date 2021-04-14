@@ -120,7 +120,7 @@ def start(debug=False):
         # for Thruster in range(8):
         #     kit._items[Thruster].throttle = targetThrottles[Thruster]
 
-        if(debug == True):
+        if(debug):
             print(f"""
                 Torque Vectors: 
                 Front Left:     {THRUSTER_FRONT_LEFT_TORQUE_VECTOR.toString()}
