@@ -86,7 +86,7 @@ def start(debug=False):
                 targetTranslation.setY(0)
 
             if(debug):
-                print(targetTranslation.toString())
+                print(targetTranslation)
             
             # TODO: consider changing this to slave thrusters together (kinda hard with this implementation)
             targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
@@ -106,10 +106,13 @@ def start(debug=False):
                 targetTorque.setZ(-SQRT05)
             
             # Ignore small values (without this we would get unwanted torques)
-            if(abs(targetTranslation.getX()) < .1):
-                targetTranslation.setX(0)
-            if(abs(targetTranslation.getY()) < .1):
-                targetTranslation.setY(0)
+            if(abs(targetTorque.getX()) < .1):
+                targetTorque.setX(0)
+            if(abs(targetTorque.getY()) < .1):
+                targetTorque.setY(0)
+
+            if(debug):
+                print(targetTorque)
 
             # Explanation incoming.....
             # Each thruster has a specific thruster torque (torque created on COM if only that thruster was activated) defined as r cross F where F is their thrust vector
@@ -135,28 +138,28 @@ def start(debug=False):
         # for Thruster in range(8):
         #     kit._items[Thruster].throttle = targetThrottles[Thruster]
 
-        if(debug):
-            # shouldnt really have to ever uncomment this one (these values shouldnt change once set)
-            # print(f"""
-            #     Torque Vectors: 
-            #     Front Left:     {THRUSTER_FRONT_LEFT_TORQUE_VECTOR.toString()}
-            #     Front Right:    {THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.toString()}
-            #     Back Left:      {THRUSTER_BACK_LEFT_TORQUE_VECTOR.toString()}
-            #     Back Right:     {THRUSTER_BACK_RIGHT_TORQUE_VECTOR.toString()} 
-            #     Z0:             {THRUSTER_Z_0_TORQUE_VECTOR.toString()}
-            #     Z1:             {THRUSTER_Z_1_TORQUE_VECTOR.toString()}
-            #     Z2:             {THRUSTER_Z_2_TORQUE_VECTOR.toString()}
-            #     Z3:             {THRUSTER_Z_3_TORQUE_VECTOR.toString()}
-            #     """)
+        # if(debug):
+        #     # shouldnt really have to ever uncomment this one (these values shouldnt change once set)
+        #     # print(f"""
+        #     #     Torque Vectors: 
+        #     #     Front Left:     {THRUSTER_FRONT_LEFT_TORQUE_VECTOR.toString()}
+        #     #     Front Right:    {THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.toString()}
+        #     #     Back Left:      {THRUSTER_BACK_LEFT_TORQUE_VECTOR.toString()}
+        #     #     Back Right:     {THRUSTER_BACK_RIGHT_TORQUE_VECTOR.toString()} 
+        #     #     Z0:             {THRUSTER_Z_0_TORQUE_VECTOR.toString()}
+        #     #     Z1:             {THRUSTER_Z_1_TORQUE_VECTOR.toString()}
+        #     #     Z2:             {THRUSTER_Z_2_TORQUE_VECTOR.toString()}
+        #     #     Z3:             {THRUSTER_Z_3_TORQUE_VECTOR.toString()}
+        #     #     """)
 
-            print(f"""
-                Throttles:
-                Front Left:     {targetThrottles[0]}
-                Front Right:    {targetThrottles[1]}
-                Back Left:      {targetThrottles[2]}
-                Back Right:     {targetThrottles[3]}
-                Z0:             {targetThrottles[4]}
-                Z1:             {targetThrottles[5]}
-                Z2:             {targetThrottles[6]}
-                Z3:             {targetThrottles[7]}
-                """)
+        #     print(f"""
+        #         Throttles:
+        #         Front Left:     {targetThrottles[0]}
+        #         Front Right:    {targetThrottles[1]}
+        #         Back Left:      {targetThrottles[2]}
+        #         Back Right:     {targetThrottles[3]}
+        #         Z0:             {targetThrottles[4]}
+        #         Z1:             {targetThrottles[5]}
+        #         Z2:             {targetThrottles[6]}
+        #         Z3:             {targetThrottles[7]}
+        #         """)
