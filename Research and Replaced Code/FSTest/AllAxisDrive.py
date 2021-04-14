@@ -63,46 +63,60 @@ def start(debug=False):
         # poll the controller
         presses = Controller.getButtonPresses()
         RS = Controller.getRightStick()
-        targetTorque = Vector()
-        # set X
-        targetTorque.setX(RS[0])
-        # set Y
-        targetTorque.setY(RS[1])
-        # set Z
-        if(presses.dup):
-            targetTorque.setZ(1)
-        elif(presses.ddown):
-            targetTorque.setZ(-1)
+        turn = False
 
-        # convert target torque to unit vector (this makes it run at constant speed)
-        targetTorque.toUnitVector()
-        
+        if(presses.rs):
+            turn = not turn
 
-        # set the throttle
-        # Explanation incoming.....
-        # Each thruster has a specific thruster torque (torque created on COM if only that thruster was activated) defined as r cross F where F is their thrust vector
-        # In order to get the throttle, you must dot this torque vector with the target Torque vector to see how much their torque vector acts upon the target torque vector
-        # This should return maximum of 1 and minimum of -1 (float inaccuracies make it slightly different so we must check it is within [-1,1]
-        ThrusterVals = []
-        ThrusterVals.append(THRUSTER_FRONT_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_BACK_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_BACK_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque))
-        ThrusterVals.append(THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque))
+        # Turning
+        if(not turn):
+            poll = Controller.getRightStick()
+            targetTranslation = Vector(poll[0], poll[1], 0)
+            if(debug):
+                print(targetTranslation.toString())
+            # THRUSTER_FRONT_LEFT.throttle = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
+            # THRUSTER_FRONT_RIGHT.throttle = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
+            # THRUSTER_BACK_LEFT.throttle = THRUSTER_BACK_LEFT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
+            # THRUSTER_BACK_RIGHT.throttle = THRUSTER_BACK_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation) * VELOCITY_MOD
+        else:
+            targetTorque = Vector()
+            # set X
+            targetTorque.setX(RS[0])
+            # set Y
+            targetTorque.setY(RS[1])
+            # set Z
+            if(presses.dup):
+                targetTorque.setZ(1)
+            elif(presses.ddown):
+                targetTorque.setZ(-1)
 
-        # Check for incorrect throttle values
-        for ThrottleValue in ThrusterVals:
-            if(ThrottleValue > 1):
-                ThrottleValue = 1
-            elif(ThrottleValue < -1):
-                ThrottleValue = -1
-            ThrottleValue *= VELOCITY_MOD
+            # convert target torque to unit vector
+            targetTorque.toUnitVector()
 
-        # for Thruster in range(8):
-        #     kit._items[Thruster].throttle = ThrusterVals[Thruster]
+            # Explanation incoming.....
+            # Each thruster has a specific thruster torque (torque created on COM if only that thruster was activated) defined as r cross F where F is their thrust vector
+            # In order to get the throttle, you must dot this torque vector with the target Torque vector to see how much their torque vector acts upon the target torque vector
+            # This should return maximum of 1 and minimum of -1 (float inaccuracies make it slightly different so we must check it is within [-1,1]
+            ThrusterVals = []
+            ThrusterVals.append(THRUSTER_FRONT_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_BACK_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_BACK_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque))
+            ThrusterVals.append(THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque))
+
+            # Check for incorrect throttle values
+            for ThrottleValue in ThrusterVals:
+                if(ThrottleValue > 1):
+                    ThrottleValue = 1
+                elif(ThrottleValue < -1):
+                    ThrottleValue = -1
+                ThrottleValue *= VELOCITY_MOD
+
+            # for Thruster in range(8):
+            #     kit._items[Thruster].throttle = ThrusterVals[Thruster]
         if(debug):
             print(f"""
                 Torque Vectors: 
@@ -127,5 +141,3 @@ def start(debug=False):
                 Z2:             {THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque)}
                 Z3:             {THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque)}
                 """)
-
-
