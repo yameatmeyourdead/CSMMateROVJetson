@@ -2,8 +2,8 @@
 # from . import Azimuth
 from . import AllAxisDrive
 
-#debug = bool(input("debug mode? 0/1"))
-AllAxisDrive.start(False)
+debug = bool(input("debug mode? 0/1\n"))
+AllAxisDrive.start(debug == True)
 
 # choice = int(input("What would you like to test?\n1. Translation\n2. Azimuth Rotation\n"))
 # if(choice == 1):

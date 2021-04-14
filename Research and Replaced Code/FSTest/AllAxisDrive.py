@@ -76,7 +76,6 @@ def start(debug=False):
 
         # Translation
         if(not turn):
-            print("translation")
             # Set target x,y
             targetTranslation = Vector(RS[0], RS[1], 0)
             if(debug):
