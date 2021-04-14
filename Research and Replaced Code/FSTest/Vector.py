@@ -1,6 +1,6 @@
 class Vector:
     def __init__(self, x=0.0, y=0.0, z=0.0):
-        self.components = (float(x),float(y),float(z))
+        self.components = [float(x),float(y),float(z)]
         self.magnitude = float(float(x) ** 2 + float(y) ** 2 + float(z) ** 2)
     
     @classmethod
@@ -76,7 +76,7 @@ class Vector:
 
     def toString(self):
         """
-        Returns components as a formatted string (x,y,z)
+        Returns components as a formatted string [x,y,z]
         """
         return str(self.components)
 
