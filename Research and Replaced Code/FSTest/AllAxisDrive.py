@@ -74,8 +74,10 @@ def start(debug=False):
 
         if(presses.rs):
             if(turn):
+                print("set to false")
                 turn = False
             else:
+                print("set to true")
                 turn = True
             print(turn)
 
