@@ -73,7 +73,6 @@ def start(debug=False):
         targetThrottles = [0 for i in range(8)]
 
         if(presses.rs):
-            print("PRESSED")
             turn = not turn
 
         # Translation
@@ -88,7 +87,7 @@ def start(debug=False):
                 targetTranslation.setY(0)
 
             if(debug):
-                print(targetTranslation)
+                print(f"Translation Target = {targetTranslation}")
             
             # TODO: consider changing this to slave thrusters together (kinda hard with this implementation)
             targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
@@ -114,7 +113,7 @@ def start(debug=False):
                 targetTorque.setY(0)
 
             if(debug):
-                print(targetTorque)
+                print(f"Torque Target = {targetTorque}")
 
             # Explanation incoming.....
             # Each thruster has a specific thruster torque (torque created on COM if only that thruster was activated) defined as r cross F where F is their thrust vector
