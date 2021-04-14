@@ -76,7 +76,6 @@ def start(debug=False):
 
         if(presses.rs):
             turn = not turn
-            print(turn)
 
         # Translation
         if(not turn):
