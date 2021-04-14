@@ -73,7 +73,7 @@ def start(debug=False):
         targetThrottles = [0 for i in range(8)]
 
         if(presses.rs):
-            if(turn):
+            if(turn == True):
                 print("set to false")
                 turn = False
             else:
