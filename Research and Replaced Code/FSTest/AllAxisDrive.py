@@ -46,6 +46,8 @@ def start(debug=False):
     # kit = ServoKit(channels=16)
 
     turn = False
+    zup = False
+    zdown = False
 
     # creating all of the thrusters
     # THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
@@ -104,9 +106,16 @@ def start(debug=False):
             targetTorque.setY(RS[1])
             # set Z TODO: change this shitty implementation (create 3 axis joystick out of two joysticks???)
             if(presses.dup):
+                zdown = False
+                zup = not zup
+            if(presses.ddown):
+                zup = False
+                zdown = not zdown
+            if(zup):
                 targetTorque.setZ(SQRT05)
-            elif(presses.ddown):
+            if(zdown):
                 targetTorque.setZ(-SQRT05)
+                
             
             # Ignore small values (without this we would get unwanted torques)
             if(abs(targetTorque.getX()) < .1):
