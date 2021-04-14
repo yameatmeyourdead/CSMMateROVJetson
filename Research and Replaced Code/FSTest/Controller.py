@@ -74,7 +74,7 @@ def getButtonPresses():
     To determine if one of these buttons are pressed, use .held(standard name) \n
     returns none if not held otherwise number of seconds held
     """
-    return joystick.presses()
+    return joystick.presses
 
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
