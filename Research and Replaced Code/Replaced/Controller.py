@@ -77,3 +77,9 @@ def getButtonPresses():
 
 # Constructor creates instance of joystick
 joystick = ControllerResource().__enter__()
+
+
+while True:
+    poll = getButtonPresses()
+    if(poll.rs):
+        print("PRESSED")
