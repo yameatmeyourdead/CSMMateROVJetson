@@ -47,6 +47,9 @@ def getDPad():
     buttonStates = getButtonPresses()
     return [buttonStates.dleft, buttonStates.dup, buttonStates.dright, buttonStates.ddown]
 
+def updatePresses():
+    joystick.check_presses()
+
 def getButtonPresses():
     """
     Returns object of all buttons indexed as follows \n 
@@ -71,7 +74,7 @@ def getButtonPresses():
     To determine if one of these buttons are pressed, use .held(standard name) \n
     returns none if not held otherwise number of seconds held
     """
-    return joystick.check_presses()
+    return joystick.presses
 
 
 
@@ -80,6 +83,7 @@ joystick = ControllerResource().__enter__()
 
 
 while True:
+    updatePresses()
     poll = getButtonPresses()
     if(poll.rs):
         print("PRESSED")
