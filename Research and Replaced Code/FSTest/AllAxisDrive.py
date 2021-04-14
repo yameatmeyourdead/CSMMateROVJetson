@@ -78,6 +78,13 @@ def start(debug=False):
         if(not turn):
             # Set target x,y
             targetTranslation = Vector(RS[0], RS[1], 0)
+
+            # Ignore small values
+            if(targetTranslation.getX() < .1):
+                targetTranslation.setX(0)
+            if(targetTranslation.getY() < .1):
+                targetTranslation.setY(0)
+
             if(debug):
                 print(targetTranslation.toString())
             targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
