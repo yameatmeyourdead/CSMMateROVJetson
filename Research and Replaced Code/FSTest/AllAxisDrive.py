@@ -79,7 +79,7 @@ def start(debug=False):
             # Set target x,y
             targetTranslation = Vector(RS[0], RS[1], 0)
 
-            # Ignore small values
+            # Ignore small values (without this we would get unwanted torques)
             if(targetTranslation.getX() < .1):
                 targetTranslation.setX(0)
             if(targetTranslation.getY() < .1):
@@ -97,11 +97,17 @@ def start(debug=False):
             targetTorque.setX(RS[0])
             # set Y
             targetTorque.setY(RS[1])
-            # set Z
+            # set Z TODO: change this shitty implementation (create 3 axis joystick out of two joysticks???)
             if(presses.dup):
                 targetTorque.setZ(SQRT05)
             elif(presses.ddown):
                 targetTorque.setZ(-SQRT05)
+            
+            # Ignore small values (without this we would get unwanted torques)
+            if(targetTranslation.getX() < .1):
+                targetTranslation.setX(0)
+            if(targetTranslation.getY() < .1):
+                targetTranslation.setY(0)
 
             # Explanation incoming.....
             # Each thruster has a specific thruster torque (torque created on COM if only that thruster was activated) defined as r cross F where F is their thrust vector
