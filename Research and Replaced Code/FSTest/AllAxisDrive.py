@@ -136,12 +136,12 @@ def start(debug=False):
 
             print(f"""
                 Throttles:
-                Front Left:     {THRUSTER_FRONT_LEFT_TORQUE_VECTOR.dotProduct(targetThrottles[0])}
-                Front Right:    {THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.dotProduct(targetThrottles[1])}
-                Back Left:      {THRUSTER_BACK_LEFT_TORQUE_VECTOR.dotProduct(targetThrottles[2])}
-                Back Right:     {THRUSTER_BACK_RIGHT_TORQUE_VECTOR.dotProduct(targetThrottles[3])}
-                Z0:             {THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetThrottles[4])}
-                Z1:             {THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetThrottles[5])}
-                Z2:             {THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetThrottles[6])}
-                Z3:             {THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetThrottles[7])}
+                Front Left:     {targetThrottles[0]}
+                Front Right:    {targetThrottles[1]}
+                Back Left:      {targetThrottles[2]}
+                Back Right:     {targetThrottles[3]}
+                Z0:             {targetThrottles[4]}
+                Z1:             {targetThrottles[5]}
+                Z2:             {targetThrottles[6]}
+                Z3:             {targetThrottles[7]}
                 """)
