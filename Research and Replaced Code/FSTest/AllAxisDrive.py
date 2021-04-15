@@ -15,7 +15,7 @@ VELOCITY_MOD = .5
 SQRT2 = math.sqrt(2)
 SQRT05 = math.sqrt(.5)
 
-
+  
 THRUSTER_FRONT_LEFT_THRUST_VECTOR = Vector(SQRT2/2, SQRT2/2, 0)
 THRUSTER_FRONT_RIGHT_THRUST_VECTOR = Vector(-SQRT2/2, SQRT2/2, 0)
 THRUSTER_BACK_LEFT_THRUST_VECTOR = Vector(SQRT2/2, -SQRT2/2, 0)
@@ -54,18 +54,18 @@ def start(debug=False):
     THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
     THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
     THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
-    THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
-    THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
-    THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
-    THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
+    # THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
+    # THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
+    # THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
+    # THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
     THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
     THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
     THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
     THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
-    THRUSTER_Z_0.set_pulse_width_range(1200,2000)
-    THRUSTER_Z_1.set_pulse_width_range(1200,2000)
-    THRUSTER_Z_2.set_pulse_width_range(1200,2000)
-    THRUSTER_Z_3.set_pulse_width_range(1200,2000)
+    # THRUSTER_Z_0.set_pulse_width_range(1200,2000)
+    # THRUSTER_Z_1.set_pulse_width_range(1200,2000)
+    # THRUSTER_Z_2.set_pulse_width_range(1200,2000)
+    # THRUSTER_Z_3.set_pulse_width_range(1200,2000)
 
     while True:
         # poll the controller
@@ -134,10 +134,10 @@ def start(debug=False):
             targetThrottles[1] = (THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
             targetThrottles[2] = (THRUSTER_BACK_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
             targetThrottles[3] = (THRUSTER_BACK_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[4] = (THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[5] = (THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[6] = (THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[7] = (THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[4] = (THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[5] = (THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[6] = (THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[7] = (THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque))
 
         # Check for incorrect throttle values
         for throttleValue in targetThrottles:
