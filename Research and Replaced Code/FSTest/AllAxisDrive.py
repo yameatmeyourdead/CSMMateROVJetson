@@ -165,13 +165,13 @@ def start(debug=False):
         #     #     Z3:             {THRUSTER_Z_3_TORQUE_VECTOR.toString()}
         #     #     """)
 
-        #     print(f"""
-        #         Throttles:
-        #         Front Left:     {targetThrottles[0]}
-        #         Front Right:    {targetThrottles[1]}
-        #         Back Left:      {targetThrottles[2]}
-        #         Back Right:     {targetThrottles[3]}
-        #         Z0:             {targetThrottles[4]}
+            print(f"""
+                Throttles:
+                Front Left:     {targetThrottles[0]}
+                Front Right:    {targetThrottles[1]}
+                Back Left:      {targetThrottles[2]}
+                Back Right:     {targetThrottles[3]}""")
+                # Z0:             {targetThrottles[4]}
         #         Z1:             {targetThrottles[5]}
         #         Z2:             {targetThrottles[6]}
         #         Z3:             {targetThrottles[7]}
