@@ -148,7 +148,7 @@ def start(debug=False):
             throttleValue *= VELOCITY_MOD
         
         # always write thrusters (defaults are 0)
-        for Thruster in range(8):
+        for Thruster in range(4):
             kit._items[Thruster].throttle = targetThrottles[Thruster]
 
         # if(debug):
