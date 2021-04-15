@@ -82,7 +82,7 @@ def start(debug=False):
         # Translation
         if(not turn):
             # Set target x,y
-            targetTranslation = Vector(RS[0], RS[1], 0)
+            targetTranslation = Vector(0, 0, RS[1])
 
             # Ignore small values (without this we would get unwanted torques)
             if(abs(targetTranslation.getX()) < .1):
@@ -95,10 +95,14 @@ def start(debug=False):
                 # print(f"Translation Target = {targetTranslation}")
             
             # TODO: consider changing this to slave thrusters together (kinda hard with this implementation)
-            targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
-            targetThrottles[1] = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation)
-            targetThrottles[2] = THRUSTER_BACK_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
-            targetThrottles[3] = THRUSTER_BACK_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation)
+            # targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
+            # targetThrottles[1] = THRUSTER_FRONT_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation)
+            # targetThrottles[2] = THRUSTER_BACK_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
+            # targetThrottles[3] = THRUSTER_BACK_RIGHT_THRUST_VECTOR.dotProduct(targetTranslation)
+            targetThrottles[4] = THRUSTER_Z_0_THRUST_VECTOR.dotProduct(targetTranslation)
+            targetThrottles[5] = THRUSTER_Z_1_THRUST_VECTOR.dotProduct(targetTranslation)
+            targetThrottles[6] = THRUSTER_Z_2_THRUST_VECTOR.dotProduct(targetTranslation)
+            targetThrottles[7] = THRUSTER_Z_3_THRUST_VECTOR.dotProduct(targetTranslation)
         # Turning
         else:
             # set X
@@ -131,14 +135,14 @@ def start(debug=False):
             # Each thruster has a specific thruster torque (torque created on COM if only that thruster was activated) defined as r cross F where F is their thrust vector
             # In order to get the throttle, you must dot this torque vector with the target Torque vector to see how much their torque vector acts upon the target torque vector
             # This should return maximum of 1 and minimum of -1 (float inaccuracies make it slightly different so we must check it is within [-1,1]
-            targetThrottles[0] = (THRUSTER_FRONT_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[1] = (THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[2] = (THRUSTER_BACK_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
-            targetThrottles[3] = (THRUSTER_BACK_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
-            # targetThrottles[4] = (THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetTorque))
-            # targetThrottles[5] = (THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetTorque))
-            # targetThrottles[6] = (THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque))
-            # targetThrottles[7] = (THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[0] = (THRUSTER_FRONT_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[1] = (THRUSTER_FRONT_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[2] = (THRUSTER_BACK_LEFT_TORQUE_VECTOR.dotProduct(targetTorque))
+            # targetThrottles[3] = (THRUSTER_BACK_RIGHT_TORQUE_VECTOR.dotProduct(targetTorque))
+            targetThrottles[4] = (THRUSTER_Z_0_TORQUE_VECTOR.dotProduct(targetTorque))
+            targetThrottles[5] = (THRUSTER_Z_1_TORQUE_VECTOR.dotProduct(targetTorque))
+            targetThrottles[6] = (THRUSTER_Z_2_TORQUE_VECTOR.dotProduct(targetTorque))
+            targetThrottles[7] = (THRUSTER_Z_3_TORQUE_VECTOR.dotProduct(targetTorque))
 
         # Check for incorrect throttle values
         for throttleValue in targetThrottles:
@@ -150,8 +154,8 @@ def start(debug=False):
         
         # always write thrusters (defaults are 0)
         for Thruster in range(4):
-            print(targetThrottles[Thruster])
-            kit._items[Thruster].throttle = targetThrottles[Thruster]
+            print(targetThrottles[Thruster+4])
+            kit._items[Thruster+4].throttle = targetThrottles[Thruster+4]
 
         # if(debug):
         #     # shouldnt really have to ever uncomment this one (these values shouldnt change once set)
