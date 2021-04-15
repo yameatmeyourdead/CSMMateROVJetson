@@ -91,7 +91,8 @@ def start(debug=False):
                 targetTranslation.setY(0)
 
             if(debug):
-                print(f"Translation Target = {targetTranslation}")
+                pass
+                # print(f"Translation Target = {targetTranslation}")
             
             # TODO: consider changing this to slave thrusters together (kinda hard with this implementation)
             targetThrottles[0] = THRUSTER_FRONT_LEFT_THRUST_VECTOR.dotProduct(targetTranslation)
