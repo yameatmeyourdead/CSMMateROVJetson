@@ -50,22 +50,22 @@ def start(debug=False):
     zdown = False
 
     # creating all of the thrusters
-    THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
-    THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
-    THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
-    THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
-    # THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
-    # THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
-    # THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
-    # THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
-    THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
-    THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
-    THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
-    THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_0.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_1.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_2.set_pulse_width_range(1200,2000)
-    # THRUSTER_Z_3.set_pulse_width_range(1200,2000)
+    # THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
+    # THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
+    # THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
+    # THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
+    THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
+    THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
+    THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
+    THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
+    # THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
+    # THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
+    # THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
+    # THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_0.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_1.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_2.set_pulse_width_range(1200,2000)
+    THRUSTER_Z_3.set_pulse_width_range(1200,2000)
 
     while True:
         # poll the controller
@@ -155,7 +155,8 @@ def start(debug=False):
         # always write thrusters (defaults are 0)
         for Thruster in range(4):
             print(targetThrottles[Thruster+4])
-            kit._items[Thruster+4].throttle = targetThrottles[Thruster+4]
+            if(kit._items[Thruster+4] is not None):
+                kit._items[Thruster+4].throttle = targetThrottles[Thruster+4]
 
         # if(debug):
         #     # shouldnt really have to ever uncomment this one (these values shouldnt change once set)
