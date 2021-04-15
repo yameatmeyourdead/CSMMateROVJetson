@@ -150,6 +150,7 @@ def start(debug=False):
         
         # always write thrusters (defaults are 0)
         for Thruster in range(4):
+            print(targetThrottles[Thruster])
             kit._items[Thruster].throttle = targetThrottles[Thruster]
 
         # if(debug):
@@ -166,12 +167,12 @@ def start(debug=False):
         #     #     Z3:             {THRUSTER_Z_3_TORQUE_VECTOR.toString()}
         #     #     """)
 
-            print(f"""
-                Throttles:
-                Front Left:     {targetThrottles[0]}
-                Front Right:    {targetThrottles[1]}
-                Back Left:      {targetThrottles[2]}
-                Back Right:     {targetThrottles[3]}""")
+            # print(f"""
+            #     Throttles:
+            #     Front Left:     {targetThrottles[0]}
+            #     Front Right:    {targetThrottles[1]}
+            #     Back Left:      {targetThrottles[2]}
+            #     Back Right:     {targetThrottles[3]}""")
                 # Z0:             {targetThrottles[4]}
         #         Z1:             {targetThrottles[5]}
         #         Z2:             {targetThrottles[6]}
