@@ -9,7 +9,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 pca = adafruit_pca9685.PCA9685(i2c, address=0x40)
 pca.frequency=300
 
-motorChannel = pca.channels[0]
+motorChannel = pca.channels[4]
 
 motorChannel.duty_cycle = 0x7fff
 
