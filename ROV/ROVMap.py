@@ -26,10 +26,10 @@ THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0]
 # THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
 # THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
 # THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
-# THRUSTER_Z_LEFT = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
-# THRUSTER_Z_FRONT = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
-# THRUSTER_Z_RIGHT = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
-# THRUSTER_Z_BACK = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
+# THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
+# THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
+# THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
+# THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
 # THRUSTERS = [THRUSTER_FRONT_LEFT,THRUSTER_FRONT_RIGHT,THRUSTER_BACK_LEFT,THRUSTER_BACK_RIGHT,THRUSTER_Z_LEFT,THRUSTER_Z_FRONT,THRUSTER_Z_RIGHT,THRUSTER_Z_BACK]
 # Manipulator
 MANIP_ELBOW_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[8])
@@ -40,7 +40,7 @@ MANIP_LEVEL_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[11])
 # MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
 MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO]
 # MicroROV THIS MAY BE REPLACED BY USB SERVO HUB TODO: IMPLEMENT IF TRUE
-# NOT YET IMPLEMENTED TODO: UNCOMMENT
+# NOT YET IMPLEMENTED
 # MICRO_SERVO_0 = kit._items[13] = servo.Servo(kit._pca.channels[13])
 # MICRO_SERVO_1 = kit._items[14] = servo.Servo(kit._pca.channels[14])
 # MICRO_ESC = kit._items[15] = servo.ContinuousServo(kit._pca.channels[15])
@@ -63,10 +63,10 @@ THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
 # THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
 # THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
 # THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
-# THRUSTER_Z_LEFT.set_pulse_width_range(1200,2000)
-# THRUSTER_Z_FRONT.set_pulse_width_range(1200,2000)
-# THRUSTER_Z_RIGHT.set_pulse_width_range(1200,2000)
-# THRUSTER_Z_BACK.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_0.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_1.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_2.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_3.set_pulse_width_range(1200,2000)
 
 
 # =======================
@@ -80,7 +80,6 @@ def log(strin, endO="\n"):
     """
     Call this method to log something  \n
     Compatible with all data types capable of conversion to str through str(value)
-    NOTE: UNDER NO CIRCUMSTANCE USE THE CHARACTER >
     """
     strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
     with open(LOGGER_FILE_PATH, 'a') as f:
