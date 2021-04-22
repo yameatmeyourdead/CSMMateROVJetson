@@ -9,7 +9,7 @@ import evdev
 import json
 import time
 
-HOST = "localhost" # loopback ip
+HOST = "10.0.0.1" # jetson's static ip address
 PORT = 7777 # port to listen to
 
 def startControllerServer():

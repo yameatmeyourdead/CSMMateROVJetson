@@ -60,8 +60,8 @@ async def list_devices():
 # Port     Use
 # 7777    Controller
 
-IP = "localhost" # Loopback IP (if testing this network functionality on a single device USE THIS IP)
-# IP = "10.0.0.1"
+# IP = "localhost" # Loopback IP (if testing this network functionality on a single device USE THIS IP)
+IP = "10.0.0.2"
 PORT = 7777
 
 def startControllerForwarding():
