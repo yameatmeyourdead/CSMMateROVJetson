@@ -1,9 +1,9 @@
 import asyncio
 import evdev
 import json
-from . import DriverStationMap
 
-CONTROLLERNAME = "Xbox"
+# CHANGE THIS FOR DIFFERENT CONTROLLERS (alternatively implement method to ask the user which device they want (print /dev/input devices and their names) :)  )
+CONTROLLERNAME = "Microsoft X-Box One S pad"
 
 async def do_forward_device(i, device):
 	async for event in device.async_read_loop():
@@ -40,4 +40,4 @@ async def run_forward():
 	
 	# await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
 
-run_forward()
+asyncio.create_task(run_forward)
