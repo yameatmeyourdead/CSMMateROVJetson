@@ -14,7 +14,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with conn:
             print("Connected to", addr) # print who we are connected with
             while True: # while we are connected, read data and do something with it
-                print(s.recv())
+                print(s.recv(1024))
     # connection was reset from other side (or maybe your network dropped)
     except ConnectionResetError:
         print("Connection with", addr, " forcibly closed")

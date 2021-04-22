@@ -14,8 +14,8 @@ CONTROLLERNAME = "Microsoft X-Box One S pad"
 
 async def do_forward_device(i, device):
 	async for event in device.async_read_loop():
-		# Sends data to jetson
-		SOC.send(json.dumps([i, event.type, event.code, event.value]))
+		# Sends data to jetson (bytes)
+		SOC.send(json.dumps([i, event.type, event.code, event.value]).encode('gbk'))
 
 async def forward_device(i, device):
 	await do_forward_device(i, device)
