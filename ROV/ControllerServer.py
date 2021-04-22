@@ -26,7 +26,11 @@ def startControllerServer():
         try:
             with conn:
                 print("Connected to", addr) # print who we are connected with
-                devices_json = json.loads(conn.recv(1024).decode())
+                poll = None
+                while poll is None:
+                    poll = conn.recv(1024).decode()
+                poll = poll.split('\n')
+                devices_json = json.loads(conn[0])
                 devices = []
                 for device_json in devices_json:
                     capabilities = {}
