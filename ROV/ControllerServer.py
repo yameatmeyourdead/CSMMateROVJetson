@@ -36,7 +36,7 @@ def startControllerServer():
                     capabilities = {}
                     for k, v in device_json['capabilities'].items():
                         capabilities[int(k)] = [x if not isinstance(x, list) else (x[0], evdev.AbsInfo(**x[1])) for x in v]
-                    devices.append(evdev.UInput(capabilities, name=device_json['name'] + ' (via input-over-ssh)'))
+                    devices.append(evdev.UInput(capabilities, name=device_json['name']))
                     print('Device created')
                 # while we are connected read controller data (and try not to miss any events)
                 while True:
