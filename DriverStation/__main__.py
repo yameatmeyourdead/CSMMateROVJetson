@@ -11,6 +11,6 @@ DSM.log("Attempt to Pass Controller")
 ControllerProcess.start()
 DSM.log("Controller Process Started")
 
-input("Enter to stop")
+input("Enter to stop\n")
 cameraDriver.kill()
 DSM.log("Killing ", endO='')
