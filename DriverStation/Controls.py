@@ -1,6 +1,7 @@
 import asyncio
 import evdev
 import json
+# from . import DriverStationMap
 
 # CHANGE THIS FOR DIFFERENT CONTROLLERS (alternatively implement method to ask the user which device they want (print /dev/input devices and their names) :)  )
 CONTROLLERNAME = "Microsoft X-Box One S pad"
@@ -27,6 +28,7 @@ async def run_forward():
 		device = evdev.InputDevice(path)
 		devices_by_name[device.name.lower()] = device
 	
+	# Choose the device you want
 	devices = []
 	devices.append(devices_by_name["Microsoft X-Box One S pad".lower()])
 	
@@ -34,11 +36,16 @@ async def run_forward():
 	# Report devices
 	print(json.dumps([encode_device(device) for device in devices]))
 	
-	# tasks = []
-	# for i, device in enumerate(devices):
-		# tasks.append(asyncio.create_task(forward_device(i, device)))
+	tasks = []
+	for i, device in enumerate(devices):
+		tasks.append(asyncio.create_task(forward_device(i, device)))
 	
-	# await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+	await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+
+async def list_devices():
+	for path in evdev.list_devices():
+			device = evdev.InputDevice(path)
+			print(f"{device.path}  {device.name}")
 
 # start the run_forward function
 loop = asyncio.get_event_loop()
