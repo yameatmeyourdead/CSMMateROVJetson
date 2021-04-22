@@ -38,15 +38,25 @@ def startControllerServer():
                         capabilities[int(k)] = [x if not isinstance(x, list) else (x[0], evdev.AbsInfo(**x[1])) for x in v]
                     devices.append(evdev.UInput(capabilities, name=device_json['name'] + ' (via input-over-ssh)'))
                     print('Device created')
-                # while we are connected read controller data
+                # while we are connected read controller data (and try not to miss any events)
                 while True:
+                    # poll the socket
                     data = conn.recv(1024)
+                    # if socket was empty, keep trying
                     if not data:
                         continue
-                    # get relevant event data 
-                    event = list(data.decode().split('\n'))[-2]
-                    # print(event)
-                    devices[int(event[0])].write(int(event[1]), int(event[2]), int(event[3]))
+                    # construct list of events that were transmitted with the socket poll
+                    events = []
+                    # split by line
+                    data = data.decode().split('\n')
+                    # parse data
+                    for event in data:
+                        if(event == ''):
+                            continue
+                        events.append(json.loads(event.replace('\n',''))) # get rid of nasty \n characters if they exist
+                    # apply pending events
+                    for event in events:
+                        devices[int(event[0])].write(int(event[1]), int(event[2]), int(event[3]))
         # connection was reset from other side (or maybe your network dropped)
         except ConnectionResetError:
             print("Connection with", addr, " forcibly closed")
