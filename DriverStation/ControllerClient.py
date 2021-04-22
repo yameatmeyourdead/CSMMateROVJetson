@@ -1,7 +1,7 @@
-# Original methods before Network stuff written by yingtongli under GNU Affero General Public License
+# Original methods written by yingtongli under GNU Affero General Public License © 2019
 # Source code here -> https://yingtongli.me/git/input-over-ssh
 # Modified by Zac Stanton
-# Note: this no longer does input over ssh, but rather input over a botched implementation of TCP
+# Note: this no longer does input over ssh, but rather input over a scuffed implementation of TCP
 
 import asyncio
 import evdev
@@ -37,13 +37,12 @@ async def run_forward():
 		device = evdev.InputDevice(path)
 		devices_by_name[device.name.lower()] = device
 	
-	# Choose the device you want
+	# Choose the device you want (hardcoded because im a lamo)
 	devices = []
 	devices.append(devices_by_name[CONTROLLERNAME.lower()])
 	
-	
-	# Report devices
-	print(json.dumps([encode_device(device) for device in devices]))
+	# Report devices to server
+	SOC.send(json.dumps([encode_device(device) for device in devices]).encode())
 	
 	tasks = []
 	for i, device in enumerate(devices):
@@ -65,14 +64,14 @@ IP = "localhost" # Loopback IP (if testing this network functionality on a singl
 # IP = "10.0.0.1"
 PORT = 7777
 
-def startNetworkListener():
+def startControllerForwarding():
 	print("Attempting to connect to Server")
 	SOC.connect((IP, PORT))
-	time.sleep(.01)
+	time.sleep(.01) # wait 10 milliseconds before sending anything (no reason, just be safe i guess)
 	print("Sucessfully conected......starting controller")
 	asyncio.run(run_forward())
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-ControllerProcess = Process(target=startNetworkListener)
+ControllerProcess = Process(target=startControllerForwarding)
 ControllerProcess.start()
