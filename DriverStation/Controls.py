@@ -16,7 +16,7 @@ CONTROLLERNAME = "Microsoft X-Box One S pad"
 async def do_forward_device(i, device):
 	async for event in device.async_read_loop():
 		# Sends data to jetson (bytes)
-		SOC.send(json.dumps([i, event.type, event.code, event.value]).encode('gbk'))
+		SOC.send(json.dumps([i, event.type, event.code, event.value]).encode())
 
 async def forward_device(i, device):
 	await do_forward_device(i, device)
@@ -65,8 +65,11 @@ IP = "127.0.0.1" # Loopback IP (if testing this network functionality on a singl
 PORT = 7777
 
 def startNetworkListener():
+	print("Attempting to connect to Server")
 	SOC.connect((IP, PORT))
 	time.sleep(.01)
+	SOC.send("hi".encode())
+	print("Sucessfully conected......starting controller")
 	asyncio.run(run_forward())
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
