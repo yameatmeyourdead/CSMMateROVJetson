@@ -34,13 +34,16 @@ def startControllerServer():
                 # while we are connected read controller data
                 while True:
                     event = json.loads(conn.recv(1024).decode())
+                    # if packet received is empty byte string, the connection has been reset
+                    if(event == b''):
+                        raise ConnectionResetError
                     #print(event)
                     devices[event[0]].write(event[1], event[2], event[3])
         # connection was reset from other side (or maybe your network dropped)
         except ConnectionResetError:
             print("Connection with", addr, " forcibly closed")
 
-
+# TODO: implement restarting of the server if connection is reset
 
 # Module scope only executed once, therefore this is safe (mostly)
 ControllerProcess = Process(target=startControllerServer)
