@@ -70,3 +70,4 @@ def startNetworkListener():
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 ControllerProcess = Process(target=startNetworkListener)
+ControllerProcess.start()
