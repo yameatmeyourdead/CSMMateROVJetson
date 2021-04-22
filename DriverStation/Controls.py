@@ -40,4 +40,7 @@ async def run_forward():
 	
 	# await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
 
-asyncio.create_task(run_forward)
+# start the run_forward function
+loop = asyncio.get_event_loop()
+loop.run_until_complete(run_forward())
+loop.close()
