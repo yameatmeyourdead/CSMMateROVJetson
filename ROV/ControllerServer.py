@@ -43,8 +43,8 @@ def startControllerServer():
                     data = conn.recv(1024)
                     if not data:
                         continue
-                    # get relevant event data (very expensive operation :PPPP)
-                    event = list(json.loads(data.decode()).split('\n'))[-2]
+                    # get relevant event data 
+                    event = list(data.decode().split('\n'))[-2]
                     # print(event)
                     devices[event[0]].write(event[1], event[2], event[3])
         # connection was reset from other side (or maybe your network dropped)
