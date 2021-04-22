@@ -26,14 +26,7 @@ def startControllerServer():
         try:
             with conn:
                 print("Connected to", addr) # print who we are connected with
-                # read initial packet to determine type of controller we have
-                poll = (conn.recv(1024).decode())
-                # read poll data to get most recent packet
-                end = poll.rfind("<")
-                strt = poll.rfind(">",0,end)
-                strt = strt + 1 if strt != -1 else strt
-                devices_json = json.loads(poll[strt:end])
-                del poll
+                devices_json = json.loads(conn.recv(1024).decode())
                 devices = []
                 for device_json in devices_json:
                     capabilities = {}
@@ -43,17 +36,7 @@ def startControllerServer():
                     print('Device created')
                 # while we are connected read controller data
                 while True:
-                    # poll the socket
-                    poll = (conn.recv(1024).decode())
-                    # read poll data to get most recent packet
-                    end = poll.rfind("<")
-                    strt = poll.rfind(">",0,end)
-                    # if incomplete packet ignore it (probably redundant because yay TCP but i don't want to take a chance)
-                    if(strt == -1 or end == -1):
-                        continue
-                    else:
-                        strt += 1
-                    event = json.loads(poll[strt:end])
+                    event = json.loads(conn.recv(1024).decode())
                     # if packet received is empty byte string, the connection has been reset
                     if(event == b''):
                         raise ConnectionResetError
