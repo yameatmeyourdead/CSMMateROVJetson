@@ -1,6 +1,7 @@
 # Original methods before Network stuff written by yingtongli under GNU Affero General Public License
 # Source code here -> https://yingtongli.me/git/input-over-ssh
 # Modified by Zac Stanton
+# Note: this no longer does input over ssh, but rather input over a botched implementation of TCP
 
 import asyncio
 import evdev
