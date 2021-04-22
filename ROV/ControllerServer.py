@@ -23,7 +23,7 @@ def startControllerServer():
             with conn:
                 print("Connected to", addr) # print who we are connected with
                 # read initial packet to determine type of controller we have
-                devices_json = json.loads(conn.recv(1024).decode())
+                devices_json = json.loads((conn.recv(1024).decode()))
                 devices = []
                 for device_json in devices_json:
                     capabilities = {}
