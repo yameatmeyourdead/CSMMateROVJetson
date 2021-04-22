@@ -28,7 +28,9 @@ def encode_device(device):
 	cap_json = {}
 	for k, v in cap.items():
 		cap_json[k] = [x if not isinstance(x, tuple) else [x[0], x[1]._asdict()] for x in v]
-	return {'name': device.name, 'capabilities': cap_json, 'vendor': device.info.vendor, 'product': device.info.product}
+	# WHY TODO: FINDOUT
+	# why have to replace device.info.vendor with 1118 and device.info.product with 746
+	return {'name': device.name, 'capabilities': cap_json, 'vendor': 1118, 'product': 746}
 
 async def run_forward():
 	# Find devices

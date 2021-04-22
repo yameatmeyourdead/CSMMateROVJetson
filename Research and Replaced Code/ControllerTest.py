@@ -77,13 +77,15 @@ def getButtonPresses():
     return joystick.presses
 
 # Constructor creates instance of joystick
-joystick = ControllerResource().__enter__()
+# joystick = ControllerResource().__enter__()
 
-while True:
-    updateController()
-    print(f"LS: {getLeftStick()}")
-    print(f"RS: {getRightStick()}")
-    if(getButtonPresses().rs):
-        print("pressed right stick")
-    if(getButtonPresses().ls):
-        print("pressed left stick")
+device = evdev.InputDevice("dev/input/event7")
+
+cap = device.capabilities()
+del cap[0] # Filter out EV_SYN, otherwise we get OSError 22 Invalid argument
+cap_json = {}
+for k, v in cap.items():
+    cap_json[k] = [x if not isinstance(x, tuple) else [x[0], x[1]._asdict()] for x in v]
+# WHY TODO: FINDOUT
+# why have to replace device.info.vendor with 1118 and device.info.product with 746
+print( {'name': device.name, 'capabilities': cap_json, 'vendor': 1118, 'product': 746})
