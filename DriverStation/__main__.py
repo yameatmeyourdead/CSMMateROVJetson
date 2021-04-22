@@ -1,12 +1,16 @@
 from .CameraDriver import CameraDriver
 from . import DriverStationMap as DSM
+from .ControllerClient import ControllerProcess
 
 DSM.log("Attempt Camera Driver Start")
 cameraDriver = CameraDriver()
-
-print("bruh")
 cameraDriver.start()
 DSM.log("Camera Driver Started")
+
+DSM.log("Attempt to Pass Controller")
+ControllerProcess.start()
+DSM.log("Controller Process Started")
+
 input("Enter to stop")
 cameraDriver.kill()
 DSM.log("Killing ", endO='')

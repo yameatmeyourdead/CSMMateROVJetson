@@ -74,4 +74,3 @@ def startControllerForwarding():
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 ControllerProcess = Process(target=startControllerForwarding)
-ControllerProcess.start()
