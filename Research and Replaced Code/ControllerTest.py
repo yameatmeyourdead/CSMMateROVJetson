@@ -1,4 +1,5 @@
 from approxeng.input.selectbinder import ControllerResource
+import evdev
     
 def getLeftStick():
     """
@@ -79,7 +80,7 @@ def getButtonPresses():
 # Constructor creates instance of joystick
 # joystick = ControllerResource().__enter__()
 
-device = evdev.InputDevice("dev/input/event7")
+device = evdev.InputDevice("/dev/input/event7")
 
 cap = device.capabilities()
 del cap[0] # Filter out EV_SYN, otherwise we get OSError 22 Invalid argument
