@@ -13,4 +13,5 @@ DSM.log("Controller Process Started")
 
 input("Enter to stop\n")
 cameraDriver.kill()
+ControllerProcess.kill()
 DSM.log("Killing ", endO='')
