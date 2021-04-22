@@ -60,7 +60,7 @@ async def list_devices():
 # Port     Use
 # 7777    Controller
 
-IP = "127.0.0.1" # Loopback IP (if testing this network functionality on a single device USE THIS IP)
+IP = "localhost" # Loopback IP (if testing this network functionality on a single device USE THIS IP)
 # IP = "10.0.0.1"
 PORT = 7777
 
@@ -68,7 +68,6 @@ def startNetworkListener():
 	print("Attempting to connect to Server")
 	SOC.connect((IP, PORT))
 	time.sleep(.01)
-	SOC.send("hi".encode())
 	print("Sucessfully conected......starting controller")
 	asyncio.run(run_forward())
 
