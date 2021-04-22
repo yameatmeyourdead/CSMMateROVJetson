@@ -46,7 +46,7 @@ def startControllerServer():
                     # get relevant event data 
                     event = list(data.decode().split('\n'))[-2]
                     # print(event)
-                    devices[event[0]].write(event[1], event[2], event[3])
+                    devices[int(event[0])].write(int(event[1]), int(event[2]), int(event[3]))
         # connection was reset from other side (or maybe your network dropped)
         except ConnectionResetError:
             print("Connection with", addr, " forcibly closed")
