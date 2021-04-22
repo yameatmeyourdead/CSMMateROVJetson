@@ -1,6 +1,12 @@
+# Original methods before Network stuff written by yingtongli under GNU Affero General Public License
+# Source code here -> https://yingtongli.me/git/input-over-ssh
+# Modified by Zac Stanton
+
 import asyncio
 import evdev
 import json
+import socket
+from multiprocessing import Process
 # from . import DriverStationMap
 
 # CHANGE THIS FOR DIFFERENT CONTROLLERS (alternatively implement method to ask the user which device they want (print /dev/input devices and their names) :)  )
@@ -8,7 +14,8 @@ CONTROLLERNAME = "Microsoft X-Box One S pad"
 
 async def do_forward_device(i, device):
 	async for event in device.async_read_loop():
-		print(json.dumps([i, event.type, event.code, event.value]))
+		# Sends data to jetson
+		SOC.send(json.dumps([i, event.type, event.code, event.value]))
 
 async def forward_device(i, device):
 	await do_forward_device(i, device)
@@ -30,7 +37,7 @@ async def run_forward():
 	
 	# Choose the device you want
 	devices = []
-	devices.append(devices_by_name["Microsoft X-Box One S pad".lower()])
+	devices.append(devices_by_name[CONTROLLERNAME.lower()])
 	
 	
 	# Report devices
@@ -47,7 +54,19 @@ async def list_devices():
 			device = evdev.InputDevice(path)
 			print(f"{device.path}  {device.name}")
 
-# start the run_forward function
-loop = asyncio.get_event_loop()
-loop.run_until_complete(run_forward())
-loop.close()
+# NETWORK STUFF!!!!!! (boo) (i lied there is network thing in do_forward_device)
+# This hurts me and I understand nothing written in this file
+# Port     Use
+# 7777    Controller
+
+IP = "127.0.0.1" # Loopback IP (if testing this network functionality on a single device USE THIS IP)
+# IP = "10.0.0.1"
+PORT = 7777
+
+def startNetworkListener():
+	SOC.connect((IP, PORT))
+	asyncio.run(run_forward())
+
+SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+ControllerProcess = Process(target=startNetworkListener)

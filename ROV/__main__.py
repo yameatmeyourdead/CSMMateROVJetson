@@ -72,13 +72,11 @@ try:
         # Process for keyboard listener (EStop etc)
         # EStopListener = Process(target=ROVMap.recvPacket)
         # EStopListener.start()
-        
-        # Thread for actually running robo code (DEPRECATED PROBABLY)
-        # functionalProcess = Process(target=start)
-        # functionalProcess.start()
+
+        # start robot (blocking)
         start()
-# If keyboard interrupt, shut down every single part
-except (KeyboardInterrupt, ROVMap.EStopInterrupt, ROVMap.EStopInterruptFatal) as e:
+# If interrupted for any reason, shut down every single part
+except Exception as e:
     ROVMap.log("Received Keyboard Interrupt.....Stopping")
-    stop(e.args)
+    stop(isinstance(e, ROVMap.EStopInterruptFatal))
     
