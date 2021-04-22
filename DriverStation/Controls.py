@@ -6,6 +6,7 @@ import asyncio
 import evdev
 import json
 import socket
+import time
 from multiprocessing import Process
 # from . import DriverStationMap
 
@@ -65,6 +66,7 @@ PORT = 7777
 
 def startNetworkListener():
 	SOC.connect((IP, PORT))
+	time.sleep(.01)
 	asyncio.run(run_forward())
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
