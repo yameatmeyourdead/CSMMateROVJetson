@@ -56,6 +56,8 @@ def startControllerServer():
                         events.append(json.loads(event.replace('\n',''))) # get rid of nasty \n characters if they exist
                     # apply pending events
                     for event in events:
+                        if(event == ''):
+                            continue
                         devices[int(event[0])].write(int(event[1]), int(event[2]), int(event[3]))
         # connection was reset from other side (or maybe your network dropped)
         except ConnectionResetError:

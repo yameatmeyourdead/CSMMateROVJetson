@@ -44,6 +44,7 @@ async def run_forward():
 	devices.append(devices_by_name[CONTROLLERNAME.lower()])
 	
 	# Report devices to server
+	print(json.dumps([encode_device(device) for device in devices]))
 	SOC.send(json.dumps([encode_device(device) for device in devices]).encode())
 	
 	tasks = []
