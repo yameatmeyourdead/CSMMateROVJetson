@@ -26,11 +26,22 @@ def startControllerServer():
         try:
             with conn:
                 print("Connected to", addr) # print who we are connected with
-                data = conn.recv(1024)
+                data = b""
                 while not data:
-                    data = conn.recv(1024)
+                    data += conn.recv(2048)
+                    # if message post-curser not found, keep polling the socket
+                    if(b"<" not in data):
+                        continue
+                data = data.decode().split('\n')
+                controllerInformation = json.loads(data[0][0:len(data[0])-1])
+
+                events = []
+                if(len(data) > 1):
+                    for i in range(1, len(data)):
+                        events.append(data[i])
+                
                 # once we start getting data, get the first thing sent (our controller information)
-                devices_json = json.loads(data.decode().split('\n')[0])
+                devices_json = controllerInformation
                 devices = []
                 for device_json in devices_json:
                     capabilities = {}
@@ -41,14 +52,14 @@ def startControllerServer():
                 # while we are connected read controller data (and try not to miss any events)
                 while True:
                     # poll the socket
-                    data = conn.recv(1024)
-                    # if socket was empty, keep trying
-                    if not data:
-                        continue
-                    # construct list of events that were transmitted with the socket poll
-                    events = []
+                    while not data: # if socket was empty, keep trying
+                        data += conn.recv(2048)
+                        if(b"<" not in data): # wait until EOM character
+                            continue
                     # split by line
                     data = data.decode().split('\n')
+                    data[-1].replace('<','') # trash EOM character
+                    
                     # parse data
                     for event in data:
                         if(event == ''):
@@ -59,6 +70,8 @@ def startControllerServer():
                         if(event == ''):
                             continue
                         devices[int(event[0])].write(int(event[1]), int(event[2]), int(event[3]))
+                    data = b""
+                    events = []
         # connection was reset from other side (or maybe your network dropped)
         except ConnectionResetError:
             print("Connection with", addr, " forcibly closed")

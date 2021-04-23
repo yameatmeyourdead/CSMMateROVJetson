@@ -45,8 +45,8 @@ async def run_forward():
 	
 	# Report devices to server
 	print(json.dumps([encode_device(device) for device in devices]))
-	SOC.send(json.dumps([encode_device(device) for device in devices]).encode())
-	
+	SOC.sendall(json.dumps([encode_device(device) for device in devices]).encode() + b"<\n")
+	time.sleep(.25) # wait for little time to prevent overlapping messages
 	tasks = []
 	for i, device in enumerate(devices):
 		tasks.append(asyncio.create_task(forward_device(i, device)))
