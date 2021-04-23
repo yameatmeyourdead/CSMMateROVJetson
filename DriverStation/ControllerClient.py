@@ -75,5 +75,4 @@ def startControllerForwarding():
 	asyncio.run(run_forward())
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 ControllerProcess = Process(target=startControllerForwarding)

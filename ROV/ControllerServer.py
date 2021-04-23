@@ -55,9 +55,12 @@ def startControllerServer():
                 # while we are connected read controller data (and try not to miss any events)
                 while True:
                     # poll the socket
+                    start = time.time()
                     while not data: # if socket was empty, keep trying
                         data += conn.recv(2048)
                         if(b"<" not in data): # wait until EOM character
+                            if(data == b"" and time.time() - start > 60): # 60 second timeout for controller server
+                                raise ConnectionResetError
                             continue
                     # split by line
                     data = data.decode().split('\n')
@@ -82,5 +85,6 @@ def startControllerServer():
 # TODO: implement restarting of the server if connection is reset
 
 # Module scope only executed once, therefore this is safe (mostly)
+# TODO: consider moving to __main__ to implement automatic restart in case of ConnectionResetError
 ControllerProcess = Process(target=startControllerServer)
 ControllerProcess.start()
