@@ -47,9 +47,11 @@ def startControllerServer():
                     capabilities = {}
                     for k, v in device_json['capabilities'].items():
                         capabilities[int(k)] = [x if not isinstance(x, list) else (x[0], evdev.AbsInfo(**x[1])) for x in v]
-                    devices.append(evdev.UInput(capabilities, name=device_json['name']))
+                    devices.append(evdev.UInput(capabilities, name=device_json['name'], vendor=1118, product=746, version=769))
                     print('Device created')
                 data = b""
+
+
                 # while we are connected read controller data (and try not to miss any events)
                 while True:
                     # poll the socket
