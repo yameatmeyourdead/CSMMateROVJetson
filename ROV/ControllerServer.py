@@ -84,7 +84,4 @@ def startControllerServer():
 
 # TODO: implement restarting of the server if connection is reset
 
-# Module scope only executed once, therefore this is safe (mostly)
-# TODO: consider moving to __main__ to implement automatic restart in case of ConnectionResetError
 ControllerProcess = Process(target=startControllerServer)
-ControllerProcess.start()

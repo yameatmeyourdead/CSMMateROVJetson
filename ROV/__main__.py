@@ -2,6 +2,8 @@ from .Drive import Drive
 from .Manip import Manip
 from .MicroROV import MicroROV
 from . import ROVMap
+from . import ControllerServer
+import queue
 import sys
 import os
 import time
@@ -50,9 +52,21 @@ def start():
     Start the Robot\n
     
     """
+    # starts network handler
+    # send stuff by putting to ROVMap.sendQueue
+    # recv stuff by looking in ROVMap.recvQueue
+    ROVMap.NetworkingProcess.start()
+
+    # starts controller server
+    ControllerServer.ControllerProcess.start()
+
     while True:
         # Update each component of the robot depending on the operating mode
         ROVMap.updateController()
+        try:
+            raise ROVMap.errQueue.get(block=False) # raise appropriate errors as they are received
+        except queue.Empty:
+            pass
         if(operatingMode):
             # Teleop
             for Comp in parts:
@@ -62,22 +76,14 @@ def start():
             for Comp in parts:
                 Comp.autoUpdate()
 
+
 # Creates two processes, one for keyboard stop/estop and one for actually doing robo
 try:
-    # try:
-    #     set_start_method('spawn', force=True)
-    # except RuntimeError:
-    #     pass
-
     if __name__ == "__main__":
-        # Process for keyboard listener (EStop etc)
-        # EStopListener = Process(target=ROVMap.recvPacket)
-        # EStopListener.start()
-
-        # start robot (blocking)
+        # start robot (blocking) and all child processes
         start()
 # If interrupted for any reason, shut down every single part
 except Exception as e:
-    ROVMap.log("Received Keyboard Interrupt.....Stopping")
+    ROVMap.log("Received Interrupt.....Stopping")
     stop(isinstance(e, ROVMap.EStopInterruptFatal))
     

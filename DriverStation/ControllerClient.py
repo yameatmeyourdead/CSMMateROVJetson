@@ -4,7 +4,11 @@
 # Note: this no longer does input over ssh, but rather input over a scuffed implementation of TCP
 
 import asyncio
-import evdev
+try:
+    import evdev
+except ModuleNotFoundError:
+    print("This code only works on linux machines with evdev installed.....Exiting this program")
+    exit()
 import json
 import socket
 import time
