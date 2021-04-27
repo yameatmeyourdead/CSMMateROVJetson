@@ -30,22 +30,22 @@ def stop(FATAL = False):
     WARNING: IF TESTING THIS FATAL FUNCTIONALITY, IT WILL SHUTDOWN YOUR COMPUTER... YOU HAVE BEEN WARNED\n
     usage: stop(FATAL) Fatal=False by default
     """
-    ROVMap.log(f"Received Stop Command.....Fatal? = {FATAL}")
-    # Calmly deactivate all components
-    ROVMap.JOYSTICK.__exit__()
-    
-    for Comp in parts:
-        Comp.kill()
-    # If EStop Fatal was triggered, shutdown Jetson immediately
-    if(FATAL):
-        ROVMap.log("Triggering system shutdown due to EStop", endO="")
+    try:
+        ROVMap.log(f"Received Stop Command.....Fatal? = {FATAL}")
+        # Calmly deactivate all components
+        ROVMap.JOYSTICK.__exit__()
+        ROVMap.NetworkingProcess.kill()
+        ControllerServer.ControllerProcess.kill()
+        
+        for Comp in parts:
+            Comp.kill()
+        # If EStop Fatal was triggered, shutdown Jetson immediately
+        if(FATAL):
+            ROVMap.log("Triggering system shutdown due to EStop", endO="")
+            os.system('shutdown /s /t 1')
+        ROVMap.log("ROV Successfully Shutdown", endO="")
+    except:
         os.system('shutdown /s /t 1')
-    ROVMap.log("ROV Successfully Shutdown", endO="")
-
-
-def eStopListener():
-    ROVMap.startNetworkListener()
-
 
 def start():
     """

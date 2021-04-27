@@ -231,15 +231,15 @@ def sendPacket(data):
 # TODO: Implement support for numpy ndarray
 def doNetworkHandler():
     SOC.connect((IP, PORT))
-    SOC.settimeout(2)
+    SOC.settimeout(0.1)
     closer = "<"
     buffer = b""
     while True:
         try:
-            sendPacket(sendQueue.get(block=True, timeout=2)) # if queue has item, send it. throws queue.Empty error if empty after timeout (2 seconds)
+            sendPacket(sendQueue.get(block=False)) # if queue has item, send it. throws queue.Empty error if empty
         except queue.Empty:
             pass
-        buffer = SOC.recv(1024) # wait for incoming messages for max 2 seconds
+        buffer = SOC.recv(1024) # wait for incoming messages for max .1 seconds
         if(buffer): # if incoming message detected, finish gathering message
             while not closer in buffer:
                 buffer += SOC.recv(1024)

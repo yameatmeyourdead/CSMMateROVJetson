@@ -1,58 +1,130 @@
-from tclab import clock, setup, Historian, Plotter
-import numpy as np
+from Vector import Vector
+from datetime import datetime
+import time
+import math
+from tkinter import *
 
-def PID(Kp, Ki, Kd, MV_bar=0, beta=1, gamma=0):
+
+def PID(Kp, Ki, Kd, MV_offset=Vector()):
     # initialize stored data
-    eD_prev = 0
-    t_prev = -100
-    P = 0
-    I = 0
-    D = 0
-    
-    # initial control
-    MV = MV_bar
-    
+    P = Vector()
+    I = Vector()
+    D = Vector()
+    t_prev = datetime.now().microsecond
+    e_prev = Vector() # no error on start
+
+    #Initial Control
+    MV = MV_offset
+
     while True:
-        # yield MV, wait for new t, SP, PV, TR
-        data = yield MV
+        # return calculated variable, wait for new data
+        t, PV, SP = yield MV
         
-        # see if a tracking data is being supplied
-        if len(data) < 4:
-            t, PV, SP = data
-        else:
-            t, PV, SP, TR = data
-            I = TR - MV_bar - P - D
-        
-        # PID calculations
-        P = Kp*(beta*SP - PV)
-        I = I + Ki*(SP - PV)*(t - t_prev)
-        eD = gamma*SP - PV
-        D = Kd*(eD - eD_prev)/(t - t_prev)
-        MV = MV_bar + P + I + D
-        
-        # Constrain MV to range 0 to 100 for anti-reset windup
-        MV = 0 if MV < 0 else 100 if MV > 100 else MV
-        #I = MV - MV_bar - P - D
-        
-        # update stored data for next iteration
-        eD_prev = eD
+        print(t, t_prev)
+
+        # PID Calculations
+        # calculate error
+        e = SP - PV
+        print(f"Error {e}")
+
+        # change in time/error
+        dt = abs(t - t_prev)
+        if(dt == 0):
+            dt = 10
+        print(f"Time Differential {dt}")
+        de = e - e_prev
+
+        # update actuator command (order is important)
+        P = e * Kp
+        print(f"Proportional {P}")
+        I = I + e * dt * Ki
+        print(f"Integral {I}")
+        D = de / dt * Kd
+        print(f"Derivative {D}")
+
+        MV = P + I + D + MV_offset
+        print(f"Offset {MV_offset}")
+        print(f"Actuator Command {MV}")
+
+        # update stored data
+        e_prev = e
         t_prev = t
 
-TCLab = setup(connected=False, speedup=10)
+root = Tk()
+root.geometry("640x480")
+root.resizable(False, False)
 
-controller = PID(1, 0.2, 0, beta=0)   # create pid control
-controller.send(None)                 # initialize
+KP = DoubleVar()
+KI = DoubleVar()
+KD = DoubleVar()
 
-tfinal = 1200
+KPLabel = Label(root, text="Kp")
+KPLabel.grid_configure(row=0, column=0)
+KPEntry = Entry(root)
+KPEntry.grid_configure(row=0, column=1)
+KPEntry.insert(0,"1")
 
-with TCLab() as lab:
-    h = Historian([('SP', lambda: SP), ('T1', lambda: lab.T1), ('MV', lambda: MV), ('Q1', lab.Q1)])
-    p = Plotter(h, tfinal)
-    Tlo = lab.T1
-    Thi = 120
-    for t in clock(tfinal, 2):
-        SP =  Thi if (t % 600 < 100) else Tlo                    # get setpoint
-        PV = lab.T1                                   # get measurement
-        MV = controller.send([t, PV, SP])   # compute manipulated variable
-        lab.Q1(MV)                                    # apply 
-        p.update(t)                                   # update information display
+KILabel = Label(root, text="Ki")
+KILabel.grid_configure(row=1, column=0)
+KIEntry = Entry(root)
+KIEntry.grid_configure(row=1, column=1)
+KIEntry.insert(0,"1")
+
+KDLabel = Label(root, text="Kd")
+KDLabel.grid_configure(row=2, column=0)
+KDEntry = Entry(root)
+KDEntry.grid_configure(row=2, column=1)
+KDEntry.insert(0,"1")
+
+targetLabel = Label(root, text="Target")
+targetLabel.grid_configure(row=4, column=0)
+targetEntry = Entry(root)
+targetEntry.grid_configure(row=4, column=1)
+targetEntry.insert(0,"0,0,0")
+
+MVLabel = Label(root, text="Actuator Command")
+MVLabel.grid_configure(row=5, column=0)
+MVOutput = Entry(root)
+MVOutput.grid_configure(row=5, column=1)
+
+
+
+CONTROLLER = PID(1, 1, 1)
+CONTROLLER.send(None)
+
+
+target = Vector()
+current = Vector()
+
+def update(MV):
+    t = datetime.now().microsecond
+    time.sleep(1)
+    KP.set(float(KPEntry.get()))
+    KI.set(float(KIEntry.get()))
+    KD.set(float(KDEntry.get()))
+    CONTROLLER = PID(KP.get(), KI.get(), KD.get(), MV)
+    CONTROLLER.send(None)
+    target = Vector.tupleToVector(parseTarget())
+    MV = CONTROLLER.send((t,current,target))
+    MVOutput.delete(0,END)
+    MVOutput.insert(0,MV)
+
+
+def parseTarget():
+    target = targetEntry.get()
+    target.replace(' ', '')
+    target = target.split(',')
+    for i in range(len(target)):
+        target[i] = float(target[i])
+    return tuple((target[0], target[1], target[2]))
+
+updateButton = Button(text="Update", command=lambda:update(current))
+updateButton.grid_configure(row=7, column=4)
+
+
+
+while True:
+    try:
+        root.update()
+    except TclError:
+        break
