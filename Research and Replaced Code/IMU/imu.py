@@ -12,7 +12,7 @@ while True:
     mag_x, mag_y, mag_z = NineAxisSensor.magnetic
     gyro_x, gyro_y, gyro_z = NineAxisSensor.gyro
 
-    print(f"Acceleration (m/s^2): {accel_x}, {accel_y}, {accel_z}")
-    print(f"Magnetometer (gauss): {mag_x}, {mag_y}, {mag_z}")
-    print(f"Gyro (deg/sec): {gyro_x}, {gyro_y}, {gyro_z}")
+    print(f"Acceleration (m/s^2): {accel_x:.3f}, {accel_y:.3f}, {accel_z:.3f}")
+    print(f"Magnetometer (gauss): {mag_x:.3f}, {mag_y:.3f}, {mag_z:.3f}")
+    print(f"Gyro (deg/sec):       {gyro_x:.3f}, {gyro_y:.3f}, {gyro_z:.3f}")
     sleep(.5)
