@@ -2,17 +2,30 @@ from time import sleep
 import busio
 import board
 import adafruit_lsm9ds1
+from.Vector import Vector
 
 i2c = busio.I2C(board.SCL, board.SDA)
 NineAxisSensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
+class Quaternion:
+    def __init__(self):
+        self.__quaternion = [0,0,0,0]
+    
+    def getW(self):
+        return self.__quaternion[0]
+    
+    def getX(self):
+        return self.__quaternion[1]
+    
+    def getY(self):
+        return self.__quaternion[2]
+    
+    def getZ(self):
+        return self.__quaternion[3]
 
 while True:
-    accel_x, accel_y, accel_z = NineAxisSensor.acceleration
-    mag_x, mag_y, mag_z = NineAxisSensor.magnetic
-    gyro_x, gyro_y, gyro_z = NineAxisSensor.gyro
-
-    print(f"Acceleration (m/s^2): {accel_x:.3f}, {accel_y:.3f}, {accel_z:.3f}")
-    print(f"Magnetometer (gauss): {mag_x:.3f}, {mag_y:.3f}, {mag_z:.3f}")
-    print(f"Gyro (deg/sec):       {gyro_x:.3f}, {gyro_y:.3f}, {gyro_z:.3f}")
-    sleep(.5)
+    # update accelerometer, magnetometer, and gyroscope values
+    
+    accel = Vector.tupleToVector(NineAxisSensor.acceleration)
+    gyro = Vector.tupleToVector(NineAxisSensor.gyro)
+    
