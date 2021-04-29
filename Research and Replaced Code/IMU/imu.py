@@ -158,13 +158,13 @@ while True:
     
     accel = Vector.tupleToVector(tuple(NineAxisSensor.acceleration))
     gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
-    print(gyro)
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
     thetaA = atan(accel.getX()/accel.getZ()) * 180 / PI
     phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
 
     dt = time.time_ns()/1000000 - t_old
+    print(dt)
     thetaG = thetaGOld + gyro.getY() * dt
     phiG = phiGOld + gyro.getX() * dt
     t_old = time.time_ns()/1000000
@@ -172,5 +172,5 @@ while True:
     thetaGOld = thetaG
     phiGOld = phiG
 
-    print(f"{thetaA:.2f} , {phiA:.2f}")
-    print(f"{thetaG:.2f} , {phiG:.2f}")
+    # print(f"{thetaA:.2f} , {phiA:.2f}")
+    # print(f"{thetaG:.2f} , {phiG:.2f}")
