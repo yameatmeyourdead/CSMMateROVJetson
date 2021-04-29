@@ -27,11 +27,6 @@ class Quaternion:
     def getZ(self):
         return self.__quaternion[3]
 
-theta = 0
-phi = 0
-
-tilt = 0
-
 class Vector:
     def __init__(self, x=0.0, y=0.0, z=0.0):
         self.components = [float(x),float(y),float(z)]
@@ -147,6 +142,9 @@ class Vector:
 PI = math.pi
 atan = math.atan
 
+theta = 0
+phi = 0
+
 while True:
     # update accelerometer, magnetometer, and gyroscope values
     
@@ -154,6 +152,7 @@ while True:
     gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
-    tilt = atan(accel.getX()/accel.getZ()) * 180 / PI
+    theta = atan(accel.getX()/accel.getZ()) * 180 / PI
+    phi = atan(accel.getY(), accel.getZ())
 
-    print(tilt)
+    print(f"{theta:.2f} , {phi:.2f}")
