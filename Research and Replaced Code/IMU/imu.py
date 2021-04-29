@@ -166,6 +166,7 @@ while True:
     dt = time.time_ns()/1000000 - t_old
     thetaG = thetaGOld + gyro.getY() * dt
     phiG = phiGOld + gyro.getX() * dt
+    t_old = time.time_ns()/1000000
 
     thetaGOld = thetaG
     phiGOld = phiG
