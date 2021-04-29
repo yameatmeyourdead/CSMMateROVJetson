@@ -153,6 +153,6 @@ while True:
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
     theta = atan(accel.getX()/accel.getZ()) * 180 / PI
-    phi = atan(accel.getY(), accel.getZ())
+    phi = atan(accel.getY()/accel.getZ()) * 180 / PI
 
     print(f"{theta:.2f} , {phi:.2f}")
