@@ -164,8 +164,8 @@ while True:
     phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
 
     dt = time.time_ns()/1000000 - t_old
-    thetaG = thetaGOld + gyro.getY() * dt
-    phiG = phiGOld + gyro.getX() * dt
+    thetaG = thetaGOld + round(gyro.getY(),2) * dt
+    phiG = phiGOld + round(gyro.getX(),2) * dt
     t_old = time.time_ns()/1000000
 
     thetaGOld = thetaG
