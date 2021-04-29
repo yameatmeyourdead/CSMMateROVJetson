@@ -1,4 +1,4 @@
-from time import sleep
+import time
 import busio
 import board
 import adafruit_lsm9ds1
@@ -142,8 +142,16 @@ class Vector:
 PI = math.pi
 atan = math.atan
 
-theta = 0
-phi = 0
+thetaA = 0
+phiA = 0
+
+thetaGOld = 0
+phiGOld = 0
+thetaG = 0
+phiG = 0
+
+dt = 0
+t_old = 0
 
 while True:
     # update accelerometer, magnetometer, and gyroscope values
@@ -152,7 +160,15 @@ while True:
     gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
-    theta = atan(accel.getX()/accel.getZ()) * 180 / PI
-    phi = atan(accel.getY()/accel.getZ()) * 180 / PI
+    thetaA = atan(accel.getX()/accel.getZ()) * 180 / PI
+    phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
 
-    print(f"{theta:.2f} , {phi:.2f}")
+    dt = time.time_ns()/1000000 - t_old
+    thetaG = thetaGOld + gyro.getY() * dt
+    phiG = phiGOld + gyro.getX() * dt
+
+    thetaGOld = thetaG
+    phiGOld = phiG
+
+    print(f"{thetaA:.2f} , {phiA:.2f}")
+    print(f"{thetaG:.2f} , {phiG:.2f}")
