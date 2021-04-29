@@ -164,7 +164,6 @@ while True:
     phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
 
     dt = time.time_ns()/1000000 - t_old
-    print(dt)
     thetaG = thetaGOld + gyro.getY() * dt
     phiG = phiGOld + gyro.getX() * dt
     t_old = time.time_ns()/1000000
@@ -173,4 +172,4 @@ while True:
     phiGOld = phiG
 
     # print(f"{thetaA:.2f} , {phiA:.2f}")
-    # print(f"{thetaG:.2f} , {phiG:.2f}")
+    print(f"{thetaG:.2f} , {phiG:.2f}")
