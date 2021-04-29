@@ -35,7 +35,6 @@ tilt = 0
 class Vector:
     def __init__(self, x=0.0, y=0.0, z=0.0):
         self.components = [float(x),float(y),float(z)]
-        self.magnitude = float(float(x) ** 2 + float(y) ** 2 + float(z) ** 2)
     
     @classmethod
     def unitVector(cls, x=0.0, y=0.0, z=0.0):
@@ -148,9 +147,9 @@ class Vector:
 while True:
     # update accelerometer, magnetometer, and gyroscope values
     
-    accel = Vector.tupleToVector(NineAxisSensor.acceleration)
-    gyro = Vector.tupleToVector(NineAxisSensor.gyro)
-    mag = Vector.tupleToVector(NineAxisSensor.magnetic)
+    accel = Vector.tupleToVector(tuple(NineAxisSensor.acceleration))
+    gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
+    mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
     tilt = math.atan(accel.getX()/accel.getZ())
 
