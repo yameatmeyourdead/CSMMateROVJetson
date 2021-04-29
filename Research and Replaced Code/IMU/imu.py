@@ -158,6 +158,7 @@ while True:
     
     accel = Vector.tupleToVector(tuple(NineAxisSensor.acceleration))
     gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
+    print(gyro)
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
     thetaA = atan(accel.getX()/accel.getZ()) * 180 / PI
