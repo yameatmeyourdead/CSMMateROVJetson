@@ -144,6 +144,9 @@ class Vector:
     def __truediv__(self, val):
         return Vector(self.getX() / val, self.getY() / val, self.getZ() / val)
 
+PI = math.pi
+atan = math.atan
+
 while True:
     # update accelerometer, magnetometer, and gyroscope values
     
@@ -151,6 +154,6 @@ while True:
     gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
     
-    tilt = math.atan(accel.getX()/accel.getZ())
+    tilt = atan(accel.getX()/accel.getZ()) * 180 / PI
 
     print(tilt)
