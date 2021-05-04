@@ -54,8 +54,8 @@ def start():
     """
     # starts network handler
     # send stuff by putting to ROVMap.sendQueue
-    # recv stuff by looking in ROVMap.recvQueue
-    ROVMap.NetworkingProcess.start()
+    # recv stuff by looking in ROVMap.dataQueue
+    ROVMap.JetsonNetworking.start()
 
     # starts controller server
     ControllerServer.ControllerProcess.start()

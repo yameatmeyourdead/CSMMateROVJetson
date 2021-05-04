@@ -1,6 +1,6 @@
+import queue
 import imagezmq
 import cv2
-from zmq.sugar.constants import NULL
 from . import DriverStationMap as DSM
 from multiprocessing import Process, set_start_method
 from tkinter import *
@@ -15,49 +15,17 @@ def waitForImage():
     # Create TKinter Window
     root = Tk()
 
-    # Create booleans to determine if a certain camera should be on
-    global camStates
-    camStates = [True, True, True, True]
-    
-    def getCamState(cam):
-        return camStates[cam]
-
-    def toggleCam0():
-        if(camStates[0]):
-            camStates[0] = False
-        else:
-            camStates[0] = True
-
-    def toggleCam1():
-        if(camStates[1]):
-            camStates[1] = False
-        else:
-            camStates[1] = True
-
-    def toggleCam2():
-        if(camStates[2]):
-            camStates[2] = False
-        else:
-            camStates[2] = True
-
-    def toggleCam3():
-        if(camStates[3]):
-            camStates[3] = False
-        else:
-            camStates[3] = True
-
-    TCAM0 = Button(root, text="Toggle Cam0", command=toggleCam0)
-    TCAM0.pack()
-    TCAM1 = Button(root, text="Toggle Cam1", command=toggleCam1)
-    TCAM1.pack()
-    TCAM2 = Button(root, text="Toggle Cam2", command=toggleCam2)
-    TCAM2.pack()
-    TCAM3 = Button(root, text="Toggle Cam3", command=toggleCam3)
-    TCAM3.pack()
-
     LABEL = Label(root, text="Cams")
     LABEL.pack()
     root.update()
+
+    coordinatesPower = 20, 50, 210, 230
+    powerCanvas = Canvas(root, bg="white", width=300, height=300)
+    powerCanvas.pack()
+
+    coordinatesCurrent = 40, 100, 420, 460
+    currentCanvas = Canvas(root, bg="white", width=300, height=300)
+    currentCanvas.pack()
 
     temp_img = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
 
@@ -78,6 +46,24 @@ def waitForImage():
         # receive client name and frame from the client and acknowledge the receipt
         (clientName, frame) = imageHub.recv_image()
 
+        # if there is updated power draw information, display that information receive
+        try:
+            currentandpower = DSM.dataQueue.get()
+            try:
+                current = currentandpower[currentandpower.index():currentandpower.index()+5]
+                currentandpower[currentandpower.index()+5:]
+                power = currentandpower[currentandpower.index():currentandpower.index()+5]
+                currentandpower = ""
+            except ValueError:
+                current = -1
+                power = -1
+        except queue.Empty:
+            pass
+        # 800W @ 12V ~ 67A Max???
+        # draw unused portion of circle
+        powerCanvas.create_arc(coordinatesPower, start=0, extent=360, fill="yellow")
+        currentCanvas.create_arc(coordinatesCurrent, start=0, extend=360, fill="yellow")
+
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
             DSM.log("received image did not contain valid camera designation")
@@ -87,9 +73,7 @@ def waitForImage():
         # grab camera designation
         cameraDesignation = int(clientName[6:])
 
-        if(not getCamState(cameraDesignation)):
-            frames[cameraDesignation] = NULLFRAME
-        elif frame is not None:
+        if frame is not None:
             # put the frame where it's supposed to go for stitching
             frames[cameraDesignation] = frame
         

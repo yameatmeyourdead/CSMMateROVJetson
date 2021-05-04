@@ -54,7 +54,6 @@ class Drive(Component):
 
         ROVMap.log("DRIVE CONSTRUCTED")
     
-    # TODO: IMPLEMENT PID
     def Update(self):
         RS = ROVMap.getRightStick()
         presses = ROVMap.getButtonPresses()
@@ -150,8 +149,9 @@ class Drive(Component):
             estimated_current[Thruster] = (-.664 -.0036 * throttle + 17.4 * throttle * throttle)
             # if(ROVMap.kit._items[Thruster] is not None): # ensure thruster object exists (shouldn't be needed unless testing less than 8 thrusters)
             ROVMap.kit._items[Thruster].throttle = self._targetThrottles[Thruster]
-        self.thruster_current_draw = max(estimated_current)
-        self.thruster_power_draw = estimated_power_draw
+        self.thruster_current_draw = round(max(estimated_current),2)
+        self.thruster_power_draw = round(estimated_power_draw,2)
+        ROVMap.sendQueue.put(b"010>" + str(self.thruster_current_draw).encode() + b">" + str(self.thruster_power_draw).encode() + b"<")
 
     def autoUpdate(self):
         print("Drive autoUpdate")

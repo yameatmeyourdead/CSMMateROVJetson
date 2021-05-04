@@ -1,55 +1,14 @@
-import time
-import os
-
-# =======================
-# =======================
-# =======================
-# =======================
-
-# LOGGER IMPLEMENTATION
-
-def log(strin, endO="\n"):
-    """
-    Call this method to log something  \n
-    Compatible with all data types capable of conversion to str through str(value)
-    """
-    strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
-    with open(LOGGER_FILE_PATH, 'a') as f:
-        f.write(strin)
-
-def getTimeFormatted(delim):
-    """
-    Get current system time formatted with given delimiter \n
-    -> Hour\delim\Min\delim\Sec
-    """
-    SYSTIME = time.localtime(time.time())
-    return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
-
-# Constructor creates file object named f
-currentTime = getTimeFormatted('_')
-LOGGER_FILE_PATH = f"DriverStation/Logs/{currentTime}.txt"
-if(os.path.exists(LOGGER_FILE_PATH)):
-    os.remove(LOGGER_FILE_PATH)
-with open("DriverStation/Logs/" + f"{currentTime}" + ".txt", "w") as f:
-    f.write(f"[{currentTime}] Logger Created")
-
-# =======================
-# =======================
-# =======================
-# =======================
-
-# NETWORKING
 import socket
 import _thread
 import time
 import queue
 from multiprocessing import Process
 
-IP = "10.0.0.1" # My IP
-CLIENT = "10.0.0.2" # IP of Jetson
+IP = "10.0.0.2" # My IP
+CLIENT = "10.0.0.1" # IP of Driver Station
 # use different ports to ensure they are always available for binding
-SENDPORT = 6666
-RECVPORT = 6667
+SENDPORT = 6667
+RECVPORT = 6666
 
 # queues to handle different data (allows for communication between processes and threads)
 errQueue = queue.Queue()
@@ -83,7 +42,6 @@ def handle_connection(client, address):
         errQueue.put("Interrupt")
     elif(tod == "010"):
         dataQueue.put(data[4:])
-    # close connection
     client.shutdown(socket.SHUT_RD)
     client.close()
 
@@ -122,8 +80,8 @@ def doClientConnection(data, host, port):
     client.shutdown(socket.SHUT_WR)
     client.close()
 
-def startDriverStationNetworking():
+def startJetsonNetworking():
     _thread.start_new_thread(server, (IP, RECVPORT))
     client(CLIENT, SENDPORT)
 
-DriverStationNetworking = Process(target=startDriverStationNetworking)
+JetsonNetworking = Process(target=startJetsonNetworking)

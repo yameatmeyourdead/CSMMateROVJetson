@@ -207,60 +207,95 @@ JOYSTICK = ControllerResource().__enter__()
 # =======================
 
 # NETWORK STUFF!!!!!! (boo)
-
-# Complete Port Map
-# 5555 ImageZMQ (look at replacing)
-# 6666 Data Transmission Port
+# Todo: replace with asyncio implementation (will probably be slightly cleaner)
 
 import socket
-IP = "10.0.0.1"
-PORT = 6666
+import _thread
+import time
+import queue
+from multiprocessing import Process
+
+IP = "10.0.0.2" # My IP
+CLIENT = "10.0.0.1" # IP of Driver Station
+# use different ports to ensure they are always available for binding
+SENDPORT = 6667
+RECVPORT = 6666
+
+# queues to handle different data (allows for communication between processes and threads)
+errQueue = queue.Queue()
+dataQueue = queue.Queue()
 
 sendQueue = queue.Queue()
-recvQueue = queue.Queue()
-errQueue = queue.Queue()
 
-def sendPacket(data):
-    """
-    Writes data to socket
-    """
-    if (not isinstance(data, ByteString)): # if data is not a bytestring, make it so
-        data = data.encode()
-    SOC.sendall(data) # send bytestring
+def server(host, port):
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host,port))
+    server.listen(5)
+    while True:
+        _thread.start_new_thread(handle_connection, server.accept())
 
-# TODO: Implement support for numpy ndarray
-def doNetworkHandler():
-    SOC.connect((IP, PORT))
-    SOC.settimeout(0.1)
-    closer = "<"
+def handle_connection(client, address):
+    """Data MUST be structured like this  
+    000< for EStopInterrupt
+    001< for Interrupt
+    010(data)< for all other data"""
+    client.settimeout(0.1)
+    data = recvall(client)
+    data = data.decode()
+    if(data == ""): # error check
+        client.shutdown(socket.SHUT_RD)
+        client.close()
+        return
+    tod = data[0:3] # type of data header
+    if(tod == "000"):
+        errQueue.put("InterruptFatal")
+    elif(tod == "001"):
+        errQueue.put("Interrupt")
+    elif(tod == "010"):
+        dataQueue.put(data[4:])
+    client.shutdown(socket.SHUT_RD)
+    client.close()
+
+def recvall(connection):
+    """Receive all data from socket and return it as bytestring"""
     buffer = b""
+    while "<" not in buffer:
+        try:
+            buffer += connection.recv(1024)
+        except socket.timeout:
+            pass
+    try:
+        toReturn = buffer[:buffer.index('<')]
+    except ValueError:
+        toReturn = b""
+    finally:
+        return toReturn
+
+def client(host, port):
+    """If item exists in sendQueue, it will get sent"""
     while True:
         try:
-            sendPacket(sendQueue.get(block=False)) # if queue has item, send it. throws queue.Empty error if empty
+            data = sendQueue.get(block=False)
+            doClientConnection(data)
         except queue.Empty:
             pass
-        buffer = SOC.recv(1024) # wait for incoming messages for max .1 seconds
-        if(buffer): # if incoming message detected, finish gathering message
-            while not closer in buffer:
-                buffer += SOC.recv(1024)
-            # extract the message
-            header = buffer[0:4]
-            pos = buffer.find(closer)
-            rval = buffer[:pos + len(closer)]
-            buffer = buffer[pos + len(closer):]
-            # classify messages based on header
-            # 100 = Fatal interrupt
-            # 010 = Interrupt
-            # 000 = Message
-            if header == b"100":
-                errQueue.put(EStopInterruptFatal())
-            elif header == b"010":
-                errQueue.put(EStopInterrupt())
-            elif header == b"000":
-                recvQueue.put(rval.decode()) # add message to the recv queue
-            
-SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-NetworkingProcess = Process(target=doNetworkHandler)
+
+def doClientConnection(data, host, port):
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    time.sleep(0.1) # wait for server to start listening for clients
+    client.connect((host, port))
+    time.sleep(0.1) # wait for thread to display connection
+    # send all data
+    client.sendall(data.encode() + b"<")
+    # close connection
+    client.shutdown(socket.SHUT_WR)
+    client.close()
+
+def startJetsonNetworking():
+    _thread.start_new_thread(server, (IP, RECVPORT))
+    client(CLIENT, SENDPORT)
+
+JetsonNetworking = Process(target=startJetsonNetworking)
 
 # =======================
 # =======================
