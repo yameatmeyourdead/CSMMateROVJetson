@@ -165,9 +165,9 @@ while True:
     phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
 
     dt = (datetime.datetime.now() - t_old).total_seconds() * 1000 # milliseconds time difference
-    thetaG = thetaGOld + (round(gyro.getY(),2) * dt if (round(gyro.getY(),2) * dt > 1) else 0)
-    phiG = phiGOld + (round(gyro.getX(),2) * dt if (round(gyro.getX(),2) * dt > 1) else 0)
-    t_old = time.time_ns()/1000000
+    thetaG = thetaGOld + (round(gyro.getY(),2) * dt if (round(gyro.getY(),2) * dt > 5) else 0)
+    phiG = phiGOld + (round(gyro.getX(),2) * dt if (round(gyro.getX(),2) * dt > 5) else 0)
+    t_old = datetime.datetime.now()
 
     thetaGOld = thetaG
     phiGOld = phiG
