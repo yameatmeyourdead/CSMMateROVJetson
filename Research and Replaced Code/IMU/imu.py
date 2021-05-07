@@ -1,4 +1,5 @@
 import time
+import datetime
 import busio
 import board
 import adafruit_lsm9ds1
@@ -151,7 +152,7 @@ thetaG = 0
 phiG = 0
 
 dt = 0
-t_old = time.time_ns()/1000000
+t_old = datetime.datetime.now()
 
 while True:
     # update accelerometer, magnetometer, and gyroscope values
@@ -163,9 +164,9 @@ while True:
     thetaA = atan(accel.getX()/accel.getZ()) * 180 / PI
     phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
 
-    dt = time.time_ns()/1000000 - t_old
-    thetaG = thetaGOld + round(gyro.getY(),2) * dt
-    phiG = phiGOld + round(gyro.getX(),2) * dt
+    dt = (datetime.datetime.now() - t_old).total_seconds() * 1000 # milliseconds time difference
+    thetaG = thetaGOld + (round(gyro.getY(),2) * dt if (round(gyro.getY(),2) * dt > 1) else 0)
+    phiG = phiGOld + (round(gyro.getX(),2) * dt if (round(gyro.getX(),2) * dt > 1) else 0)
     t_old = time.time_ns()/1000000
 
     thetaGOld = thetaG
