@@ -151,7 +151,7 @@ thetaG = 0
 phiG = 0
 
 dt = 0
-t_old = 0
+t_old = time.time_ns()/1000000
 
 while True:
     # update accelerometer, magnetometer, and gyroscope values
