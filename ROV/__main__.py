@@ -45,6 +45,7 @@ def stop(FATAL = False):
             os.system('shutdown /s /t 1')
         ROVMap.log("ROV Successfully Shutdown", endO="")
     except:
+        # in case of unexpected error during killing process, shutdown jetson
         os.system('shutdown /s /t 1')
 
 def start():
@@ -54,7 +55,7 @@ def start():
     """
     # starts network handler
     # send stuff by putting to ROVMap.sendQueue
-    # recv stuff by looking in ROVMap.dataQueue
+    # recv stuff by looking in ROVMap.dataQueue (throws queue.empty if empty!!!!)
     ROVMap.JetsonNetworking.start()
 
     # starts controller server
@@ -62,22 +63,26 @@ def start():
 
     while True:
         # Update each component of the robot depending on the operating mode
-        ROVMap.updateController()
+        ROVMap.updateController() # update the controller (get new button presses/releases since last check) ONCE DO NOT USE THIS ANYWHERE ELSE
         try:
-            raise ROVMap.errQueue.get(block=False) # raise appropriate errors as they are received
+            raise ROVMap.errQueue.get(block=False) # raise appropriate errors as they are received (will be caught by try/except in if __name__ == __main__ at the bottom of this file and appropriate action taken there)
         except queue.Empty:
             pass
         if(operatingMode):
             # Teleop
             for Comp in parts:
-                Comp.Update()
+                try:
+                    Comp.Update()
+                except:
+                    ROVMap.log(f"Updating {Comp} Threw an Error, Logging and Continuing: {traceback.format_exc()}")
         else:
             # Autonomous
             for Comp in parts:
-                Comp.autoUpdate()
+                try:
+                    Comp.autoUpdate()
+                except:
+                    ROVMap.log(f"Auto-Updating {Comp} Threw an Error, Logging and Continuing: {traceback.format_exc()}")
 
-
-# Creates two processes, one for keyboard stop/estop and one for actually doing robo
 try:
     if __name__ == "__main__":
         # start robot (blocking) and all child processes

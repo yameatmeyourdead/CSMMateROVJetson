@@ -25,7 +25,6 @@ kit = ServoKit(channels=16)
 
 # Constant "dictionary" for PCA9685
 # Thrusters
-
 THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
 THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
 THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
@@ -35,8 +34,6 @@ THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
 THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
 THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
 
-
-
 # Manipulator
 MANIP_ELBOW_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[8])
 # MANIP_ELBOW_SERVO_2 = kit._items[9] = servo.Servo(kit._pca.channels[9])
@@ -45,13 +42,9 @@ MANIP_LEVEL_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[11])
 # MANIP_CLAMP_SERVO = kit.servo[12]
 # MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
 MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO]
-# MicroROV THIS MAY BE REPLACED BY USB SERVO HUB TODO: IMPLEMENT IF TRUE
-# NOT YET IMPLEMENTED
-# MICRO_SERVO_0 = kit._items[13] = servo.Servo(kit._pca.channels[13])
-# MICRO_SERVO_1 = kit._items[14] = servo.Servo(kit._pca.channels[14])
-# MICRO_ESC = kit._items[15] = servo.ContinuousServo(kit._pca.channels[15])
-# MICRO_SERVOS = [MICRO_SERVO_0, MICRO_SERVO_1]
-# MICRO_ESCS = [MICRO_ESC]
+
+MICROROVCOMPORT = "COM4" # windows
+# MICROROVCOMPORT = "/dev/ttyACM0" # linux ACM0 subject to change depending upon accessories plugged into the computer o_o TODO: figure out how this works
 
 # PLACE ALL MODIFICATIONS TO SPECIFIC CHANNEL'S PULSE WIDTH BELOW
 # Manip Servo Mods (Rated pulse width)
@@ -82,20 +75,14 @@ THRUSTER_Z_3.set_pulse_width_range(1200,2000)
 
 # LOGGER IMPLEMENTATION
 
-def log(strin, endO="\n"):
+def log(data, endO="\n"):
     """
     Call this method to log something  \n
-    Compatible with all data types capable of conversion to str through str(value)
+    Compatible with all data types capable of conversion to str
     """
-    strin = '[' + getTimeFormatted(':') + '] ' + str(strin) + endO
+    strin = '[' + getTimeFormatted(':') + '] ' + str(data) + endO
     with open(LOGGER_FILE_PATH, 'a') as f:
         f.write(strin)
-
-def log_debug(feedback_queue, error, name):
-    pass
-
-def log_error(feedback_queue, traceback, name):
-    pass
 
 def getTimeFormatted(delim):
     """
@@ -105,12 +92,13 @@ def getTimeFormatted(delim):
     SYSTIME = time.localtime(time.time())
     return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
 
-currentTime = getTimeFormatted('_')
-LOGGER_FILE_PATH = f"ROV/Logs/{currentTime}.txt" # TODO: Consider changing to latest.txt
+LOGGER_FILE_PATH = "./Logs/latest.txt"
 if(os.path.exists(LOGGER_FILE_PATH)):
-    os.remove(LOGGER_FILE_PATH)
+    if(os.path.exists("./Logs/last.txt")):
+        os.remove("./Logs/last.txt")
+    os.rename(LOGGER_FILE_PATH, "./Logs/last.txt")
 with open(LOGGER_FILE_PATH, 'w') as f:
-    f.write(f"[{currentTime}] Logger Created\n")
+    f.write(f"[{getTimeFormatted(':')}] Logger Created\n")
 
 # =======================
 # =======================
@@ -118,7 +106,6 @@ with open(LOGGER_FILE_PATH, 'w') as f:
 # =======================
 
 # JOYSTICK IMPLEMENTATION
-
 from approxeng.input.selectbinder import ControllerResource
     
 def getLeftStick():
@@ -295,41 +282,7 @@ def startJetsonNetworking():
     _thread.start_new_thread(server, (IP, RECVPORT))
     client(CLIENT, SENDPORT)
 
-JetsonNetworking = Process(target=startJetsonNetworking)
-
-# =======================
-# =======================
-# =======================
-# =======================
-
-# Error-Safe Processes
-class EtlStepProcess(multiprocessing.Process):
-
-    def __init__(self, feedback_queue):
-        multiprocessing.Process.__init__(self)
-        self.feedback_queue = feedback_queue
-
-    def log_info(self, message):
-        log(message)
-
-    def log_debug(self, message):
-        log_debug(self.feedback_queue, message, self.name)
-
-    def log_error(self, err):
-        log_error(self.feedback_queue, err, self.name)
-
-    def saferun(self):
-        """Method to be run in sub-process; can be overridden in sub-class"""
-        if self._target:
-            self._target(*self._args, **self._kwargs)
-
-    def run(self):
-        try:
-            self.saferun()
-        except Exception as e:
-            self.log_error(e)
-            raise e
-        return
+JetsonNetworking = Process(target=startJetsonNetworking) # two threaded process (one child)
 
 # =======================
 # =======================
@@ -412,15 +365,15 @@ class Vector:
         """
         Get the cross product of this vector x other
         """
-        return Vector((self.getY() * vector.getZ() - self.getZ() * vector.getY()),
-                      (self.getZ() * vector.getX() - self.getX() * vector.getZ()),
-                      (self.getX() * vector.getY() - self.getY() * vector.getX()))
+        return Vector((self.getY() * vector.getZ() - self.getZ() * vector.getY()), 
+                      (self.getZ() * vector.getX() - self.getX() * vector.getZ()), 
+                      (self.getX() * vector.getY() - self.getY() * vector.getX())) 
 
     def getMagnitude(self):
         """
         Get magnitude of vector
         """
-        return (float(self.getX()) ** 2 + float(self.getY()) ** 2 + float(self.getZ()) ** 2)
+        return (float(self.getX()) ** 2 + float(self.getY()) ** 2 + float(self.getZ()) ** 2) ** .5
 
     def toString(self):
         """

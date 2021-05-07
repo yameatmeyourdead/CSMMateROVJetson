@@ -13,15 +13,13 @@ class Manip(Component):
         # TODO: IMPLEMENT
         # self.clamp_servo = ROVMap.MANIP_CLAMP_SERVO
 
-        self.chicken = 0
+        self.chicken = False
         self.elbow_angle = 90       # deg
         self.elbow_angle_old = 90   # deg
         self.wrist_angle = 90       # deg
         self.wrist_angle_old = 90   # deg
         self.level_angle = 90       # deg
         self.level_angle_old = 90   # deg
-
-        self.button_new = 1
 
         self.elbow_tune = 0     # deg
         self.elbow_tune2 = 0    # deg
@@ -31,7 +29,7 @@ class Manip(Component):
         self.x_velocity = 0
         self.y_velocity = 0
 
-        self.VELOCITY_SCALING_FACTOR = .1
+        self.VELOCITY_SCALING_FACTOR = .1 # SUBJECT TO CHANGE
         self.DELTA_VELOCITY_IGNORE = .075 * self.VELOCITY_SCALING_FACTOR # Tunes how sensitive joystick is to changes
         self.ELBOW_ANGLE_MAX = 180
         self.ELBOW_ANGLE_MIN = 0
@@ -39,11 +37,6 @@ class Manip(Component):
         self.LEVEL_ANGLE_MIN = 0
         self.WRIST_ANGLE_MAX = 180
         self.WRIST_ANGLE_MIN = 0
-
-        self.slow = 200 # Slows speed of manipulator
-
-        # Want to wait some time before shizzle starts to move?
-        # sleep(3)
 
         ROVMap.log("MANIPULATOR CONSTRUCTED")
 
@@ -59,7 +52,6 @@ class Manip(Component):
         if(abs(self.x_velocity) < self.DELTA_VELOCITY_IGNORE):
             self.x_velocity = 0
 
-        
         # Determines protocol based on if auto-leveling (chicken) is desired
         # Move all but elbow
         # Else moves elbow servos
@@ -86,13 +78,12 @@ class Manip(Component):
             self.wrist_angle = self.WRIST_ANGLE_MIN
         
         # Update Positions
-
         # Always write the wrist_servo
         self.wrist_servo.angle = self.wrist_angle
 
         # Determines protocol based on if auto-leveling (chicken) is desired
-        # Move only level servo
-        # Else move all
+        # move all
+        # else move only level servo
         if(self.chicken):
             self.elbow_servo.angle = self.elbow_angle
             # elbow_servo2.angle = 180 - elbow_angle + elbow_tune
@@ -106,22 +97,8 @@ class Manip(Component):
         self.wrist_angle_old = self.wrist_angle
 
         # Update chicken
-        self.button_new = ROVMap.getButtonPresses().ls
-
-        if(self.button_new):
-            if(self.chicken):
-                self.chicken = 0
-            else:
-                self.chicken = 1
-
-        # (DEBUG)
-        # print("Elbow :", self.elbow_angle)
-        # print("Wrist :", self.wrist_angle)
-        # print("Level :", self.level_angle)
-        # if(self.button_new):
-        #     print("PRESSED")
-        # print("Manipulator Update")
-
+        if(ROVMap.getButtonPresses().ls):
+            self.chicken = not self.chicken # Note: changed this implementation it MAY break things
 
     def autoUpdate(self):
         print("Manipulator autoUpdate")
@@ -130,4 +107,3 @@ class Manip(Component):
         for servo in ROVMap.MANIP_SERVOS:
             servo.duty_cycle = 0
         ROVMap.log("Manipulator Servos Successfully Killed")
-        print("Manipulator duty cycles zeroed")

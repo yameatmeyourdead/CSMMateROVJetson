@@ -1,7 +1,0 @@
-[19:10:32] DRIVE CONSTRUCTED
-[19:10:32] Manipulator Constructed
-[19:10:32] MICROROV CONSTRUCTED
-[19:10:32] All parts constructed
-[19:10:35] Received Keyboard Interrupt.....Stopping
-[19:10:35] Received Stop Command.....Fatal? => False
-[19:10:35] ROV Successfully Shutdown....Closing Log
