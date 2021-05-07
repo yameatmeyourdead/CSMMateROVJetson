@@ -160,9 +160,15 @@ while True:
     accel = Vector.tupleToVector(tuple(NineAxisSensor.acceleration))
     gyro = Vector.tupleToVector(tuple(NineAxisSensor.gyro))
     mag = Vector.tupleToVector(tuple(NineAxisSensor.magnetic))
-    
-    thetaA = atan(accel.getX()/accel.getZ()) * 180 / PI
-    phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
+
+    try:
+        thetaA = atan(accel.getX()/accel.getZ()) * 180 / PI
+    except ZeroDivisionError:
+        thetaA = 90
+    try:
+        phiA = atan(accel.getY()/accel.getZ()) * 180 / PI
+    except ZeroDivisionError:
+        phiA = 0
 
     dt = (datetime.datetime.now() - t_old).total_seconds()  # seconds time difference
     thetaG = thetaGOld + (round(gyro.getY(),2) * dt if (abs(round(gyro.getY(),2) * dt) > .25) else 0)
