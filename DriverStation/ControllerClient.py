@@ -4,6 +4,7 @@
 # Note: this no longer does input over ssh, but rather input over a scuffed implementation of TCP
 
 import asyncio
+from . import DriverStationMap
 try:
     import evdev
 except ModuleNotFoundError:
@@ -17,6 +18,8 @@ from multiprocessing import Process
 
 # CHANGE THIS FOR DIFFERENT CONTROLLERS (alternatively implement method to ask the user which device they want (print /dev/input devices and their names) :)  )
 CONTROLLERNAME = "Microsoft X-Box One S pad"
+CONTROLLERVENDORID = 1118
+CONTROLLERPRODUCTID = 746
 
 async def do_forward_device(i, device):
 	async for event in device.async_read_loop():
@@ -32,9 +35,8 @@ def encode_device(device):
 	cap_json = {}
 	for k, v in cap.items():
 		cap_json[k] = [x if not isinstance(x, tuple) else [x[0], x[1]._asdict()] for x in v]
-	# WHY TODO: FINDOUT
-	# why have to replace device.info.vendor with 1118 and device.info.product with 746
-	return {'name': device.name, 'capabilities': cap_json, 'vendor': 1118, 'product': 746}
+	# have to replace device.info.vendor with 1118 and device.info.product with 746 (identifies controller as XBox Controller)
+	return {'name': device.name, 'capabilities': cap_json, 'vendor': CONTROLLERVENDORID, 'product': CONTROLLERPRODUCTID}
 
 async def run_forward():
 	# Find devices
@@ -72,10 +74,19 @@ IP = "10.0.0.2"
 PORT = 7777
 
 def startControllerForwarding():
-	print("Attempting to connect to Server")
-	SOC.connect((IP, PORT))
-	time.sleep(.01) # wait 10 milliseconds before sending anything (no reason, just be safe i guess)
-	print("Sucessfully conected......starting controller")
+	# try to connect to server
+	while True:
+		try:
+			DriverStationMap.log("Attempting to connect to Server")
+			SOC.connect((IP, PORT))
+			time.sleep(.01) # wait 10 milliseconds before sending anything (no reason, just be safe i guess)
+			DriverStationMap.log("Sucessfully conected......starting controller")
+			break
+		except: # in case of error (such as server not running yet), retry connection in .5 seconds
+			DriverStationMap.log("Connection unable to be established. Retrying in .5 seconds")
+			time.sleep(.5)
+			continue
+	# after ensuring connection to controller server, start sending data
 	asyncio.run(run_forward())
 
 SOC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

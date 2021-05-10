@@ -49,8 +49,8 @@ class Drive(Component):
         self._targetTranslation = ROVMap.Vector()
         self._targetThrottles = [0 for i in range(8)]
         
-        self.thruster_power_draw = 0
-        self.thruster_current_draw = 0
+        # self.thruster_power_draw = 0
+        # self.thruster_current_draw = 0
 
         ROVMap.log("DRIVE CONSTRUCTED")
     
@@ -141,17 +141,21 @@ class Drive(Component):
         # always write thrusters (defaults are 0)
         # update estimated power and current draw as well
         # throttle * throttle decently faster than throttle ** 2
-        estimated_current = [0, 0, 0, 0, 0, 0, 0, 0]
-        estimated_power_draw = 0
+        # estimated_current = [0, 0, 0, 0, 0, 0, 0, 0]
+        # estimated_power_draw = 0
         for Thruster in range(8):
-            throttle = self._targetThrottles[Thruster]
-            estimated_power_draw += (-7.96 - .0434 * throttle + 209 * throttle * throttle)
-            estimated_current[Thruster] = (-.664 -.0036 * throttle + 17.4 * throttle * throttle)
+            # NOTE: calculated power draw and current replaced by physical monitoring
+            # throttle = self._targetThrottles[Thruster]
+            # estimated_power_draw += (-7.96 - .0434 * throttle + 209 * throttle * throttle)
+            # estimated_current[Thruster] = (-.664 -.0036 * throttle + 17.4 * throttle * throttle)
             # if(ROVMap.kit._items[Thruster] is not None): # ensure thruster object exists (shouldn't be needed unless testing less than 8 thrusters)
             ROVMap.kit._items[Thruster].throttle = self._targetThrottles[Thruster]
-        self.thruster_current_draw = round(max(estimated_current),2)
-        self.thruster_power_draw = round(estimated_power_draw,2)
-        ROVMap.sendQueue.put(b"010>" + str(self.thruster_current_draw).encode() + b">" + str(self.thruster_power_draw).encode() + b"<")
+
+        # TODO: Ping the DC-DC Converter to get physical monitoring of power
+        
+        # self.thruster_current_draw = round(max(estimated_current),2)
+        # self.thruster_power_draw = round(estimated_power_draw,2)
+        # ROVMap.sendQueue.put(b"010>" + str(self.thruster_current_draw).encode() + b">" + str(self.thruster_power_draw).encode() + b"<")
 
     def autoUpdate(self):
         print("Drive autoUpdate")

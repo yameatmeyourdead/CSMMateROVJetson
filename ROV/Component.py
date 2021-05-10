@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 
 class Component(ABC):
-
-    # this is a constructor!
+    # this is an initializer!
     def __init__(self):
         pass
 
@@ -20,4 +19,3 @@ class Component(ABC):
     @abstractmethod
     def kill(self):
         pass
-    

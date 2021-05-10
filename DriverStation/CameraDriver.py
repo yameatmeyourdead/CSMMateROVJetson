@@ -2,7 +2,7 @@ import queue
 import imagezmq
 import cv2
 from . import DriverStationMap as DSM
-from multiprocessing import Process, set_start_method
+from multiprocessing import Process
 from tkinter import *
 import numpy as np
 from PIL import Image
@@ -117,10 +117,6 @@ class CameraDriver:
         DSM.log("Camera Driver Created")
 
     def start(self):
-        try:
-            set_start_method('spawn', force=True)
-        except RuntimeError:
-            pass
         self.cameraServer = Process(target=waitForImage)
         self.cameraServer.start()
         print("camera server process")

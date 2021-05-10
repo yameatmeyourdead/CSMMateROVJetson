@@ -1,3 +1,4 @@
+from multiprocessing import Process
 import imagezmq
 import socket
 import cv2
@@ -19,17 +20,20 @@ def returnValidCameraIndexes():
         i -= 1
     return arr
 
+# get all valid cameras
 validCameraIndexes = returnValidCameraIndexes()
 camList = []
 
-index = 0
+# get list of camera objects
 for camera in validCameraIndexes:
     camList.append(cv2.VideoCapture(camera))
     # camList[index].open(camera)
-    index += 1
 
-while True:
-    index = 0
-    for index in range(len(camList)):
-        ret, frame = camList[index].read()
-        sender.send_image(hostName + str(index), frame)
+def doStart():
+    while True:
+        # send every new frame to driver station
+        for index in range(len(camList)):
+            ret, frame = camList[index].read()
+            sender.send_image(hostName + str(index), frame)
+
+CameraProcess = Process(target=doStart)

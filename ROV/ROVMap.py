@@ -1,19 +1,13 @@
 # USE THIS TO CREATE "STATIC" VARIABLES / WHEN YOU WANT JAVA STYLE STATIC CLASSES
 
-from multiprocessing.context import Process
-from typing import ByteString
 from adafruit_servokit import ServoKit
 from adafruit_motor import servo
 import os
 import time
-import multiprocessing
 import math
 import queue
+import threading
 import traceback
-import numpy
-import board
-import busio
-import adafruit_pca9685
 
 # Creation of EStop Exception and its Fatal counterpart (Fatal EStop completely shuts down computer)
 class EStopInterruptFatal(Exception): args: True 
@@ -292,14 +286,15 @@ JetsonNetworking = Process(target=startJetsonNetworking) # two threaded process 
 class Vector:
     def __init__(self, x=0.0, y=0.0, z=0.0):
         self.components = [float(x),float(y),float(z)]
-        self.magnitude = float(float(x) ** 2 + float(y) ** 2 + float(z) ** 2)
     
     @classmethod
     def unitVector(cls, x=0.0, y=0.0, z=0.0):
         """
         Create new unit vector
         """
-        magnitude = x**2 + y**2 + z**2
+        magnitude = (x**2 + y**2 + z**2) ** .5
+        if(magnitude == 0):
+            return Vector()
         return cls(x/magnitude, y/magnitude, z/magnitude)
 
     def setX(self, x):

@@ -3,6 +3,7 @@ from .Manip import Manip
 from .MicroROV import MicroROV
 from . import ROVMap
 from . import ControllerServer
+from . import Cameras
 import queue
 import sys
 import os
@@ -34,9 +35,9 @@ def stop(FATAL = False):
         ROVMap.log(f"Received Stop Command.....Fatal? = {FATAL}")
         # Calmly deactivate all components
         ROVMap.JOYSTICK.__exit__()
-        ROVMap.NetworkingProcess.kill()
+        Cameras.CameraProcess.kill()
+        ROVMap.JetsonNetworking.kill()
         ControllerServer.ControllerProcess.kill()
-        
         for Comp in parts:
             Comp.kill()
         # If EStop Fatal was triggered, shutdown Jetson immediately
@@ -57,6 +58,9 @@ def start():
     # send stuff by putting to ROVMap.sendQueue
     # recv stuff by looking in ROVMap.dataQueue (throws queue.empty if empty!!!!)
     ROVMap.JetsonNetworking.start()
+
+    # starts camera server
+    Cameras.CameraProcess.start()
 
     # starts controller server
     ControllerServer.ControllerProcess.start()
@@ -91,4 +95,3 @@ try:
 except Exception as e:
     ROVMap.log("Received Interrupt.....Stopping")
     stop(isinstance(e, ROVMap.EStopInterruptFatal))
-    
