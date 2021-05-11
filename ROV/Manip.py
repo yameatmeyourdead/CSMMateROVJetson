@@ -7,11 +7,11 @@ class Manip(Component):
         # Grab the relevant servos from the map
         self.elbow_servo = ROVMap.MANIP_ELBOW_SERVO
         # TODO: IMPLEMENT
-        # self.elbow_servo2 = ROVMap.MANIP_ELBOW_SERVO_2
+        self.elbow_servo2 = ROVMap.MANIP_ELBOW_SERVO_2
         self.level_servo = ROVMap.MANIP_LEVEL_SERVO
         self.wrist_servo = ROVMap.MANIP_WRIST_SERVO
         # TODO: IMPLEMENT
-        # self.clamp_servo = ROVMap.MANIP_CLAMP_SERVO
+        self.clamp_servo = ROVMap.MANIP_CLAMP_SERVO
 
         self.chicken = False
         self.elbow_angle = 90       # deg
@@ -86,7 +86,7 @@ class Manip(Component):
         # else move only level servo
         if(self.chicken):
             self.elbow_servo.angle = self.elbow_angle
-            # elbow_servo2.angle = 180 - elbow_angle + elbow_tune
+            self.elbow_servo2.angle = 180 - self.elbow_angle
             self.level_servo.angle = self.level_angle
         else:
             self.level_servo.angle = self.level_angle

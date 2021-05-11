@@ -9,7 +9,6 @@ import sys
 import os
 import time
 import traceback
-from multiprocessing import Process, set_start_method
 
 parts = [] # Component list for ease of looping in autoOp/teleOp function
 operatingMode = True # Operate in Autonomous or TeleOp? True = TeleOp, False = Auto

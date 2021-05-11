@@ -5,7 +5,7 @@ class Drive(Component):
     def __init__(self):
         # if you can decipher this eldritch horror of vector math I love you forever :))))
 
-        # TODO: fix bug where since joysticks are naturally bounded for r_max = 1 they do not mesh well with this implementation of Z-axis Thrust due to r_max > 1
+        # TODO: fix bug where since joysticks are naturally bounded for r = 1 they do not mesh well with this implementation of Z-axis Thrust due to rho > 1
         # current workaround: do not increase velocity mod past .8
         # unexpected side affect : this shifts velocity_max from velocity_mod and to some weird function im not going to attempt to find :)
 
@@ -161,7 +161,7 @@ class Drive(Component):
         print("Drive autoUpdate")
     
     def kill(self):
-        for Thruster in range(8):
-            if(ROVMap.kit._items[Thruster] is not None):
-                ROVMap.kit._items[Thruster].throttle = 0
+        for Thruster in ROVMap.THRUSTERS:
+            if(Thruster is not None):
+                Thruster.throttle = 0
         ROVMap.log("Drive killed")

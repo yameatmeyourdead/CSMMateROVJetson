@@ -6,7 +6,6 @@ import os
 import time
 import math
 import queue
-import threading
 import traceback
 
 # Creation of EStop Exception and its Fatal counterpart (Fatal EStop completely shuts down computer)
@@ -27,30 +26,27 @@ THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
 THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
 THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
 THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
+THRUSTERS = [THRUSTER_FRONT_LEFT, THRUSTER_FRONT_RIGHT, THRUSTER_BACK_LEFT, THRUSTER_BACK_RIGHT, THRUSTER_Z_0, THRUSTER_Z_1, THRUSTER_Z_2, THRUSTER_Z_3]
 
 # Manipulator
 MANIP_ELBOW_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[8])
-# MANIP_ELBOW_SERVO_2 = kit._items[9] = servo.Servo(kit._pca.channels[9])
-MANIP_WRIST_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[10])
-MANIP_LEVEL_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[11])
-# MANIP_CLAMP_SERVO = kit.servo[12]
-# MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
-MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO]
+MANIP_ELBOW_SERVO_2 = kit._items[9] = servo.Servo(kit._pca.channels[9])
+MANIP_WRIST_SERVO = kit._items[10] = servo.Servo(kit._pca.channels[10])
+MANIP_LEVEL_SERVO = kit._items[11] = servo.Servo(kit._pca.channels[11])
+MANIP_CLAMP_SERVO = kit.servo[12] = servo.Servo(kit._pca.channels[12])
+MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
 
-MICROROVCOMPORT = "COM4" # windows
-# MICROROVCOMPORT = "/dev/ttyACM0" # linux ACM0 subject to change depending upon accessories plugged into the computer o_o TODO: figure out how this works
+# MICROROVCOMPORT = "COM4" # windows (my computer assigned it to COM4 yours might not (this program shouldnt be run on a windows os but whatev))
+MICROROVCOMPORT = "/dev/ttyACM0" # linux ACM0 subject to change depending upon accessories plugged into the computer o_o TODO: figure out how this works
 
-# PLACE ALL MODIFICATIONS TO SPECIFIC CHANNEL'S PULSE WIDTH BELOW
 # Manip Servo Mods (Rated pulse width)
 MANIP_ELBOW_SERVO.set_pulse_width_range(500,2500)
-# NOT YET IMPLEMENTED TODO: UNCOMMENT
-# MANIP_ELBOW_SERVO_2.set_pulse_width_range(500,2500)
+MANIP_ELBOW_SERVO_2.set_pulse_width_range(500,2500)
 MANIP_WRIST_SERVO.set_pulse_width_range(500,2500)
 MANIP_LEVEL_SERVO.set_pulse_width_range(500,2500)
-# NOT YET IMPLEMENTED TODO: UNCOMMENT
-# MANIP_CLAMP_SERVO.set_pulse_width_range(500,2500)
+MANIP_CLAMP_SERVO.set_pulse_width_range(500,2500)
 
-# Thruster Mods (Experimentally found pulse width because specs lied to us :) ) 
+# Thruster Mods (Experimentally found pulse width because specs lied to us :) (1100->1900 base)) 
 # (in reality its probably a library thing but i dont want to debug/rewrite ServoKit.continuous_servo :P )
 THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
 THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
@@ -60,7 +56,6 @@ THRUSTER_Z_0.set_pulse_width_range(1200,2000)
 THRUSTER_Z_1.set_pulse_width_range(1200,2000)
 THRUSTER_Z_2.set_pulse_width_range(1200,2000)
 THRUSTER_Z_3.set_pulse_width_range(1200,2000)
-
 
 # =======================
 # =======================
@@ -196,7 +191,7 @@ import time
 import queue
 from multiprocessing import Process
 
-IP = "10.0.0.2" # My IP
+IP = "10.0.0.2" # Jetson IP
 CLIENT = "10.0.0.1" # IP of Driver Station
 # use different ports to ensure they are always available for binding
 SENDPORT = 6667
