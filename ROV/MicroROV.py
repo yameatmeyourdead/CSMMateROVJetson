@@ -7,6 +7,7 @@ class MicroROV(Component):
     def __init__(self):
         # NOTE: may have to change ROVMap.MICROROVCOMPORT depending upon the comport assigned to the usb breakout
         self.__COMPORT = serial.Serial(port=ROVMap.MICROROVCOMPORT, baudrate=9600, write_timeout=0.05) # timeout is is seconds
+        self.__WINCH = ROVMap.MICROROV_WINCH
         self.__clamp = False # set clamp to be open by default
         ROVMap.log("MICROROV CONSTRUCTED")
 

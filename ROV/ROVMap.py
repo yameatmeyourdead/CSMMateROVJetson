@@ -1,7 +1,9 @@
 # USE THIS TO CREATE "STATIC" VARIABLES / WHEN YOU WANT JAVA STYLE STATIC CLASSES
 
 from adafruit_servokit import ServoKit
-from adafruit_motor import servo
+import adafruit_pca9685
+from adafruit_motor import servo, stepper
+import board, busio
 import os
 import time
 import math
@@ -15,6 +17,9 @@ class EStopInterrupt(Exception): ...
 # PCA9685 should be connected to jetson on J41 pins 27(SDA)/28(SCL) for Bus0 or pins 3(SDA)/5(SCL) for Bus1 as well as relevant voltage (pin1 3.3v)
 # Default I2C address is 0x40
 kit = ServoKit(channels=16)
+i2c = busio.I2C(board.SCL, board.SDA) # definition of second PCA9685 (used for stepper motor)
+kit2 = adafruit_pca9685.PCA9685(i2c, address=0x41)
+kit2.frequency = 1600
 
 # Constant "dictionary" for PCA9685
 # Thrusters
@@ -35,6 +40,19 @@ MANIP_WRIST_SERVO = kit._items[10] = servo.Servo(kit._pca.channels[10])
 MANIP_LEVEL_SERVO = kit._items[11] = servo.Servo(kit._pca.channels[11])
 MANIP_CLAMP_SERVO = kit.servo[12] = servo.Servo(kit._pca.channels[12])
 MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
+
+#Micro Rov
+pwma = kit2.channels[8]
+ain1 = kit2.channels[10]
+ain2 = kit2.channels[9]
+
+pwmb = kit2.channels[13]
+bin1 = kit2.channels[11]
+bin2 = kit2.channels[12]
+MICROROV_WINCH = stepper.StepperMotor(ain1, ain2, bin1, bin2)
+# hold pins high for TB6612 driver
+pwma.duty_cycle = 0xffff
+pwmb.duty_cycle = 0xffff
 
 # MICROROVCOMPORT = "COM4" # windows (my computer assigned it to COM4 yours might not (this program shouldnt be run on a windows os but whatev))
 MICROROVCOMPORT = "/dev/ttyACM0" # linux ACM0 subject to change depending upon accessories plugged into the computer o_o TODO: figure out how this works
