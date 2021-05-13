@@ -123,7 +123,12 @@ def doClientConnection(data, host, port):
     client.close()
 
 def startDriverStationNetworking():
-    _thread.start_new_thread(server, (IP, RECVPORT))
-    client(CLIENT, SENDPORT)
+    _thread.start_new_thread(server, ("", RECVPORT))
+    client(CLIENT, SENDPORT) 
 
 DriverStationNetworking = Process(target=startDriverStationNetworking)
+
+if __name__ == "__main__":
+    DriverStationNetworking.start()
+    input()
+    DriverStationNetworking.kill()
