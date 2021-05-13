@@ -1,3 +1,4 @@
+import queue
 from vpython import *
 from time import *
 import numpy as np
@@ -38,5 +39,5 @@ while (True):
         ROV.axis=k
         ROV.up=vrot
 
-    except:
+    except queue.Empty:
         pass
