@@ -41,7 +41,6 @@ def waitForImage():
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
             DSM.log("received image did not contain valid camera designation")
-            root.update()
             continue
 
         # grab camera designation
@@ -100,33 +99,14 @@ class CameraDriver:
 
 # use this to put multiple images into one! expects a 2d list of images, and will stack accordingly
 def concat_tile_resize(list_2d):
-    # function calling for every
-    # list of images
-
-    # stacks cv2 images vertically
-    def vconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
-        # take minimum width
-        w_min = min(img.shape[1] for img in img_list)
-        # resizing images
-        im_list_resize = [
-            cv2.resize(img, (w_min, int(img.shape[0] * w_min / img.shape[1])), interpolation=interpolation) for img
-            in img_list]
-        # return final image
-        return cv2.vconcat(im_list_resize)
-
-
-    # stacks cv2 images horizontally
-    def hconcat_resize(img_list, interpolation=cv2.INTER_CUBIC):
-        h_min = min(img.shape[0] for img in img_list)
-        im_list_resize = [
-            cv2.resize(img, (int(img.shape[1] * h_min / img.shape[0]), h_min), interpolation=interpolation) for img
-            in img_list]
-        return cv2.hconcat(im_list_resize)
-
-    img_list_v = [hconcat_resize(list_h, interpolation=cv2.INTER_CUBIC) for list_h in list_2d]
-
-    # return final image
-    return vconcat_resize(img_list_v, interpolation=cv2.INTER_CUBIC)
+    # stack first two cams horizontally (cam0|cam1)
+    firstTwo = cv2.hconcat(list_2d[0][0], list_2d[0][1])
+    # stack second two cams horizontally (cam2|cam3)
+    secondTwo = cv2.hconcat(list_2d[1][0], list_2d[1][1])
+    # combine them
+    # (cam0|cam1)
+    # (cam2|cam3)
+    return cv2.vconcat(firstTwo, secondTwo)
 
 # helper method for concatenating picture tiles (use for grayscale images)
 def toColor(img):
