@@ -1,7 +1,7 @@
 import queue
 import imagezmq
 import cv2
-from . import DriverStationMap as DSM
+# from . import DriverStationMap as DSM
 from multiprocessing import Process
 from tkinter import *
 import numpy as np
@@ -40,7 +40,7 @@ def waitForImage():
 
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
-            DSM.log("received image did not contain valid camera designation")
+            # DSM.log("received image did not contain valid camera designation")
             continue
 
         # grab camera designation
@@ -87,7 +87,8 @@ class CameraDriver:
                 newCameraServerObject.kill()\n
                 (  Process is no longer running :)  )
         '''
-        DSM.log("Camera Driver Created")
+        pass
+        # DSM.log("Camera Driver Created")
 
     def start(self):
         self.cameraServer = Process(target=waitForImage)
@@ -111,3 +112,9 @@ def concat_tile_resize(list_2d):
 # helper method for concatenating picture tiles (use for grayscale images)
 def toColor(img):
     return cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
+if __name__ == "__main__":
+    cameraDriver = CameraDriver()
+    cameraDriver.start()
+    input()
+    cameraDriver.kill()

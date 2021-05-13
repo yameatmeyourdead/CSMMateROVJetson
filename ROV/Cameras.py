@@ -4,7 +4,7 @@ import imagezmq
 import socket
 import cv2
 
-sender = imagezmq.ImageSender(connect_to="tcp://10.0.2.15:5555")
+sender = imagezmq.ImageSender(connect_to="tcp://10.0.0.1:5555")
 hostName = socket.gethostname()
 
 camList = [None, None, None, None]
@@ -22,8 +22,8 @@ def doStart():
             if(camList[i] is not None):
                 ret, frame = camList[i].read()
                 sender.send_image("jetson" + str(i), frame)
-                # cv2.imshow('frame',frame)
-                # cv2.waitKey(1)
+                cv2.imshow('frame',frame)
+                cv2.waitKey(1)
 
 CameraProcess = Process(target=doStart)
 
