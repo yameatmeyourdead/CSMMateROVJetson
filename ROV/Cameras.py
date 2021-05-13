@@ -7,8 +7,6 @@ import cv2
 sender = imagezmq.ImageSender(connect_to="tcp://10.0.0.1:5555")
 hostName = socket.gethostname()
 
-camList = [None, None, None, None]
-
 def doStart():
     # check for valid cams
     camList = [None, None, None, None]
