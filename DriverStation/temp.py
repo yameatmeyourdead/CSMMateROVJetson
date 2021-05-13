@@ -1,8 +1,7 @@
-import imagezmq
+import numpy as np
 import cv2
-imageHub = imagezmq.ImageHub()
+NULLFRAME = cv2.imread("./Assets/NullFrame.jpg")
 
 while True:
-	(clientName, frame) = imageHub.recv_image()
-	imageHub.send_reply(b"OK")
-	cv2.imshow(clientName, frame)
+	cv2.imshow("bruh", NULLFRAME)
+	cv2.waitKey(1)
