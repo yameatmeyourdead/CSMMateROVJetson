@@ -1,18 +1,9 @@
-import time
-import datetime
 import busio
 import board
 import adafruit_bno055
-import vpython
+from . import Component
 from .ROVMap import Vector, sendQueue
 import math
-
-i2c = busio.I2C(board.SCL, board.SDA)
-NineAxisSensor = adafruit_bno055.BNO055_I2C(i2c)
-
-NineAxisSensor.gyro_mode = adafruit_bno055.GYRO_125_DPS
-NineAxisSensor.accel_range = adafruit_bno055.ACCEL_2G
-NineAxisSensor.magnet_mode = adafruit_bno055.MAGNET_ACCURACY_MODE
 
 class EulerAngles():
     def __init__(self, roll=0, pitch=0, yaw=0) -> None:
@@ -48,8 +39,21 @@ def toEulerAngles(q) -> EulerAngles:
 
     return toReturn
 
-def send(angles):
-    sendQueue.put(angles)
 
-while True:
-    send(toEulerAngles(NineAxisSensor.quaternion()).toString())
+class IMU(Component):
+    def __init__(self) -> None:
+        i2c = busio.I2C(board.SCL, board.SDA)
+        self.__NineAxisSensor = adafruit_bno055.BNO055_I2C(i2c)
+
+        self.__NineAxisSensor.gyro_mode = adafruit_bno055.GYRO_125_DPS
+        self.__NineAxisSensor.accel_range = adafruit_bno055.ACCEL_2G
+        self.__NineAxisSensor.magnet_mode = adafruit_bno055.MAGNET_ACCURACY_MODE
+    
+    def Update(self) -> None:
+        sendQueue.put((toEulerAngles(self.__NineAxisSensor.quaternion()).toString()))
+
+    def autoUpdate() -> None:
+        pass
+
+    def kill() -> None:
+        pass

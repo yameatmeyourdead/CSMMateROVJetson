@@ -1,62 +1,94 @@
-from vpython import *
-from time import *
-import numpy as np
-import math
-import serial
-ad=serial.Serial('com5',115200)
-sleep(1)
- 
-scene.range=5
-scene.background=color.yellow
-toRad=2*np.pi/360
-toDeg=1/toRad
-scene.forward=vector(-1,-1,-1)
- 
-scene.width=1200
-scene.height=1080
- 
-xarrow=arrow(lenght=2, shaftwidth=.1, color=color.red,axis=vector(1,0,0))
-yarrow=arrow(lenght=2, shaftwidth=.1, color=color.green,axis=vector(0,1,0))
-zarrow=arrow(lenght=4, shaftwidth=.1, color=color.blue,axis=vector(0,0,1))
- 
-frontArrow=arrow(length=4,shaftwidth=.1,color=color.purple,axis=vector(1,0,0))
-upArrow=arrow(length=1,shaftwidth=.1,color=color.magenta,axis=vector(0,1,0))
-sideArrow=arrow(length=2,shaftwidth=.1,color=color.orange,axis=vector(0,0,1))
- 
-bBoard=box(length=6,width=2,height=.2,opacity=.8,pos=vector(0,0,0,))
-bn=box(length=1,width=.75,height=.1, pos=vector(-.5,.1+.05,0),color=color.blue)
-nano=box(lenght=1.75,width=.6,height=.1,pos=vector(-2,.1+.05,0),color=color.green)
-myObj=compound([bBoard,bn,nano])
-while (True):
-    try:
-        while (ad.inWaiting()==0):
+import socket
+import _thread
+import time
+import queue
+from multiprocessing import Process
+
+IP = "10.0.0.2" # Jetson IP
+CLIENT = "10.0.0.1" # IP of Driver Station
+# use different ports to ensure they are always available for binding
+SENDPORT = 6667
+RECVPORT = 6666
+
+# queues to handle different data (allows for communication between processes and threads)
+errQueue = queue.Queue()
+dataQueue = queue.Queue()
+
+sendQueue = queue.Queue()
+
+def server(host, port):
+    print("starting server")
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host,port))
+    server.listen(5)
+    while True:
+        _thread.start_new_thread(handle_connection, server.accept())
+
+def handle_connection(client, address):
+    """Data MUST be structured like this  
+    000< for EStopInterrupt
+    001< for Interrupt
+    010(data)< for all other data"""
+    print("incoming connection")
+    client.settimeout(0.1)
+    data = recvall(client)
+    data = data.decode()
+    if(data == ""): # error check
+        client.shutdown(socket.SHUT_RD)
+        client.close()
+        return
+    tod = data[0:3] # type of data header
+    if(tod == "000"):
+        errQueue.put("InterruptFatal")
+    elif(tod == "001"):
+        errQueue.put("Interrupt")
+    elif(tod == "010"):
+        dataQueue.put(data[4:])
+    client.shutdown(socket.SHUT_RD)
+    client.close()
+
+def recvall(connection):
+    """Receive all data from socket and return it as bytestring"""
+    buffer = b""
+    while "<" not in buffer:
+        try:
+            buffer += connection.recv(1024)
+        except socket.timeout:
             pass
-        dataPacket=ad.readline()
-        dataPacket=str(dataPacket,'utf-8')
-        splitPacket=dataPacket.split(",")
-        q0=float(splitPacket[0])
-        q1=float(splitPacket[1])
-        q2=float(splitPacket[2])
-        q3=float(splitPacket[3])
- 
-        roll=-math.atan2(2*(q0*q1+q2*q3),1-2*(q1*q1+q2*q2))
-        pitch=math.asin(2*(q0*q2-q3*q1))
-        yaw=-math.atan2(2*(q0*q3+q1*q2),1-2*(q2*q2+q3*q3))-np.pi/2
- 
-        rate(50)
-        k=vector(cos(yaw)*cos(pitch), sin(pitch),sin(yaw)*cos(pitch))
-        y=vector(0,1,0)
-        s=cross(k,y)
-        v=cross(s,k)
-        vrot=v*cos(roll)+cross(k,v)*sin(roll)
- 
-        frontArrow.axis=k
-        sideArrow.axis=cross(k,vrot)
-        upArrow.axis=vrot
-        myObj.axis=k
-        myObj.up=vrot
-        sideArrow.length=2
-        frontArrow.length=4
-        upArrow.length=1
-    except:
-        pass
+    try:
+        toReturn = buffer[:buffer.index('<')]
+    except ValueError:
+        toReturn = b""
+    finally:
+        return toReturn
+
+def client(host, port):
+    """If item exists in sendQueue, it will get sent"""
+    print("starting client")
+    while True:
+        try:
+            time.sleep(.001)
+            data = sendQueue.get(block=False)
+        except queue.Empty:
+            continue
+        else:
+            doClientConnection(data)
+
+def doClientConnection(data, host, port):
+    print("do client connection")
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        time.sleep(0.1) # wait for server to start listening for clients
+        s.connect((host, port))
+        time.sleep(0.1) # wait for thread to display connection
+        # send all data
+        s.sendall(data.encode() + b"<")
+    print("did")
+
+def startJetsonNetworking():
+    _thread.start_new_thread(server, ("", RECVPORT))
+    client(CLIENT, SENDPORT)
+
+JetsonNetworking = Process(target=startJetsonNetworking) # two threaded process (one child)
+
+if __name__ == "__main__":
+    JetsonNetworking.start()

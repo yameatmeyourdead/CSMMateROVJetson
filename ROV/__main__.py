@@ -1,6 +1,7 @@
 from .Drive import Drive
 from .Manip import Manip
 from .MicroROV import MicroROV
+from .IMU import IMU
 from . import ROVMap
 from . import ControllerServer
 from . import Cameras
@@ -20,6 +21,8 @@ parts.append(Drive())
 parts.append(Manip())
 # MicroROV
 parts.append(MicroROV())
+# IMU
+parts.append(IMU())
 
 ROVMap.log("All parts constructed")
 

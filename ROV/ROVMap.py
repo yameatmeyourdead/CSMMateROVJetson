@@ -273,10 +273,12 @@ def client(host, port):
     """If item exists in sendQueue, it will get sent"""
     while True:
         try:
+            time.sleep(.001)
             data = sendQueue.get(block=False)
-            doClientConnection(data)
         except queue.Empty:
-            pass
+            continue
+        else:
+            doClientConnection(data)
 
 def doClientConnection(data, host, port):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
