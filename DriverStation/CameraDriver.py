@@ -19,14 +19,6 @@ def waitForImage():
     LABEL.pack()
     root.update()
 
-    coordinatesPower = 20, 50, 210, 230
-    powerCanvas = Canvas(root, bg="white", width=300, height=300)
-    powerCanvas.pack()
-
-    coordinatesCurrent = 40, 100, 420, 460
-    currentCanvas = Canvas(root, bg="white", width=300, height=300)
-    currentCanvas.pack()
-
     temp_img = ImageTk.PhotoImage(Image.new("RGB", (800, 800)))
 
     panel = Label(root, image=temp_img)
@@ -45,24 +37,6 @@ def waitForImage():
     while True:
         # receive client name and frame from the client and acknowledge the receipt
         (clientName, frame) = imageHub.recv_image()
-
-        # if there is updated power draw information, display that information receive
-        try:
-            currentandpower = DSM.dataQueue.get()
-            try:
-                current = currentandpower[currentandpower.index():currentandpower.index()+5]
-                currentandpower[currentandpower.index()+5:]
-                power = currentandpower[currentandpower.index():currentandpower.index()+5]
-                currentandpower = ""
-            except ValueError:
-                current = -1
-                power = -1
-        except queue.Empty:
-            pass
-        # 800W @ 12V ~ 67A Max???
-        # draw unused portion of circle
-        powerCanvas.create_arc(coordinatesPower, start=0, extent=360, fill="yellow")
-        currentCanvas.create_arc(coordinatesCurrent, start=0, extend=360, fill="yellow")
 
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):

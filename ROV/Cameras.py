@@ -1,4 +1,5 @@
 from multiprocessing import Process
+import numpy as np
 import imagezmq
 import socket
 import cv2
@@ -6,34 +7,22 @@ import cv2
 sender = imagezmq.ImageSender(connect_to="tcp://10.0.0.1:5555")
 hostName = socket.gethostname()
 
-def returnValidCameraIndexes():
-    # checks the first 10 indexes
-    index = 0
-    arr = []
-    i = 10
-    while i > 0:
-        cap = cv2.VideoCapture(index)
-        if cap.read()[0]:
-            arr.append(index)
-            cap.release()
-        index += 1
-        i -= 1
-    return arr
-
-# get all valid cameras
-validCameraIndexes = returnValidCameraIndexes()
-camList = []
-
-# get list of camera objects
-for camera in validCameraIndexes:
-    camList.append(cv2.VideoCapture(camera))
-    # camList[index].open(camera)
+camList = [None, None, None, None]
 
 def doStart():
+    # check for valid cams
+    camList = [None, None, None, None]
+    for i in range(4):
+        potentialCam = cv2.VideoCapture(i)
+        if(potentialCam.read()[0]):
+            camList[i] = potentialCam
+    # send images
     while True:
-        # send every new frame to driver station
-        for index in range(len(camList)):
-            ret, frame = camList[index].read()
-            sender.send_image(hostName + str(index), frame)
+        for i in range(4):
+            if(camList[i] is not None):
+                ret, frame = camList[i].read()
+                sender.send_image("jetson" + str(i), frame)
+                # cv2.imshow('frame',frame)
+                # cv2.waitKey(1)
 
 CameraProcess = Process(target=doStart)
