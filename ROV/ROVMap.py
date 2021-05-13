@@ -38,21 +38,25 @@ MANIP_ELBOW_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[8])
 MANIP_ELBOW_SERVO_2 = kit._items[9] = servo.Servo(kit._pca.channels[9])
 MANIP_WRIST_SERVO = kit._items[10] = servo.Servo(kit._pca.channels[10])
 MANIP_LEVEL_SERVO = kit._items[11] = servo.Servo(kit._pca.channels[11])
-MANIP_CLAMP_SERVO = kit.servo[12] = servo.Servo(kit._pca.channels[12])
+MANIP_CLAMP_SERVO = kit._items[12] = servo.Servo(kit._pca.channels[12])
 MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LEVEL_SERVO,MANIP_CLAMP_SERVO]
 
 #Micro Rov
-pwma = kit2.channels[8]
-ain1 = kit2.channels[10]
-ain2 = kit2.channels[9]
 
-pwmb = kit2.channels[13]
-bin1 = kit2.channels[11]
-bin2 = kit2.channels[12]
-MICROROV_WINCH = stepper.StepperMotor(ain1, ain2, bin1, bin2)
-# hold pins high for TB6612 driver
-pwma.duty_cycle = 0xffff
-pwmb.duty_cycle = 0xffff
+MICROROV_WINCH = kit._items[13] = servo.ContinuousServo(kit._pca.channels[13])
+
+# Stepper motor (OBSOLETE??)
+# pwma = kit2.channels[8]
+# ain1 = kit2.channels[10]
+# ain2 = kit2.channels[9]
+
+# pwmb = kit2.channels[13]
+# bin1 = kit2.channels[11]
+# bin2 = kit2.channels[12]
+# MICROROV_WINCH = stepper.StepperMotor(ain1, ain2, bin1, bin2)
+# # hold pins high for TB6612 driver
+# pwma.duty_cycle = 0xffff
+# pwmb.duty_cycle = 0xffff
 
 # MICROROVCOMPORT = "COM4" # windows (my computer assigned it to COM4 yours might not (this program shouldnt be run on a windows os but whatev))
 MICROROVCOMPORT = "/dev/ttyACM0" # linux ACM0 subject to change depending upon accessories plugged into the computer o_o TODO: figure out how this works
@@ -286,7 +290,7 @@ def doClientConnection(data, host, port):
     client.close()
 
 def startJetsonNetworking():
-    _thread.start_new_thread(server, (IP, RECVPORT))
+    _thread.start_new_thread(server, ("", RECVPORT))
     client(CLIENT, SENDPORT)
 
 JetsonNetworking = Process(target=startJetsonNetworking) # two threaded process (one child)
@@ -309,6 +313,10 @@ class Vector:
         if(magnitude == 0):
             return Vector()
         return cls(x/magnitude, y/magnitude, z/magnitude)
+    
+    @classmethod
+    def tupleToVector(cls, tupl):
+        return cls(tupl[0], tupl[1], tupl[2])
 
     def setX(self, x):
         """

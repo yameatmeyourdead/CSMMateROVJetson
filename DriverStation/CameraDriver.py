@@ -21,7 +21,7 @@ def waitForImage():
 
     NULLFRAME = cv2.imread("./Assets/NullFrame.jpg")
 
-    # initialize empty opencv frames so stitching them together works.
+    # initialize empty opencv frames so stitching them together works
     frames = [NULLFRAME, NULLFRAME, NULLFRAME, NULLFRAME]
     organized_frames = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
     output = ImageTk.PhotoImage(Image.fromarray(concat_tile_resize(organized_frames)))
