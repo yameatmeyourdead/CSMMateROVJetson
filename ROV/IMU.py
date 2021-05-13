@@ -50,7 +50,7 @@ class IMU(Component):
         self.__NineAxisSensor.magnet_mode = adafruit_bno055.MAGNET_ACCURACY_MODE
     
     def Update(self) -> None:
-        sendQueue.put((toEulerAngles(self.__NineAxisSensor.quaternion()).toString()))
+        sendQueue.put("010" + toEulerAngles(self.__NineAxisSensor.quaternion()).toString())
 
     def autoUpdate() -> None:
         pass

@@ -278,18 +278,14 @@ def client(host, port):
         except queue.Empty:
             continue
         else:
-            doClientConnection(data)
+            doClientConnection(data, host, port)
 
 def doClientConnection(data, host, port):
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    time.sleep(0.1) # wait for server to start listening for clients
-    client.connect((host, port))
-    time.sleep(0.1) # wait for thread to display connection
-    # send all data
-    client.sendall(data.encode() + b"<")
-    # close connection
-    client.shutdown(socket.SHUT_WR)
-    client.close()
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((host, port))
+        time.sleep(0.1) # wait for thread to display connection
+        # send all data
+        s.sendall(data.encode() + b"<")
 
 def startJetsonNetworking():
     _thread.start_new_thread(server, ("", RECVPORT))

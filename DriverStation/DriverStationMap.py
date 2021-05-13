@@ -62,7 +62,8 @@ def server(host, port):
     server.bind((host,port))
     server.listen(5)
     while True:
-        _thread.start_new_thread(handle_connection, server.accept())
+        clientaddress = server.accept()
+        _thread.start_new_thread(handle_connection, clientaddress)
 
 def handle_connection(client, address):
     """Data MUST be structured like this  
@@ -106,10 +107,12 @@ def client(host, port):
     """If item exists in sendQueue, it will get sent"""
     while True:
         try:
-            data = sendQueue.get(block=False)
-            doClientConnection(data)
+            time.sleep(.001)
+            data = sendQueue.get_nowait()
         except queue.Empty:
-            pass
+            continue
+        else:
+            doClientConnection(data)
 
 def doClientConnection(data, host, port):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
