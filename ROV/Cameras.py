@@ -26,3 +26,8 @@ def doStart():
                 # cv2.waitKey(1)
 
 CameraProcess = Process(target=doStart)
+
+if __name__ == "__main__":
+    CameraProcess.start()
+    input("Enter to stop")
+    CameraProcess.kill()
