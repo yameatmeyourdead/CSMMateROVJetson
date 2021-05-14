@@ -3,6 +3,7 @@ from vpython import *
 from time import *
 import numpy as np
 import math
+from multiprocessing import Process
 from .DriverStationMap import dataQueue
 
 scene = canvas()
@@ -22,22 +23,24 @@ frontArrow=arrow(length=1.5,shaftwidth=.1,color=color.purple,axis=vector(1,0,0))
 upArrow=arrow(length=1.5,shaftwidth=.1,color=color.magenta,axis=vector(0,1,0))
  
 ROV=box(length=1,width=1,height=1,opacity=.5,pos=vector(0,0,0,))
-x = 0
-while (True):
-    try:
-        roll, pitch, yaw = dataQueue.get_nowait().split(',')
- 
-        rate(50)
-        k=vector(cos(yaw)*cos(pitch), sin(pitch),sin(yaw)*cos(pitch))
-        y=vector(0,1,0)
-        s=cross(k,y)
-        v=cross(s,k)
-        vrot=v*cos(roll)+cross(k,v)*sin(roll)
- 
-        frontArrow.axis=k
-        upArrow.axis=vrot
-        ROV.axis=k
-        ROV.up=vrot
+def doIMU():
+    while (True):
+        try:
+            roll, pitch, yaw = dataQueue.get_nowait().split(',')
+    
+            rate(50)
+            k=vector(cos(yaw)*cos(pitch), sin(pitch),sin(yaw)*cos(pitch))
+            y=vector(0,1,0)
+            s=cross(k,y)
+            v=cross(s,k)
+            vrot=v*cos(roll)+cross(k,v)*sin(roll)
+    
+            frontArrow.axis=k
+            upArrow.axis=vrot
+            ROV.axis=k
+            ROV.up=vrot
 
-    except queue.Empty:
-        pass
+        except queue.Empty:
+            pass
+
+IMUManager = Process(target=doIMU)
