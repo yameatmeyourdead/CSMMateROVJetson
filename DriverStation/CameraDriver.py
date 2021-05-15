@@ -33,6 +33,7 @@ def waitForImage():
 
     # start looping over all the frames
     while True:
+        print("wait for frame")
         # receive client name and frame from the client and acknowledge the receipt
         clientName, frame = imageHub.recv_image()
 
