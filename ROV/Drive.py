@@ -165,3 +165,8 @@ class Drive(Component):
             if(Thruster is not None):
                 Thruster.throttle = 0
         ROVMap.log("Drive killed")
+
+if __name__ == "__main__":
+    drive = Drive()
+    while True:
+        drive.Update()

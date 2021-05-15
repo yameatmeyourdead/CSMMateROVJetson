@@ -1,7 +1,7 @@
-from .Drive import Drive
+# from .Drive import Drive
 from .Manip import Manip
-from .MicroROV import MicroROV
-from .IMU import IMU
+# from .MicroROV import MicroROV
+# from .IMU import IMU
 from . import ROVMap
 from . import ControllerServer
 from . import Cameras
@@ -16,13 +16,13 @@ operatingMode = True # Operate in Autonomous or TeleOp? True = TeleOp, False = A
 
 # Creation of parts
 # Drive thrusters
-parts.append(Drive())
+# parts.append(Drive())
 # Manipulator(s)
 parts.append(Manip())
 # MicroROV
-parts.append(MicroROV())
+# parts.append(MicroROV())
 # IMU
-parts.append(IMU())
+# parts.append(IMU())
 
 ROVMap.log("All parts constructed")
 
@@ -59,14 +59,14 @@ def start():
     # starts network handler
     # send stuff by putting to ROVMap.sendQueue
     # recv stuff by looking in ROVMap.dataQueue (throws queue.empty if empty!!!!)
-    ROVMap.JetsonNetworking.start()
+    # ROVMap.JetsonNetworking.start()
 
     # starts camera server
-    Cameras.CameraProcess.start()
+    # Cameras.CameraProcess.start()
 
     # starts controller server
-    ControllerServer.ControllerProcess.start()
-
+    # ControllerServer.ControllerProcess.start()
+    print("Started")
     while True:
         # Update each component of the robot depending on the operating mode
         ROVMap.updateController() # update the controller (get new button presses/releases since last check) ONCE DO NOT USE THIS ANYWHERE ELSE

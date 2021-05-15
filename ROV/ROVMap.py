@@ -17,25 +17,25 @@ class EStopInterrupt(Exception): ...
 # PCA9685 should be connected to jetson on J41 pins 27(SDA)/28(SCL) for Bus0 or pins 3(SDA)/5(SCL) for Bus1 as well as relevant voltage (pin1 3.3v)
 # Default I2C address is 0x40
 kit = ServoKit(channels=16)
-i2c = busio.I2C(board.SCL, board.SDA) # definition of second PCA9685 (used for stepper motor)
-kit2 = adafruit_pca9685.PCA9685(i2c, address=0x41)
-kit2.frequency = 1600
+# i2c = busio.I2C(board.SCL, board.SDA) # definition of second PCA9685 (used for stepper motor)
+# kit2 = adafruit_pca9685.PCA9685(i2c, address=0x41)
+# kit2.frequency = 1600
 
 # Constant "dictionary" for PCA9685
 # Thrusters
-THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
-THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
-THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
-THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
-THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
-THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
-THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
-THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
-THRUSTERS = [THRUSTER_FRONT_LEFT, THRUSTER_FRONT_RIGHT, THRUSTER_BACK_LEFT, THRUSTER_BACK_RIGHT, THRUSTER_Z_0, THRUSTER_Z_1, THRUSTER_Z_2, THRUSTER_Z_3]
+# THRUSTER_FRONT_LEFT = kit._items[0] = servo.ContinuousServo(kit._pca.channels[0])
+# THRUSTER_FRONT_RIGHT = kit._items[1] = servo.ContinuousServo(kit._pca.channels[1])
+# THRUSTER_BACK_LEFT = kit._items[2] = servo.ContinuousServo(kit._pca.channels[2])
+# THRUSTER_BACK_RIGHT = kit._items[3] = servo.ContinuousServo(kit._pca.channels[3])
+# THRUSTER_Z_0 = kit._items[4] = servo.ContinuousServo(kit._pca.channels[4])
+# THRUSTER_Z_1 = kit._items[5] = servo.ContinuousServo(kit._pca.channels[5])
+# THRUSTER_Z_2 = kit._items[6] = servo.ContinuousServo(kit._pca.channels[6])
+# THRUSTER_Z_3 = kit._items[7] = servo.ContinuousServo(kit._pca.channels[7])
+# THRUSTERS = [THRUSTER_FRONT_LEFT, THRUSTER_FRONT_RIGHT, THRUSTER_BACK_LEFT, THRUSTER_BACK_RIGHT, THRUSTER_Z_0, THRUSTER_Z_1, THRUSTER_Z_2, THRUSTER_Z_3]
 
 # Manipulator
-MANIP_ELBOW_SERVO = kit._items[8] = servo.Servo(kit._pca.channels[8])
-MANIP_ELBOW_SERVO_2 = kit._items[9] = servo.Servo(kit._pca.channels[9])
+MANIP_ELBOW_SERVO_2 = kit._items[8] = servo.Servo(kit._pca.channels[8])
+MANIP_ELBOW_SERVO = kit._items[9] = servo.Servo(kit._pca.channels[9])
 MANIP_WRIST_SERVO = kit._items[10] = servo.Servo(kit._pca.channels[10])
 MANIP_LEVEL_SERVO = kit._items[11] = servo.Servo(kit._pca.channels[11])
 MANIP_CLAMP_SERVO = kit._items[12] = servo.Servo(kit._pca.channels[12])
@@ -43,7 +43,7 @@ MANIP_SERVOS = [MANIP_ELBOW_SERVO,MANIP_ELBOW_SERVO_2,MANIP_WRIST_SERVO,MANIP_LE
 
 #Micro Rov
 
-MICROROV_WINCH = kit._items[13] = servo.ContinuousServo(kit._pca.channels[13])
+# MICROROV_WINCH = kit._items[13] = servo.ContinuousServo(kit._pca.channels[13])
 
 # Stepper motor (OBSOLETE??)
 # pwma = kit2.channels[8]
@@ -64,20 +64,20 @@ MICROROVCOMPORT = "/dev/ttyACM0" # linux ACM0 subject to change depending upon a
 # Manip Servo Mods (Rated pulse width)
 MANIP_ELBOW_SERVO.set_pulse_width_range(500,2500)
 MANIP_ELBOW_SERVO_2.set_pulse_width_range(500,2500)
-MANIP_WRIST_SERVO.set_pulse_width_range(500,2500)
+MANIP_WRIST_SERVO.set_pulse_width_range(600,2400)
 MANIP_LEVEL_SERVO.set_pulse_width_range(500,2500)
 MANIP_CLAMP_SERVO.set_pulse_width_range(500,2500)
 
 # Thruster Mods (Experimentally found pulse width because specs lied to us :) (1100->1900 base)) 
 # (in reality its probably a library thing but i dont want to debug/rewrite ServoKit.continuous_servo :P )
-THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
-THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
-THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
-THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
-THRUSTER_Z_0.set_pulse_width_range(1200,2000)
-THRUSTER_Z_1.set_pulse_width_range(1200,2000)
-THRUSTER_Z_2.set_pulse_width_range(1200,2000)
-THRUSTER_Z_3.set_pulse_width_range(1200,2000)
+# THRUSTER_FRONT_LEFT.set_pulse_width_range(1200,2000)
+# THRUSTER_FRONT_RIGHT.set_pulse_width_range(1200,2000)
+# THRUSTER_BACK_LEFT.set_pulse_width_range(1200,2000)
+# THRUSTER_BACK_RIGHT.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_0.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_1.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_2.set_pulse_width_range(1200,2000)
+# THRUSTER_Z_3.set_pulse_width_range(1200,2000)
 
 # =======================
 # =======================
@@ -103,11 +103,11 @@ def getTimeFormatted(delim):
     SYSTIME = time.localtime(time.time())
     return (str(SYSTIME.tm_hour) + delim + str(SYSTIME.tm_min) + delim + str(SYSTIME.tm_sec))
 
-LOGGER_FILE_PATH = "./Logs/latest.txt"
+LOGGER_FILE_PATH = "/home/mines-mate-rov/CSMMateROVJetson/ROV/Logs/latest.txt"
 if(os.path.exists(LOGGER_FILE_PATH)):
-    if(os.path.exists("./Logs/last.txt")):
-        os.remove("./Logs/last.txt")
-    os.rename(LOGGER_FILE_PATH, "./Logs/last.txt")
+    if(os.path.exists("/home/mines-mate-rov/CSMMateROVJetson/ROV/Logs/last.txt")):
+        os.remove("/home/mines-mate-rov/CSMMateROVJetson/ROV/Logs/last.txt")
+    os.rename(LOGGER_FILE_PATH, "/home/mines-mate-rov/CSMMateROVJetson/ROV/Logs/last.txt")
 with open(LOGGER_FILE_PATH, 'w') as f:
     f.write(f"[{getTimeFormatted(':')}] Logger Created\n")
 
