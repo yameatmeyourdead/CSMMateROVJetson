@@ -9,11 +9,11 @@ hostName = socket.gethostname()
 
 def doStart():
     # check for valid cams
-    camList = [None, None, None, None]
-    for i in range(4):
-        potentialCam = cv2.VideoCapture(i)
-        if(potentialCam.read()[0]):
-            camList[i] = potentialCam
+    camList = [cv2.VideoCapture(0), None, None, None]
+    # for i in range(4):
+    #     potentialCam = cv2.VideoCapture(i)
+    #     if(potentialCam.read()[0]):
+    #         camList[i] = potentialCam
     # send images
     while True:
         for i in range(4):
