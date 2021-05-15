@@ -7,6 +7,7 @@ from tkinter import *
 import numpy as np
 from PIL import Image
 from PIL import ImageTk
+from zmq.sugar.constants import NULL
 
 def waitForImage():
     # Create the server
@@ -15,19 +16,19 @@ def waitForImage():
     # Create TKinter Window
     root = Tk()
 
-    LABEL = Label(root, text="Cams")
-    LABEL.pack()
-    root.update()
-
-    NULLFRAME = cv2.imread("DriverStation/Assets/NullFrame.jpg")
+    NULLFRAME = ImageTk.PhotoImage(Image.fromarray(cv2.imread("DriverStation/Assets/NullFrame.jpg")))
 
     # initialize empty opencv frames so stitching them together works
-    frames = [NULLFRAME, NULLFRAME, NULLFRAME, NULLFRAME]
-    organized_frames = [[frames[0], frames[1]], [frames[2], frames[3]]]  # man, naming variables is hard
-    output = ImageTk.PhotoImage(Image.fromarray(concat_tile_resize(organized_frames)))
+    cam0 = Label(root, image=NULLFRAME)
+    cam0.grid_configure(row=0, column=0)
+    cam1 = Label(root, image=NULLFRAME)
+    cam1.grid_configure(row=0, column=1)
+    cam2 = Label(root, image=NULLFRAME)
+    cam2.grid_configure(row=1, column=0)
+    cam3 = Label(root, image=NULLFRAME)
+    cam3.grid_configure(row=1, column=1)
 
-    panel = Label(root, image=output)
-    panel.pack(side="left", padx=10, pady=10)
+    cams = [cam0, cam1, cam2, cam3]
     root.update()
 
     # start looping over all the frames
@@ -37,6 +38,7 @@ def waitForImage():
 
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
+            print("what")
             # DSM.log("received image did not contain valid camera designation")
             root.update()
             continue
@@ -46,19 +48,13 @@ def waitForImage():
 
         if frame is not None:
             # put the frame where it's supposed to go for stitching
-            frames[cameraDesignation] = frame
+            cams[cameraDesignation].configure(image=ImageTk.PhotoImage(Image.fromarray(frame)))
         
         # Uncomment below line for debug ONLY
         # DSM.log(f"received image from camera {cameraDesignation}")
-        # cv2.imshow(cameraDesignation, frame)
+        # cv2.imshow(str(cameraDesignation), frame)
         # cv2.waitKey(1)
         imageHub.send_reply(b'OK')
-
-        if (len(frames) == 0):
-            continue
-
-        # stitch the frames into one to be displaye
-        panel.image = ImageTk.PhotoImage(Image.fromarray(concat_tile_resize([[frames[0], frames[1]], [frames[2], frames[3]]])))
 
         root.update()
 
