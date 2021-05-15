@@ -19,7 +19,7 @@ def waitForImage():
     LABEL.pack()
     root.update()
 
-    NULLFRAME = cv2.imread("./Assets/NullFrame.jpg")
+    NULLFRAME = cv2.imread("DriverStation/Assets/NullFrame.jpg")
 
     # initialize empty opencv frames so stitching them together works
     frames = [NULLFRAME, NULLFRAME, NULLFRAME, NULLFRAME]
