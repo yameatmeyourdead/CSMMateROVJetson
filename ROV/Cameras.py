@@ -24,6 +24,4 @@ def doStart():
 CameraProcess = Process(target=doStart)
 
 if __name__ == "__main__":
-    CameraProcess.start()
-    input("Enter to stop")
-    CameraProcess.kill()
+    doStart()
