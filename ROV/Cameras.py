@@ -16,12 +16,10 @@ def doStart():
     #         camList[i] = potentialCam
     # send images
     while True:
-        for i in range(4):
-            if(camList[i] is not None):
-                ret, frame = camList[i].read()
-                sender.send_image("jetson" + str(i), frame)
-                # cv2.imshow('frame',frame)
-                # cv2.waitKey(1)
+        ret, frame = camList[0].read()
+        sender.send_image("jetson" + str(0), frame)
+        # cv2.imshow('frame',frame)
+        # cv2.waitKey(1)
 
 CameraProcess = Process(target=doStart)
 

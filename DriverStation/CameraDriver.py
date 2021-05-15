@@ -35,7 +35,6 @@ def waitForImage():
     while True:
         # receive client name and frame from the client and acknowledge the receipt
         clientName, frame = imageHub.recv_image()
-        print(clientName)
 
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
@@ -47,14 +46,17 @@ def waitForImage():
         # grab camera designation
         cameraDesignation = int(clientName[6:])
 
+        cv2.imshow(str(cameraDesignation), frame)
+        cv2.waitKey(1)
+
         if frame is not None:
             # put the frame where it's supposed to go for stitching
-            cams[cameraDesignation].configure(image=ImageTk.PhotoImage(Image.fromarray(frame)))
+            print("fuck")
+            cams[cameraDesignation].configure(image=ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))))
         
         # Uncomment below line for debug ONLY
         # DSM.log(f"received image from camera {cameraDesignation}")
-        # cv2.imshow(str(cameraDesignation), frame)
-        # cv2.waitKey(1)
+        
         imageHub.send_reply(b'OK')
 
         root.update()
