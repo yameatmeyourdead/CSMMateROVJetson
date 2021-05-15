@@ -1,6 +1,6 @@
 from .CameraDriver import CameraDriver
 from . import DriverStationMap as DSM
-from .IMU import IMUManager
+# from .IMU import IMUManager
 from .ControllerClient import ControllerProcess
 
 DSM.log("Attempt Camera Driver Start")
@@ -16,11 +16,11 @@ DSM.log("Attempt to start networking")
 DSM.DriverStationNetworking.start()
 DSM.log("Networking process started")
 
-IMUManager.start()
+# IMUManager.start()
 
 input("Enter to stop\n")
 cameraDriver.kill()
 ControllerProcess.kill()
 DSM.DriverStationNetworking.kill()
-IMUManager.kill()
+# IMUManager.kill()
 DSM.log("Killing ", endO='')
