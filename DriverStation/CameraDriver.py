@@ -34,7 +34,8 @@ def waitForImage():
     # start looping over all the frames
     while True:
         # receive client name and frame from the client and acknowledge the receipt
-        (clientName, frame) = imageHub.recv_image()
+        clientName, frame = imageHub.recv_image()
+        print(clientName)
 
         # if recieved client did not specify camera designation error out
         if (len(clientName) <= 6 or not (0 <= int(clientName[6:]) <= 3)):
