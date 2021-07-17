@@ -1,0 +1,27 @@
+[
+{
+  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\Cameras.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\Cameras.cpp\"",
+  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/Cameras.cpp"
+},
+{
+  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\Drive.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\Drive.cpp\"",
+  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/Drive.cpp"
+},
+{
+  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\Manipulator.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\Manipulator.cpp\"",
+  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/Manipulator.cpp"
+},
+{
+  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\MicroROV.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\MicroROV.cpp\"",
+  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/MicroROV.cpp"
+},
+{
+  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\ROV.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\ROV.cpp\"",
+  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/ROV.cpp"
+}
+]
