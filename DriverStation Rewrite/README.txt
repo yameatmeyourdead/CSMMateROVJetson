@@ -1,0 +1,1 @@
+Dependencies: tkinter, pyopengl
