@@ -1,1 +1,1 @@
-Dependencies: tkinter, pyopengl
+Dependencies: tkinter, pyopengl, psutil
