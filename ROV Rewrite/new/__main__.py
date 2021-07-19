@@ -7,6 +7,7 @@ from tools.IllegalStateException import IllegalStateException
 from tools.network import Client, Server
 from enum import Enum
 from traceback import format_exc
+import time
 
 # Debug Tools
 purgeLogs = True
@@ -35,6 +36,7 @@ initialize()
 try:
     # Define initial state
     STATE = State.idle
+    last = time.time()
     while True:
         # place update methods for things that should be updated at idle here
         Controller.updateController()

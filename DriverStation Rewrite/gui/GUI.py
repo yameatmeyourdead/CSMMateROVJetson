@@ -1,4 +1,5 @@
 from enum import Enum
+from queue import Empty
 import tkinter as tk
 from tkinter import StringVar, ttk, DoubleVar
 import traceback
@@ -20,6 +21,8 @@ DEFAULTBG2 = '#707070'
 DEFAULTFONT = ("Arial", 16, "bold")
 
 cameraBuffer = Queue()
+
+varData = {"voltage":0.0, "amperage":0.0, "T0":0.0, "T1":0.0, "T2":0.0, "T3":0.0, "T4":0.0, "T5":0.0, "T6":0.0, "T7":0.0}
 
 rootWindow = tk.Tk(className="\Mines Mate ROV DriverStation", )
 
@@ -98,6 +101,7 @@ class orientationFrame(OpenGLFrame):
     def redraw(self):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT|GL.GL_DEPTH_BUFFER_BIT)
 
+        # TODO: get quaternion and set rotation of cube to it
         GL.glPushMatrix()
         GL.glRotatef(self.nframes % 360, 0, 1, 0)
         Cube()
@@ -154,7 +158,6 @@ cameraCanvas3.place(relx=.5, rely=.5, relwidth=.5, relheight=.5)
 cameraCanvas3Label = tk.Label(cameraCanvas3, bg=DEFAULTBG2, text="Cam3", borderwidth=1, relief="solid")
 cameraCanvas3Label.place(anchor='nw')
 
-
 cameraCanvases = (cameraCanvas0, cameraCanvas1, cameraCanvas2, cameraCanvas3)
 
 # stupid that i have to make img global but WHATEVER
@@ -165,7 +168,7 @@ def updateCameras():
         global img
         img = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(cv2.resize(info[1],(cameraCanvas0.winfo_width(), cameraCanvas0.winfo_height())), cv2.COLOR_BGR2RGB)))
         cameraCanvases[info[0]].create_image(190,144,image=img)
-    except:
+    except Empty:
         pass
 
 
@@ -202,6 +205,7 @@ tabController.add(cameraTab, text="Camera")
 commandTab = ttk.Frame(tabController)
 tabController.add(commandTab, text="Command")
 
+
 # options tab
 optionsTab = ttk.Frame(tabController)
 tabController.add(optionsTab, text="Options")
@@ -215,6 +219,7 @@ statusFrame.place(rely=.8, relwidth=1, relheight=.2)
 
 powerLabelFrame = tk.LabelFrame(statusFrame, bg=DEFAULTBG, foreground=DEFAULTFG, text="Power", borderwidth=2, relief="sunken")
 powerLabelFrame.place(relwidth=.3, relheight=1)
+eStop = tk.Button(powerLabelFrame, text="Disable", bg=DEFAULTBG, foreground=DEFAULTFG)
 voltageVar = DoubleVar(name="voltageTextVar", value=0)
 amperageVar = DoubleVar(name="amerageTextVar", value=40)
 voltageLabel = tk.Label(powerLabelFrame, bg=DEFAULTBG, foreground=DEFAULTFG, textvariable=voltageVar)
@@ -260,6 +265,8 @@ lastControllerStatus = controlStatus.off
 currentStatus = controlStatus.connected
 def updateWidgets():
     global lastCPUCheck, lastControllerStatus
+    voltageVar.set(varData["voltage"])
+    
     # if second has passed, update CPU/RAM stats
     if(time.time() - lastCPUCheck > 1):
         lastCPUCheck = time.time()
