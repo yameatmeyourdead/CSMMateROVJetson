@@ -1,11 +1,13 @@
+from abc import ABC, abstractmethod
 from queue import Empty
+from typing import Any
+from tools import Logger
 import socket
 import threading
-from enum import Enum
+from tools.network.messageType import messageType
 from multiprocessing import Queue
+import json
 import time
-import random
-import pickle
 import numpy as np
 
 IP = "127.0.0.1" # connect to DRIVERSTATION
@@ -14,34 +16,38 @@ PORT = 7777
 EOM = b"<<"
 sendQueue = Queue(maxsize=64)
 
-class messageType(Enum):
-    command = "0001"
-    stop = "1000"
-    idle = "0100"
-    teleop = "0010"
-    auto = "1111"
-    controller = "0000"
-    data = "1001"
-    camera = "0110"
+class messageEncoder(ABC):
+    @abstractmethod
+    def encode(obj: Any) -> bytes:
+        """Encode this data type to bytes, by default returns obj.encode()"""
+        return obj.encode()
 
-def handleConn(typeOfMessage:str, message):
-    typeOfMessage = messageType(typeOfMessage)
-    time.sleep(random.random())
+class imageEncoder(messageEncoder):
+    def encode(camIdent:int, img:np.ndarray) -> bytes:
+        return (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
+
+
+def handleConn(typeOfMessage: messageType, data):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        attemptedConnections = 0
         while True:
             try:
                 s.connect((IP,PORT))
             except ConnectionRefusedError:
-                # if connection refused (server not online, wait for it to start)
+                # if connection refused (server not online, wait for it to start) timeout = 3 sec (NOTE: if experiencing memory/CPU intensive ops this is very memory intensive (1 thread per frame of camera :^)) )
+                attemptedConnections += 1
+                if(attemptedConnections >= 3):
+                    Logger.log(f"Connection to {(IP, PORT)} refused. Is the server online?")
+                    return
                 time.sleep(1)
                 continue
             else:
                 break
         if(typeOfMessage != messageType.camera):
             # if it is not a camera, it is string
-            s.sendall(typeOfMessage.value.encode() + message.encode() + EOM)
+            s.sendall(typeOfMessage.value.encode() + messageEncoder.encode(data) + EOM)
         else:
-            s.sendall(typeOfMessage.value.encode() + pickle.dumps(message) + EOM)
+            s.sendall(typeOfMessage.value.encode() + imageEncoder.encode(data[0], data[1]) + EOM)
 
 def client():
     while True:
@@ -62,5 +68,6 @@ if __name__ == "__main__":
     startClient()
     import cv2
     cam = cv2.VideoCapture(1)
+    cameraIdent = 0
     while True:
-        sendQueue.put((messageType.camera.value, cam.read()[1]))
+        sendQueue.put((messageType.camera.value, (cameraIdent, cam.read()[1])))

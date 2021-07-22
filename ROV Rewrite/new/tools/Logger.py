@@ -31,10 +31,10 @@ def createNewLog(purge=False):
     """Create new empty log"""
     time = getTime()
     global CURRENTLOG 
-    CURRENTLOG = f"./new/Logs/latest.txt"
-    if(os.path.exists("./new/Logs/latest.txt") and not purge):
+    CURRENTLOG = f"./Logs/latest.txt"
+    if(os.path.exists("./Logs/latest.txt") and not purge):
         with open(CURRENTLOG, 'r') as f:
             timeOfCreation = f.read()[1:9]
-        os.rename("./new/Logs/latest.txt", f"./new/Logs/{timeOfCreation}.txt")
+        os.rename("./Logs/latest.txt", f"./Logs/{timeOfCreation}.txt")
     with open(CURRENTLOG, 'w') as f:
         f.write(f"[{getTime()}] {'[' + str(threading.get_ident()) + '/' + threading.current_thread().name +']'}: " + "Created New Log")

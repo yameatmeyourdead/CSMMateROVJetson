@@ -1,22 +1,25 @@
 from enum import Enum
+from abc import ABC, abstractmethod
 import socket
-import pickle
+from tools.network.messageType import messageType
 import threading
+import numpy as np
+import json
 
 IP = "0.0.0.0" # listen to all ips
 PORT = 7777
 
 EOM = b"<<"
 
-class messageType(Enum):
-    command = "0001"
-    stop = "1000"
-    idle = "0100"
-    teleop = "0010"
-    auto = "1111"
-    controller = "0000"
-    data = "1001"
-    camera = "0110"
+class messageDecoder(ABC):
+    @abstractmethod
+    def decode(obj):
+        return ""
+
+class imageDecoder(messageDecoder):
+    def decode(metaData:str, array:bytes) -> np.ndarray:
+        metaData = json.loads(metaData)
+        return np.ndarray(metaData["shape"], dtype=metaData["dtype"], buffer=array)
 
 def handleConn(connectionInformation):
     conn:socket.socket = connectionInformation[0]
@@ -31,7 +34,7 @@ def handleConn(connectionInformation):
         # remove EOM
         header = data[0:4]
         data = data[4:-len(EOM)]
-        conn.sendall(b"header: " + header + b" data: " + data)
+        print("header: " + header.decode() + " data: " + data.decode())
         break
 def server():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -43,5 +46,5 @@ def server():
 def startServer():
     global serverThread
     serverThread = threading.Thread(target=server)
-    serverThread.setName("clientThread")
+    serverThread.setName("serverThread")
     serverThread.start()

@@ -5,22 +5,13 @@ from enum import Enum
 from multiprocessing import Queue
 import time
 import random
+from tools.network.messageType import messageType
 
 IP = "10.0.0.2" # connect to JETSON
 PORT = 7777
 
 EOM = b"<<"
 sendQueue = Queue()
-
-class messageType(Enum):
-    command = "0001"
-    stop = "1000"
-    idle = "0100"
-    teleop = "0010"
-    auto = "1111"
-    controller = "0000"
-    data = "1001"
-    camera = "0110"
 
 def handleConn(typeOfMessage:messageType, message:str):
     time.sleep(random.random())

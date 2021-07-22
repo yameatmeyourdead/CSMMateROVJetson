@@ -75,7 +75,7 @@ class Vector3f:
     def __pos__(self):
         return self
 
-# unneeded
+# NOTE: pretty sure this is unneeded
 # class Quaternion:
 #     """Spatial rotation around fixed point of theta radians about a unit axis (X,Y,Z) that denotes the Euler Axis is given by Quaternion (C, XS, YS, ZS) where C = cos(theta/2) and S = sin(theta/2)"""
 #     def __init__(self, S=0, i=0, j=0, k=0) -> None:

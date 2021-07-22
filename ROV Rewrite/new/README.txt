@@ -1,0 +1,1 @@
+dependencies: cv2, numpy
