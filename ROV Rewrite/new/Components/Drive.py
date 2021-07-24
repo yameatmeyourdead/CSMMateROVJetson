@@ -1,3 +1,4 @@
+from Components.PCA9685 import THRUSTERS
 from enum import Enum
 from tools import Logger, Controller
 from tools.IllegalStateException import IllegalStateException
@@ -5,7 +6,7 @@ from tools.Vectors import Vector3f
 from Component import Component
 from math import sqrt
 
-# stores state of drive
+# defines state of drive
 class State(Enum):
         translation = 0
         rotation = 1
@@ -42,18 +43,19 @@ class Drive(Component):
         self.debug = debug
         self.velocity_mod = 1
         self.state = State.translation
+        self.idle = False
         self.trgt_velocity = Vector3f()
         self.trgt_angular_velocity = Vector3f()
-        self.thruster_events = [0 for x in range(8)] # list of events for indexed thruster (TODO: proper indexes tbd)
+        self.thruster_events = [0 for x in range(8)] # list of events for indexed thruster (TODO: proper indexes TBD)
         Logger.log("Drive Constructed")
 
-    def setSpeedLimit(self, limit):
+    def setSpeedLimit(self, limit) -> None:
         if(limit > 1):
             self.velocity_mod = 1
             return
         self.velocity_mod = limit
 
-    def update(self):
+    def update(self) -> None:
         # get controller's presses/stick positions
         presses = Controller.getButtonPresses()
         LS = Controller.getLeftStick()
@@ -71,7 +73,12 @@ class Drive(Component):
 
         # if left stick was pressed, toggle drive state
         if(presses.ls):
-            self.state = State(not self.state.value)
+            # if state is idle, do not update on left stick press
+            if(not self.idle):
+                self.state = State(not self.last_state.value)
+        # if right stick was pressed, toggle drive/manipulator defaults to drive being on and manipulator being off
+        if(presses.rs):
+            self.idle = not self.idle
 
         # depending upon drive state, update drive accordingly
         # always set target velocity and target torque to 0
@@ -92,7 +99,7 @@ class Drive(Component):
         else:
             raise IllegalStateException("Drive is in undefined state")
     
-    def autoUpdate(self):
+    def autoUpdate(self) -> None:
         if(self.state == State.translation):
             pass
         elif(self.state == State.rotation):
@@ -100,5 +107,7 @@ class Drive(Component):
         else:
             raise IllegalStateException("Drive is in undefined state")
     
-    def kill(self):
-        return
+    def kill(self) -> None:
+        for thruster in THRUSTERS.values():
+            thruster.throttle = 0
+        Logger.log("Drive Thrusters Successfully Killed")

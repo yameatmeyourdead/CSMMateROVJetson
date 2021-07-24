@@ -5,6 +5,7 @@ from Components.Manipulator import Manipulator
 from tools import Logger, Controller
 from tools.IllegalStateException import IllegalStateException
 from tools.network import Client, Server
+from Components import Cameras
 from enum import Enum
 from traceback import format_exc
 import time
@@ -24,15 +25,20 @@ components: List[Component] = list()
 def initialize():
     """Initialize all relevant robot components/tools here"""
     Logger.createNewLog(purgeLogs)
+    # create daemons
     Client.startClient()
     Server.startServer()
+    Cameras.start()
+
     # initialize all components here
     components.append(Drive())
     components.append(Manipulator())
     Logger.log("Components initialized")
 
-# Start Robot
+# initialize Robot
 initialize()
+
+# Start Robot
 try:
     # Define initial state
     STATE = State.idle
@@ -41,17 +47,18 @@ try:
         # place update methods for things that should be updated at idle here
         Controller.updateController()
         if(STATE == State.idle):
-            # when idle, continue doing nothing
+            # when idle, continue doing nothing (Daemon's/other threads of control will continue to run)
             continue
 
         # when not idle, decide what to do
-        for component in components:
-            if(STATE == State.teleop):
+        if(STATE == State.teleop):
+            for component in components:
                 component.update()
-            elif(STATE == State.auto):
+        elif(STATE == State.auto):
+            for component in components:
                 component.autoUpdate()
-            else:
-                raise IllegalStateException("Robot state is undefined")
+        else:
+            raise IllegalStateException("Robot state is undefined")
 except:
     # Log Exception (removes \n from the end)
     Logger.logError(format_exc()[0:-1])

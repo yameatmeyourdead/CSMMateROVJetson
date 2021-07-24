@@ -69,6 +69,7 @@ def startServer():
     global serverThread
     serverThread = threading.Thread(target=server)
     serverThread.setName("clientThread")
+    serverThread.setDaemon(True)
     serverThread.start()
 
 if __name__ == "__main__":

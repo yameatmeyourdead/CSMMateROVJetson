@@ -14,14 +14,6 @@ class Vector3f:
         self.i = tupl3[0]
         self.j = tupl3[1]
         self.k = tupl3[2]
-    
-    def setComponents(self, i=None, j=None, k=None):
-        if(i is not None):
-            self.i = i
-        if(j is not None):
-            self.j = j
-        if(k is not None):
-            self.k = k
 
     def getComponents(self):
         """returns 3-tuple of i,j,k components"""

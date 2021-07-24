@@ -10,7 +10,7 @@ purgeLogs = True
 def initialize():
     Logger.createNewLog(purgeLogs)
     # GUI already initialized on import resolution
-    # Client.startClient()
+    Client.startClient()
     Server.startServer()
     # ControllerClient.startControllerForwarding()
     Logger.log("DriverStation initialized")

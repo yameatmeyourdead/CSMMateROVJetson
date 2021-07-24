@@ -34,4 +34,5 @@ def startClient():
     global clientThread
     clientThread = threading.Thread(target=client)
     clientThread.setName("clientThread")
+    clientThread.setDaemon(True)
     clientThread.start()

@@ -2,7 +2,7 @@ from Components import Component
 from tools import Logger
 
 class IMU(Component):
-    """Implementation of 9-axis BNO055 IMU"""
+    """Implementation of 9-axis BNO055 IMU and Depth Sensor for Translational/Rotational Velocity Calculations and Rotational Orientation"""
     def __init__(self) -> None:
         return
     

@@ -63,6 +63,7 @@ def startClient():
     global clientThread
     clientThread = threading.Thread(target=client)
     clientThread.setName("clientThread")
+    clientThread.setDaemon(True)
     clientThread.start()
 
 if __name__ == "__main__":

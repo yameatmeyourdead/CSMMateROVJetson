@@ -47,4 +47,5 @@ def startServer():
     global serverThread
     serverThread = threading.Thread(target=server)
     serverThread.setName("serverThread")
+    serverThread.setDaemon(True)
     serverThread.start()
