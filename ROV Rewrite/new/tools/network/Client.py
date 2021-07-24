@@ -24,6 +24,7 @@ class messageEncoder(ABC):
 
 class imageEncoder(messageEncoder):
     def encode(camIdent:int, img:np.ndarray) -> bytes:
+        assert (camIdent is not None and img is not None)
         return (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, size=img.size, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
 
 
