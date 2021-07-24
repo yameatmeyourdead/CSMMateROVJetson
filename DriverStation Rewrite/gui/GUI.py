@@ -12,6 +12,7 @@ from OpenGL.GLUT import fonts
 from pyopengltk import OpenGLFrame
 import psutil
 from multiprocessing import Queue
+from tools.network import Client
 
 HEIGHT = 720
 WIDTH = 1280
@@ -171,7 +172,6 @@ def updateCameras():
     except Empty:
         pass
 
-
 # create frame within rootWindow to allow for selection of different operation options
 detailFrame = tk.Frame(backgroundFrame, bg=DEFAULTBG, borderwidth=2, relief="sunken")
 detailFrame.place(relx=.6, relwidth=.4, relheight=.8)
@@ -190,16 +190,24 @@ tabStyle.configure("TFrame", background=DEFAULTBG, borderwidth=2, relief="sunken
 # drive tab
 driveTab = ttk.Frame(tabController)
 tabController.add(driveTab, text="Drive")
-# orientationCanvas = tk.Canvas(driveTab, background=DEFAULTBG2, width=200, height=200)
-# orientationCanvas.pack(side="top", anchor='ne')
 orientation = orientationFrame(driveTab, width=200, height=200)
 orientation.animate=1
 orientation.pack(anchor='ne')
 
-
 # camera tab
 cameraTab = ttk.Frame(tabController)
 tabController.add(cameraTab, text="Camera")
+toggleCam0 = tk.Button(cameraTab, text="Toggle Cam0", background=DEFAULTBG2, foreground=DEFAULTFG)
+toggleCam0.pack(side="left", anchor="nw", padx=5, pady=2)
+toggleCam1 = tk.Button(cameraTab, text="Toggle Cam1", background=DEFAULTBG2, foreground=DEFAULTFG)
+toggleCam1.pack(side="left", anchor="nw", padx=5, pady=2)
+toggleCam2 = tk.Button(cameraTab, text="Toggle Cam2", background=DEFAULTBG2, foreground=DEFAULTFG)
+toggleCam2.pack(side="left", anchor="nw", padx=5, pady=2)
+toggleCam3 = tk.Button(cameraTab, text="Toggle Cam3", background=DEFAULTBG2, foreground=DEFAULTFG)
+toggleCam3.pack(side="left", anchor="nw", padx=5, pady=2)
+
+def toggleCam(camNum):
+    Client.sendQueue.put((Client.messageType.command, f"toggle{camNum}"))
 
 # command tab
 commandTab = ttk.Frame(tabController)
