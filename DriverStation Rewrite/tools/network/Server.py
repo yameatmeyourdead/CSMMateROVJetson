@@ -4,7 +4,8 @@ from enum import Enum
 import socket
 import threading
 from traceback import print_exc
-from typing import Any, Tuple
+from typing import Any, Dict, Tuple
+import cv2
 import numpy as np
 import json
 from gui import GUI
@@ -21,9 +22,8 @@ class messageDecoder(ABC):
         return obj.decode()
 
 class imageDecoder(messageDecoder):
-    def decode(metaData:bytes, img:bytes) -> Tuple[int, np.ndarray]:
-        metaData = json.loads(metaData)
-        return np.ndarray(metaData["shape"], dtype=metaData["dtype"], buffer=img)
+    def decode(metaData:Dict[str, Any], img:bytes) -> Tuple[int, np.ndarray]:
+        return (metaData["cam"], np.ndarray(metaData["shape"], dtype=metaData["dtype"], buffer=img))
 
 def handleConn(connectionInformation):
     conn:socket.socket = connectionInformation[0]
@@ -40,13 +40,12 @@ def handleConn(connectionInformation):
             while EOM not in data:
                 data += conn.recv(4096)
                 split = data.index(EOM)
-            metaData = data[:split]
+            metaData = json.loads(data[:split])
             data = data[split+len(EOM):]
-            while EOM not in data:
+            while len(data) < metaData["size"]:
                 data += conn.recv(4096)
-
             # construct image
-            GUI.cameraBuffer.put_nowait(imageDecoder.decode(metaData, data[:data.index(EOM)]))
+            GUI.cameraBuffer.put_nowait(imageDecoder.decode(metaData, data))
         except: # if any error occurs, return without updating cams
             print_exc()
             return

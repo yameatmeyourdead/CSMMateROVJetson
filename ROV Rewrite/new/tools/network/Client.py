@@ -24,7 +24,7 @@ class messageEncoder(ABC):
 
 class imageEncoder(messageEncoder):
     def encode(camIdent:int, img:np.ndarray) -> bytes:
-        return (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
+        return (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, size=img.size, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
 
 
 def handleConn(typeOfMessage: messageType, data):
@@ -47,7 +47,7 @@ def handleConn(typeOfMessage: messageType, data):
             # if it is not a camera, it is string
             s.sendall(typeOfMessage.value.encode() + messageEncoder.encode(data) + EOM)
         else:
-            s.sendall(typeOfMessage.value.encode() + imageEncoder.encode(data[0], data[1]) + EOM)
+            s.sendall(typeOfMessage.value.encode() + imageEncoder.encode(data[0], data[1]))
 
 def client():
     while True:
