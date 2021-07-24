@@ -270,7 +270,7 @@ console.place(relx=.61, rely=.1, relwidth=.38, relheight=.8)
 rootWindow.update()
 lastCPUCheck = time.time()
 lastControllerStatus = controlStatus.off
-currentStatus = controlStatus.connected
+currentControllerStatus = controlStatus.off
 def updateWidgets():
     global lastCPUCheck, lastControllerStatus
     voltageVar.set(varData["voltage"])
@@ -281,8 +281,8 @@ def updateWidgets():
         cpuUtilizationVar.set(str(psutil.cpu_percent()) + " %  @ " + str(psutil.cpu_freq().current / 1000) + " GHz")
         ramUsageVar.set(str(round(psutil.virtual_memory().used / 1000000000, 2)) + "GB / " + str(round(psutil.virtual_memory().total / 1000000000, 2)) + "GB")
     # if controller status has changed, update color accordingly
-    if(currentStatus != lastControllerStatus):
-        controllerStatus.configure(bg=currentStatus.value)
-        lastControllerStatus = currentStatus
+    if(currentControllerStatus != lastControllerStatus):
+        controllerStatus.configure(bg=currentControllerStatus.value)
+        lastControllerStatus = currentControllerStatus
     updateCameras()
     updateAmperageBar()

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from queue import Empty
-from typing import Any
+from typing import Any, List
 from tools import Logger
 import socket
 import threading
@@ -20,12 +20,12 @@ class messageEncoder(ABC):
     @abstractmethod
     def encode(obj: Any) -> bytes:
         """Encode this data type to bytes, by default returns obj.encode()"""
-        return obj.encode()
+        return messageType.message.value.encode() + obj.encode() + EOM
 
 class imageEncoder(messageEncoder):
     def encode(camIdent:int, img:np.ndarray) -> bytes:
         assert (camIdent is not None and img is not None)
-        return (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, size=img.size, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
+        return messageType.camera.value.encode() + (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, size=img.size, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
 
 
 def handleConn(typeOfMessage: messageType, data):
@@ -45,10 +45,10 @@ def handleConn(typeOfMessage: messageType, data):
             else:
                 break
         if(typeOfMessage != messageType.camera):
-            # if it is not a camera, it is string
-            s.sendall(typeOfMessage.value.encode() + messageEncoder.encode(data) + EOM)
+            # if it is not a camera, use default message encoder
+            s.sendall(messageEncoder.encode(data))
         else:
-            s.sendall(typeOfMessage.value.encode() + imageEncoder.encode(data[0], data[1]))
+            s.sendall(imageEncoder.encode(data[0], data[1]))
 
 def client():
     while True:

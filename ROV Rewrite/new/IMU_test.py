@@ -1,7 +1,6 @@
 import math
 import time
 import board
-from tools.Vectors import Vector3f, Quaternion
 import adafruit_bno055
 # IMU/TEMP TEST
 
@@ -16,4 +15,4 @@ while True:
     pitch = math.asin(2*(rotation[0]*rotation[2] - rotation[3]*rotation[1]))
     yaw = -math.atan2(2*(rotation[0]*rotation[3] + rotation[1]*rotation[2]), 1-2*(rotation[2]**2 + rotation[3]**2))-math.pi/2
 
-    print(roll , pitch, yaw)
+    print(roll, pitch, yaw, end='\r')

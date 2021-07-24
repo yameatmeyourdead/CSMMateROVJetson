@@ -9,3 +9,4 @@ class messageType(Enum):
     controller = "0000"
     data = "1001"
     camera = "0110"
+    message = "1010"
