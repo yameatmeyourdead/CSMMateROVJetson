@@ -8,8 +8,8 @@ Drive over reef and show video of it
 	Keep Blue Pipes in video without seeing Red Pipes
 	while:
 		Map points of interest on the reef (6 total) in (9x3 reef)
-			9x3 array of squares displayed
-			Large coral colony (Red Oval) or (Two Red Circles)
-			Two outplanting areas (Yellow Circle)
-			Two red crown of thorn sea stars (Blue Circle)
-			One sponge (Green Circle)
+			(DONE) 9x3 array of squares displayed
+			(DONE) Large coral colony (Red Oval) or (Two Red Circles)
+			(DONE) Two outplanting areas (Yellow Circle)
+			(DONE) Two red crown of thorn sea stars (Blue Circle)
+			(DONE) One sponge (Green Circle)

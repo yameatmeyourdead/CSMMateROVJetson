@@ -2,6 +2,8 @@ from typing import Dict, List, Callable
 # from tools import Logger
 from traceback import format_exc
 
+# TODO: implement asyncio
+
 # event dict
 subscribers:Dict[str, List[Callable]] = dict()
 

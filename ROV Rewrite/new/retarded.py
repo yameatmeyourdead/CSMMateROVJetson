@@ -1,3 +1,2 @@
-from tools.graphics.Transect import run
-
+from tools.graphics.TransectDrawer import run
 run()
