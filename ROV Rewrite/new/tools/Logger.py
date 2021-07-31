@@ -14,7 +14,10 @@ def log(*message):
     """Log given message  
     \nPlease only log important events as log file can get quite large"""
     # allow for same functionality as print(x,y,z)
-    message = " ".join(message)
+    out = []
+    for arg in message:
+        out.append(str(arg))
+    message = " ".join(out)
     if(CURRENTLOG == ""):
         raise IllegalStateException("Attempted to use logger without first creating a log")
     with open(CURRENTLOG, 'a') as f:
@@ -37,4 +40,4 @@ def createNewLog(purge=False):
             timeOfCreation = f.read()[1:9]
         os.rename("./Logs/latest.txt", f"./Logs/{timeOfCreation}.txt")
     with open(CURRENTLOG, 'w') as f:
-        f.write(f"[{getTime()}] {'[' + str(threading.get_ident()) + '/' + threading.current_thread().name +']'}: " + "Created New Log")
+        f.write(f"[{time}] {'[' + str(threading.get_ident()) + '/' + threading.current_thread().name +']'}: " + "Created New Log")

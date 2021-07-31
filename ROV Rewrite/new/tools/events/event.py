@@ -11,7 +11,7 @@ def SubscribeEvent(event_type:str):
         if not event_type in subscribers:
             subscribers[event_type] = []
         subscribers[event_type].append(fn)
-        print(fn, "successfully subscribed to event " + event_type)
+        # print(fn, "successfully subscribed to event " + event_type) # DEBUG
         return fn
     return subscribe
 
@@ -19,6 +19,7 @@ def SubscribeEvent(event_type:str):
 def post_event(event_type: str, *args, **kwargs):
     """Post event and notify subscribers"""
     if not event_type in subscribers:
+        print(f"Event '{event_type}' was posted, but either does not exist or has no subscribers")
         return
     for fn in subscribers[event_type]:
         try:

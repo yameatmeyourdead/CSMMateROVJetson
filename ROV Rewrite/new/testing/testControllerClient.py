@@ -16,11 +16,7 @@ from tools import Logger
 from multiprocessing import Process
 import threading
 
-# CHANGE THIS FOR DIFFERENT CONTROLLERS (alternatively implement method to ask the user which device they want (print /dev/input devices and their names) :)  )
 CONTROLLERNAME = "Microsoft X-Box One S pad"
-CONTROLLERVENDORID = 1118
-CONTROLLERPRODUCTID = 746
-
 EOM = b"<<"
 
 async def do_forward_device(i, device):
@@ -32,13 +28,12 @@ async def forward_device(i, device):
 	await do_forward_device(i, device)
 
 def encode_device(device):
-	cap = device.capabilities()
-	del cap[0] # Filter out EV_SYN, otherwise we get OSError 22 Invalid argument
-	cap_json = {}
-	for k, v in cap.items():
-		cap_json[k] = [x if not isinstance(x, tuple) else [x[0], x[1]._asdict()] for x in v]
-	# have to replace device.info.vendor with 1118 and device.info.product with 746 (identifies controller as XBox Controller)
-	return {'name': device.name, 'capabilities': cap_json, 'vendor': CONTROLLERVENDORID, 'product': CONTROLLERPRODUCTID}
+    cap = device.capabilities()
+    del cap[0] # Filter out EV_SYN, otherwise we get OSError 22 Invalid argument
+    cap_json = {}
+    for k, v in cap.items():
+	    cap_json[k] = [x if not isinstance(x, tuple) else [x[0], x[1]._asdict()] for x in v]
+    return {'name': device.name, 'capabilities': cap_json, 'vendor': device.info.vendor, 'product': device.info.product, 'version': device.info.version}
 
 async def run_forward():
 	# Find devices
@@ -73,22 +68,10 @@ async def list_devices():
 
 # IP = "localhost" # Loopback IP (if testing this network functionality on a single device USE THIS IP)
 IP = "10.0.0.2"
-PORT = 7778
+PORT = 7777
 
 def doControllerForwarding():
-	# try to connect to server
-	while True:
-		try:
-			Logger.log("Attempting to connect to Controller Server")
-			SOC.connect((IP, PORT))
-			time.sleep(.01) # wait 10 milliseconds before sending anything (no reason, just be safe i guess)
-			Logger.log("Sucessfully connected to Controller Server......starting controller")
-			break
-		except: # in case of error (such as server not running yet), retry connection in 5 seconds
-			Logger.log("Connection unable to be established. Retrying in 2 seconds")
-			time.sleep(2)
-			continue
-	# after ensuring connection to controller server, start sending data
+	SOC.connect((IP, PORT))
 	asyncio.run(run_forward())
 
 def startControllerForwarding():
