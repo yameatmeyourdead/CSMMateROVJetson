@@ -4,14 +4,13 @@ If you contribute to this repo, make sure you comment your code. If you don't...
   
 Dependencies:  
   
-ROV:  
-imageZMQ  
+ROV:
 adafruit-circuitpython-servokit  
-xboxdrv  
+evdev
 cv2  
-simple-pid  
   
 DriverStation:  
 imageZMQ  
 cv2  
-tkinter  
+tkinter
+evdev
