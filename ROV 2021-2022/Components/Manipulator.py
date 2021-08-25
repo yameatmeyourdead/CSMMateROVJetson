@@ -7,7 +7,7 @@ from PCA9685 import MANIP_SERVOS
 # CONSTANTS
 
 
-class Manip(Component):
+class Manipulator(Component):
     def __init__(self):
         # Grab the relevant servos from the map
         self.elbow_servo = MANIP_SERVOS["MANIP_ELBOW_SERVO"]
