@@ -1,2 +1,3 @@
 Replace current Client and Server network implementations with one Process (Networking.py) with two child Processes (Client.py and Server.py).
+	Utilize thread pool for client and server connections????
 Make event system asynchronous

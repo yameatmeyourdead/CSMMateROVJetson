@@ -1,0 +1,10 @@
+ensure movement still works
+ensure manipulator still works
+	debug grip mechanism to prevent unnecessary usage of servo
+understand quaternions
+implement IMU using aforementioned understanding of quaternions
+implement pressure detection/depth detection
+implement power monitoring
+overhaul networking
+implement proper control loops into movement system
+visual detection code for specific tasks given
