@@ -98,3 +98,11 @@ def drawEllipseAtCoords(start:Tuple[int,int] = 0, end:Tuple[int,int] = 0, color:
     im, draw = getImageDrawCTX()
     draw.ellipse((start,end), fill=color, outline=0)
     im.save(IMAGE_PATH)
+
+# DEBUG
+def run():
+    initialize()
+    post_event(TransectStart)
+    post_event(LargeCoralColonyDetected, cell_1=(1,1), cell_2=(1,2))
+
+    getImageCTX().show()

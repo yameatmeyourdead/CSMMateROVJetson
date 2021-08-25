@@ -1,5 +1,5 @@
 import time
-from abc import ABC, abstractstaticmethod
+from abc import ABC, abstractmethod
 from enum import Enum
 import socket
 import threading
@@ -9,7 +9,6 @@ import cv2
 import numpy as np
 import json
 from gui import GUI
-from tools import Logger
 from tools.network.messageType import messageType
 
 IP = "0.0.0.0" # listen to all ips
@@ -18,19 +17,18 @@ PORT = 7777
 EOM = b"<<"
 
 class messageDecoder(ABC):
-    @abstractstaticmethod
+    @abstractmethod
     def decode(obj:Any) -> Any:
         return obj.decode()
 
 class imageDecoder(messageDecoder):
-    @staticmethod
     def decode(metaData:Dict[str, Any], img:bytes) -> Tuple[int, np.ndarray]:
         return (metaData["cam"], np.ndarray(metaData["shape"], dtype=metaData["dtype"], buffer=img))
 
 def handleConn(connectionInformation):
     conn:socket.socket = connectionInformation[0]
     addr = connectionInformation[1]
-    # print('Connected by', addr)
+    print('Connected by', addr)
     # ensure all data is received
     try:
         header = messageType(conn.recv(4).decode())
@@ -46,10 +44,11 @@ def handleConn(connectionInformation):
             data = data[split+len(EOM):]
             while len(data) < metaData["size"]:
                 data += conn.recv(4096)
+
             # construct image
             GUI.cameraBuffer.put_nowait(imageDecoder.decode(metaData, data))
         except: # if any error occurs, return without updating cams
-            Logger.logError(print_exc())
+            print_exc()
             return
     else:
         data = conn.recv(4096)
@@ -71,7 +70,6 @@ def startServer():
     global serverThread
     serverThread = threading.Thread(target=server)
     serverThread.setName("clientThread")
-    serverThread.setDaemon(True)
     serverThread.start()
 
 if __name__ == "__main__":

@@ -17,12 +17,10 @@ def initialize():
 
 initialize()
 try:
-    count = 0
-    skip = 0
     while True:
         # always update GUI (prevent OS from thinking program has stalled)
-        GUI.updateWidgets()
         GUI.rootWindow.update()
+        GUI.updateWidgets()
 except:
     Logger.logError(format_exc()[0:-1])
 finally:

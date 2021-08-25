@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from queue import Empty
-from typing import Any, List
+from typing import Any
 from tools import Logger
 import socket
 import threading
@@ -20,15 +20,14 @@ class messageEncoder(ABC):
     @abstractmethod
     def encode(obj: Any) -> bytes:
         """Encode this data type to bytes, by default returns obj.encode()"""
-        return messageType.message.value.encode() + obj.encode() + EOM
+        return obj.encode()
 
 class imageEncoder(messageEncoder):
     def encode(camIdent:int, img:np.ndarray) -> bytes:
-        assert (camIdent is not None and img is not None)
-        return messageType.camera.value.encode() + (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, size=img.size, cam=camIdent)).encode("utf-8") + EOM + img.tobytes())
+        return (json.dumps(dict(dtype=str(img.dtype), shape=img.shape, size=img.size, cam=camIdent)).encode("utf-8") + EOM + img.tobytes() + EOM)
 
 
-def handleConn(typeOfMessage: str, data):
+def handleConn(typeOfMessage: messageType, data):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         attemptedConnections = 0
         while True:
@@ -44,11 +43,11 @@ def handleConn(typeOfMessage: str, data):
                 continue
             else:
                 break
-        if(typeOfMessage != messageType.camera.value):
-            # if it is not a camera, use default message encoder
-            s.sendall(messageEncoder.encode(data))
+        if(typeOfMessage != messageType.camera):
+            # if it is not a camera, it is string
+            s.sendall(typeOfMessage.value.encode() + messageEncoder.encode(data) + EOM)
         else:
-            s.sendall(imageEncoder.encode(data[0], data[1]))
+            s.sendall(typeOfMessage.value.encode() + imageEncoder.encode(data[0], data[1]))
 
 def client():
     while True:
@@ -63,10 +62,9 @@ def startClient():
     global clientThread
     clientThread = threading.Thread(target=client)
     clientThread.setName("clientThread")
-    clientThread.setDaemon(True)
     clientThread.start()
 
-def main():
+if __name__ == "__main__":
     startClient()
     import cv2
     cam = cv2.VideoCapture(1)

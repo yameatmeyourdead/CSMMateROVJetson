@@ -1,4 +1,4 @@
-from typing import Awaitable, Coroutine, Dict, List, Callable
+from typing import Any, Awaitable, Coroutine, Dict, List, Callable
 from tools import Logger
 from traceback import format_exc
 import asyncio
@@ -19,11 +19,11 @@ class TransectFailed(TransectEvent): ...
 
 class SubscriptionException(Exception): ...
 
-subscribers:dict[Event, list[function]] = dict()
+subscribers:Dict[Event, Any] = dict()
 
 def SubscribeEvent(event_type:Event):
     """Decorator that subscribes async function to event event_type"""
-    def subscribe(fn:function): # create wrapper function to manipulate wrapped fn
+    def subscribe(fn): # create wrapper function to manipulate wrapped fn
         if(not inspect.iscoroutinefunction(fn)): # ensure function has been defined as async def name(): ... (could add functionality for both but would add like 50 lines and its easy enough to write an asynchronous function that does not need to wait on anything :P)
             raise SubscriptionException("Cannot subscribe synchronous function to asynchronous event system")
         if not event_type in subscribers: # add subscribed event to subscription tracker
