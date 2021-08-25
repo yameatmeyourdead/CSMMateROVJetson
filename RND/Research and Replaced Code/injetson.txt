@@ -1,0 +1,13 @@
+fn,/dev/input/event2
+path,/dev/input/event2
+name,Generic X-Box pad
+phys,usb-70090000.xusb-2.1/input0
+uniq,
+vendor,1118
+product,746
+version,769
+bus,3
+axes,"{'ABS_X': {'code': 0, 'min': -32768, 'max': 32767, 'fuzz': 16, 'flat': 128, 'res': 0}, 'ABS_Y': {'code': 1, 'min': -32768, 'max': 32767, 'fuzz': 16, 'flat': 128, 'res': 0}, 'ABS_Z': {'code': 2, 'min': 0, 'max': 1023, 'fuzz': 0, 'flat': 0, 'res': 0}, 'ABS_RX': {'code': 3, 'min': -32768, 'max': 32767, 'fuzz': 16, 'flat': 128, 'res': 0}, 'ABS_RY': {'code': 4, 'min': -32768, 'max': 32767, 'fuzz': 16, 'flat': 128, 'res': 0}, 'ABS_RZ': {'code': 5, 'min': 0, 'max': 1023, 'fuzz': 0, 'flat': 0, 'res': 0}, 'ABS_HAT0X': {'code': 16, 'min': -1, 'max': 1, 'fuzz': 0, 'flat': 0, 'res': 0}, 'ABS_HAT0Y': {'code': 17, 'min': -1, 'max': 1, 'fuzz': 0, 'flat': 0, 'res': 0}}"
+rel_axes,
+buttons,"{304: ['BTN_A', 'BTN_GAMEPAD', 'BTN_SOUTH'], 305: ['BTN_B', 'BTN_EAST'], 307: ['BTN_NORTH', 'BTN_X'], 308: ['BTN_WEST', 'BTN_Y'], 310: 'BTN_TL', 311: 'BTN_TR', 314: 'BTN_SELECT', 315: 'BTN_START', 316: 'BTN_MODE', 317: 'BTN_THUMBL', 318: 'BTN_THUMBR'}"
+unique_name,usb-70090000.xusb-2.1
