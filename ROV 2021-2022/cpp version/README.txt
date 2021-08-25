@@ -1,2 +1,0 @@
-Do I even expend the effort to relearn how to do literally everything in cpp rather than continue in python???
-Cpp is much faster than python, and allows for much more readability (typedefs in IDE allow for good prediction and typechecking), however creating code in cpp takes much longer than in python

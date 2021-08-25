@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Desktop/Programming/CPP-Rewrite/src/Components/Component.h
+
+D:/Desktop/Programming/CPP-Rewrite/src/Components/Manipulator.cpp
+Manipulator.h
+D:/Desktop/Programming/CPP-Rewrite/src/Components/Manipulator.h
+
+D:/Desktop/Programming/CPP-Rewrite/src/Components/Manipulator.h
+Component.h
+D:/Desktop/Programming/CPP-Rewrite/src/Components/Component.h
+iostream
+-
+

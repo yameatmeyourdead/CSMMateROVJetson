@@ -1,27 +1,32 @@
 [
 {
-  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
-  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\Cameras.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\Cameras.cpp\"",
-  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/Cameras.cpp"
+  "directory": "D:/Desktop/Programming/CPP-Rewrite/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\G__~1.EXE  @CMakeFiles/ROV.dir/includes_CXX.rsp -g -o CMakeFiles\\ROV.dir\\ROV.cpp.obj -c D:\\Desktop\\Programming\\CPP-Rewrite\\ROV.cpp",
+  "file": "D:/Desktop/Programming/CPP-Rewrite/ROV.cpp"
 },
 {
-  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
-  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\Drive.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\Drive.cpp\"",
-  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/Drive.cpp"
+  "directory": "D:/Desktop/Programming/CPP-Rewrite/build/src",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\G__~1.EXE   -g -o CMakeFiles\\src.dir\\Tools\\Vector3D.cpp.obj -c D:\\Desktop\\Programming\\CPP-Rewrite\\src\\Tools\\Vector3D.cpp",
+  "file": "D:/Desktop/Programming/CPP-Rewrite/src/Tools/Vector3D.cpp"
 },
 {
-  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
-  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\Manipulator.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\Manipulator.cpp\"",
-  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/Manipulator.cpp"
+  "directory": "D:/Desktop/Programming/CPP-Rewrite/build/src",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\G__~1.EXE   -g -o CMakeFiles\\src.dir\\Logger\\Logger.cpp.obj -c D:\\Desktop\\Programming\\CPP-Rewrite\\src\\Logger\\Logger.cpp",
+  "file": "D:/Desktop/Programming/CPP-Rewrite/src/Logger/Logger.cpp"
 },
 {
-  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
-  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\MicroROV.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\MicroROV.cpp\"",
-  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/MicroROV.cpp"
+  "directory": "D:/Desktop/Programming/CPP-Rewrite/build/src",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\G__~1.EXE   -g -o CMakeFiles\\src.dir\\Controller.cpp.obj -c D:\\Desktop\\Programming\\CPP-Rewrite\\src\\Controller.cpp",
+  "file": "D:/Desktop/Programming/CPP-Rewrite/src/Controller.cpp"
 },
 {
-  "directory": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/build",
-  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\X86_64~2.EXE  @CMakeFiles/CPPROV.dir/includes_CXX.rsp -g -o CMakeFiles\\CPPROV.dir\\ROV.cpp.obj -c \"D:\\Desktop\\CSMMateROVJetson\\ROV Rewrite\\cpp version\\ROV.cpp\"",
-  "file": "D:/Desktop/CSMMateROVJetson/ROV Rewrite/cpp version/ROV.cpp"
+  "directory": "D:/Desktop/Programming/CPP-Rewrite/build/src/Components",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\G__~1.EXE   -g -o CMakeFiles\\components.dir\\Drive.cpp.obj -c D:\\Desktop\\Programming\\CPP-Rewrite\\src\\Components\\Drive.cpp",
+  "file": "D:/Desktop/Programming/CPP-Rewrite/src/Components/Drive.cpp"
+},
+{
+  "directory": "D:/Desktop/Programming/CPP-Rewrite/build/src/Components",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\G__~1.EXE   -g -o CMakeFiles\\components.dir\\Manipulator.cpp.obj -c D:\\Desktop\\Programming\\CPP-Rewrite\\src\\Components\\Manipulator.cpp",
+  "file": "D:/Desktop/Programming/CPP-Rewrite/src/Components/Manipulator.cpp"
 }
 ]

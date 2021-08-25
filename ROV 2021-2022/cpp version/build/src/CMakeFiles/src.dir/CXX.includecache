@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Desktop/Programming/CPP-Rewrite/src/Controller.cpp
+Controller.h
+D:/Desktop/Programming/CPP-Rewrite/src/Controller.h
+assert.h
+-
+
+D:/Desktop/Programming/CPP-Rewrite/src/Controller.h
+xinput.h
+-
+map
+-
+string
+-
+

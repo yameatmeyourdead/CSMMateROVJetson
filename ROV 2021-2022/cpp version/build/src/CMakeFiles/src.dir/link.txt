@@ -1,0 +1,2 @@
+C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ar.exe qc libsrc.a CMakeFiles/src.dir/Tools/Vector3D.cpp.obj CMakeFiles/src.dir/Logger/Logger.cpp.obj CMakeFiles/src.dir/Controller.cpp.obj
+C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ranlib.exe libsrc.a

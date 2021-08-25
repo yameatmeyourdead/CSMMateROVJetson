@@ -1,23 +1,16 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(CPPROV VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.19)
 
-include(CTest)
-enable_testing()
+project(
+    ROV
+    VERSION 0.1
+    DESCRIPTION "Colorado School of Mines MATE ROV"
+    LANGUAGES CXX
+)
 
-find_package(OpenCV REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
+add_subdirectory(src)
 
-add_executable(CPPROV
-               Cameras.cpp
-               Component.hpp
-               Drive.cpp
-               Manipulator.cpp
-               MicroROV.cpp
-               ROV.cpp
-               )
+add_executable(${PROJECT_NAME} ROV.cpp)
 
-target_link_libraries(CPPROV ${OpenCV_LIBS})
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+target_include_directories(${PROJECT_NAME} PUBLIC src)
+target_link_directories(${PROJECT_NAME} PRIVATE src)
+target_link_libraries(${PROJECT_NAME} src)

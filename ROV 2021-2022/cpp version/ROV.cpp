@@ -1,39 +1,48 @@
-#include "Component.hpp"
-#include "Drive.cpp"
-#include "Manipulator.cpp"
-#include "MicroROV.cpp"
 #include <iostream>
+#include "Components/Drive.h"
 #include <vector>
+#include <signal.h>
+#include <chrono>
+#include <ctime>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
-#include <opencv2/opencv.hpp>
 
-// Create Linked List of Components
+
+// Create vector of components to hold all ROV parts (Global so cleanup has access to it)
 std::vector<Component*> components;
 
-void initialize() {
-    // initialize every part of robot here
-    components.emplace_back(new Drive());
-    components.emplace_back(new Manipulator());
-    components.emplace_back(new MicroROV());
+void cleanup(int signum) {
+    std::cout << "\n================\nStarted Cleanup" << std::endl;
+    auto start = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    for(int i = components.size()-1; i >= 0; i--) {
+                components[i]->Stop(); // do any last minute cleanup on the component
+                delete components[i]; // delete the component
+    }
+    auto end = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    std::cout << "\nSucessfully cleaned up in " << (end-start) << " milliseconds.....exiting!\n================\n";
 }
 
-// Main Robot Loop
 int main() {
-    // initialize the robot
-    initialize();
+    // catch SIGINT (control + c)
+    signal(SIGINT, cleanup);
 
-    // update components
-    // forever loop
-    while(false) {
-        // update each component
+    // Create all ROV parts
+    components.emplace_back(new Drive());
+
+
+    // start update loop
+    std::string inputBuffer;
+    bool QUIT = false;
+    while(!QUIT) {
         for(Component* component : components) {
-            component->update();
+                component->Update();
         }
+        Sleep(2000);
     }
     
-    std::string img = "assets\\pickle zacx.png";
-    cv::Mat srcImage = cv::imread(img);
-    cv::imshow("srcImage", srcImage);
-    cv::waitKey(0);
     return 0;
 }

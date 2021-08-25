@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\CPPROV.dir/objects.a
-C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ar.exe cr CMakeFiles\CPPROV.dir/objects.a @CMakeFiles\CPPROV.dir\objects1.rsp
-C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\X86_64~2.EXE -g -Wl,--whole-archive CMakeFiles\CPPROV.dir/objects.a -Wl,--no-whole-archive -o CPPROV.exe -Wl,--out-implib,libCPPROV.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\CPPROV.dir\linklibs.rsp

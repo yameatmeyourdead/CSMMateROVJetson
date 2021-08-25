@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\ROV.dir/objects.a
+C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ar.exe cr CMakeFiles\ROV.dir/objects.a @CMakeFiles\ROV.dir\objects1.rsp
+C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\ROV.dir/objects.a -Wl,--no-whole-archive -o ROV.exe -Wl,--out-implib,libROV.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ROV.dir\linklibs.rsp
