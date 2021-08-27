@@ -1,58 +1,61 @@
+from typing import Tuple
 from approxeng.input.selectbinder import ControllerResource
+from approxeng.input import ButtonPresses
 
-def getLeftStick():
+def getLeftStick() -> Tuple[float, float]:
     """
     Returns tuple of type int,int ranging from -1 to 1  \n
     -> (x, y)
     """
     return JOYSTICK.l
 
-def getRightStick():
+def getRightStick() -> Tuple[float, float]:
     """
     Returns tuple of type int,int ranging from -1 to 1  \n
     -> (x, y)
     """
     return JOYSTICK.r
 
-def getLeftTrigger():
+def getLeftTrigger() -> float:
     """
     Returns current value from -1 to 1  \n
     """
     return JOYSTICK.lt
 
-def getRightTrigger():
+def getRightTrigger() -> float:
     """
     Returns current value from -1 to 1  \n
     """
     return JOYSTICK.rt
 
-def getLeftBumper():
+def getLeftBumper() -> bool:
     """
     Returns 1 if pressed else 0  \n
     """
     return JOYSTICK.l1
 
-def getRightBumper():
+def getRightBumper() -> bool:
     """
     Returns 1 if pressed else 0  \n
     """
     return JOYSTICK.r1
 
-def getDPad():
+def getDPad() -> Tuple[bool, bool, bool, bool]:
     """
     Returns list of DPad states indexed as follows  \n
     -> (dleft, dup, dright, ddown)  \n
     val = 1 if pressed else 0  
     """
     buttonStates = getButtonPresses()
-    return [buttonStates.dleft, buttonStates.dup, buttonStates.dright, buttonStates.ddown]
+    return (buttonStates.dleft, buttonStates.dup, buttonStates.dright, buttonStates.ddown)
 
-def updateController():
+def updateController() -> None:
+    """Updates controller. Call at most once per main loop"""
     JOYSTICK.check_presses()
 
-def getButtonPresses():
+def getButtonPresses() -> ButtonPresses:
     """
-    Returns object of all buttons indexed as follows \n 
+    Returns object of all buttons with properties as follows \n 
     INTUITIVE NAME  ->  STANDARD NAME\n
     x->                 .square     \n
     y->                 .triangle   \n

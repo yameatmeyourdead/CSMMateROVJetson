@@ -7,7 +7,7 @@ from PCA9685 import MANIP_SERVOS
 # CONSTANTS
 
 
-class Manip(Component):
+class Manipulator(Component):
     def __init__(self):
         # Grab the relevant servos from the map
         self.elbow_servo = MANIP_SERVOS["MANIP_ELBOW_SERVO"]
@@ -63,7 +63,7 @@ class Manip(Component):
         self.x_velocity = poll[0]
         self.y_velocity = poll[1]
 
-        # Disregard very target velocities (< 10%)
+        # Disregard very small target velocities (< 10%)
         if(abs(self.y_velocity) < self.VELOCITY_IGNORE):
             self.y_velocity = 0
         if(abs(self.x_velocity) < self.VELOCITY_IGNORE):
@@ -114,6 +114,7 @@ class Manip(Component):
         self.wrist_angle_old = self.wrist_angle
 
         # Update clamp position
+        # TODO: make functionality better
         if(self.clamp):
             self.clamp_servo.angle = 130
         else:
@@ -128,9 +129,9 @@ class Manip(Component):
             self.chicken = not self.chicken
 
     def autoUpdate(self) -> None:
-        pass
+        raise NotImplementedError()
     
     def kill(self) -> None:
         for servo in MANIP_SERVOS.values():
-            servo.duty_cycle = 0
+            servo.angle = None
         Logger.log("Manipulator Servos Successfully Killed")

@@ -26,9 +26,9 @@ def initialize():
     """Initialize all relevant robot components/tools here"""
     Logger.createNewLog(purgeLogs)
     # create daemons
-    Client.startClient()
-    Server.startServer()
-    Cameras.start()
+    # Client.startClient()
+    # Server.startServer()
+    # Cameras.start()
 
     # initialize all components here
     components.append(Drive())

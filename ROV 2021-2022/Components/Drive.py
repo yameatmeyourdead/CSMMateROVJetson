@@ -15,6 +15,8 @@ class State(Enum):
 SQRT2 = sqrt(2)
 SQRT0_5 = sqrt(.5)
 
+CONTROLLER_DEADZONE = .1
+
 # azimuth plane thruster vectors
 THRUSTER_FRONT_LEFT_THRUST_VECTOR = Vector3f(-SQRT2/2, -SQRT2/2, 0)
 THRUSTER_FRONT_RIGHT_THRUST_VECTOR = Vector3f(SQRT2/2, -SQRT2/2, 0)
@@ -62,15 +64,15 @@ class Drive(Component):
         RS = Controller.getRightStick()
 
         # set deadzone
-        if(LS[0] < .1):
+        if(LS[0] < CONTROLLER_DEADZONE):
             LS[0] = 0
-        if(LS[1] < .1):
+        if(LS[1] < CONTROLLER_DEADZONE):
             LS[1] = 0
-        if(RS[0] < .1):
+        if(RS[0] < CONTROLLER_DEADZONE):
             RS[0] = 0
-        if(RS[1] < .1):
+        if(RS[1] < CONTROLLER_DEADZONE):
             RS[1] = 0
-
+        
         # if left stick was pressed, toggle drive state
         if(presses.ls):
             # if state is idle, do not update on left stick press
@@ -100,12 +102,13 @@ class Drive(Component):
             raise IllegalStateException("Drive is in undefined state")
     
     def autoUpdate(self) -> None:
-        if(self.state == State.translation):
-            pass
-        elif(self.state == State.rotation):
-            pass
-        else:
-            raise IllegalStateException("Drive is in undefined state")
+        raise NotImplementedError()
+        # if(self.state == State.translation):
+        #     pass
+        # elif(self.state == State.rotation):
+        #     pass
+        # else:
+        #     raise IllegalStateException("Drive is in undefined state")
     
     def kill(self) -> None:
         for thruster in THRUSTERS.values():
