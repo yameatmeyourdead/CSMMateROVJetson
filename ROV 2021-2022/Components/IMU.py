@@ -66,7 +66,7 @@ class IMU(Component):
                 return False
         else:
             return False
-    
+    # TODO: FIND OUT HOW THIS WORKS IN THIS LIBRARY
     # def setSensorOffsets(self, offsets:Tuple[str]):
     #     self.BNO055.offsets_accelerometer = offsets[0].replace('\n', '')
     #     self.BNO055.offsets_gyroscope = offsets[1].replace('\n', '')
