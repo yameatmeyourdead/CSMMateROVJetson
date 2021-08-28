@@ -1,9 +1,9 @@
-ensure movement still works
-ensure manipulator still works
+ensure movement still works [LOOKED OVER|LOOKS GOOD]
+ensure manipulator still works [LOOKED OVER|LOOKS GOOD]
 	debug grip mechanism to prevent unnecessary usage of servo
-understand quaternions
-implement IMU using aforementioned understanding of quaternions
-implement pressure detection/depth detection
+understand quaternions [STILL DONT UNDERSTAND]
+implement IMU using aforementioned understanding of quaternions [YEAH THERES AN IMPLEMENTATION NOW]
+implement pressure detection/depth detection [IMPLEMENTED]
 implement power monitoring
 overhaul networking
 implement proper control loops into movement system
