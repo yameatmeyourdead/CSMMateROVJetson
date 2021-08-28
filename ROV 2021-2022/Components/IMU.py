@@ -55,7 +55,7 @@ class IMU(Component):
         else:
             return False
 
-    # TODO: FIND OUT HOW THIS WORKS IN THIS LIBRARY    
+    # TODO: FIND OUT HOW THIS WORKS IN THIS LIBRARY
     def loadCalibration(self) -> bool:
         if os.path.exists("data\\BNO055_CALIBRATION_DATA.dat"):
             with open("data\\BNO055_CALIBRATION_DATA.dat", 'r') as f:
