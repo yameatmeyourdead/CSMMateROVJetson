@@ -4,25 +4,7 @@ from adafruit_motor import servo, stepper, motor
 
 _kit = ServoKit(channels=16, i2c=board.I2C())
 
-# THRUSTERS
-THRUSTER_FRONT_LEFT = _kit._items[0] = servo.ContinuousServo(_kit._pca.channels[0])
-THRUSTER_FRONT_RIGHT = _kit._items[1] = servo.ContinuousServo(_kit._pca.channels[1])
-THRUSTER_BACK_LEFT = _kit._items[2] = servo.ContinuousServo(_kit._pca.channels[2])
-THRUSTER_BACK_RIGHT = _kit._items[3] = servo.ContinuousServo(_kit._pca.channels[3])
-THRUSTER_Z_0 = _kit._items[4] = servo.ContinuousServo(_kit._pca.channels[4])
-THRUSTER_Z_1 = _kit._items[5] = servo.ContinuousServo(_kit._pca.channels[5])
-THRUSTER_Z_2 = _kit._items[6] = servo.ContinuousServo(_kit._pca.channels[6])
-THRUSTER_Z_3 = _kit._items[7] = servo.ContinuousServo(_kit._pca.channels[7])
-THRUSTERS = {
-    "THRUSTER_FRONT_LEFT": THRUSTER_FRONT_LEFT, 
-    "THRUSTER_FRONT_RIGHT": THRUSTER_FRONT_RIGHT, 
-    "THRUSTER_BACK_LEFT": THRUSTER_BACK_LEFT, 
-    "THRUSTER_BACK_RIGHT": THRUSTER_BACK_RIGHT, 
-    "THRUSTER_Z_0": THRUSTER_Z_0, 
-    "THRUSTER_Z_1": THRUSTER_Z_1, 
-    "THRUSTER_Z_2": THRUSTER_Z_2, 
-    "THRUSTER_Z_3": THRUSTER_Z_3
-}
+# Thrusters are defined in Components.Drive
 
 # MANIPULATOR
 MANIP_ELBOW_SERVO_2 = _kit._items[8] = servo.Servo(_kit._pca.channels[8])

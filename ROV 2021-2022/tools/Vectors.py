@@ -60,7 +60,7 @@ class Vector3f:
         return self.__getattribute__(chr(ord('i') + item))
     
     def __str__(self):
-        return f"({self.i}, {self.j}, {self.k})"
+        return f"[{self.i}, {self.j}, {self.k}]"
     
     def __neg__(self):
         return Vector3f(-self.i, -self.j, -self.k)

@@ -1,0 +1,44 @@
+{
+    "thrusters": [
+        {
+            "ID": 0,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[0.7071067811865476, -0.7071067811865476, 0]"
+        },
+        {
+            "ID": 1,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[0.7071067811865476, 0.7071067811865476, 0]"
+        },
+        {
+            "ID": 2,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[-0.7071067811865476, 0.7071067811865476, 0]"
+        },
+        {
+            "ID": 3,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[-0.7071067811865476, -0.7071067811865476, 0]"
+        },
+        {
+            "ID": 4,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[0, 0, 1]"
+        },
+        {
+            "ID": 5,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[0, 0, 1]"
+        },
+        {
+            "ID": 6,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[0, 0, 1]"
+        },
+        {
+            "ID": 7,
+            "positionVector": "[0.0, 0.0, 0.0]",
+            "thrustVector": "[0, 0, 1]"
+        }
+    ]
+}

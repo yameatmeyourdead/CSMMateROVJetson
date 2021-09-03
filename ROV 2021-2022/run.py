@@ -1,6 +1,5 @@
-from tools.Logger import createNewLog
+from tools import Logger
+Logger.createNewLog()
 
-createNewLog()
-
-from tools.network import Client
-Client.main()
+from Components.Drive import run
+run()
