@@ -2,6 +2,7 @@ import os
 from typing import Tuple
 from Components import Component
 from tools import Logger
+import time
 import board
 import adafruit_bno055
 
@@ -9,11 +10,16 @@ class IMU(Component):
     """Implementation of 9-axis BNO055 IMU and Depth Sensor for Translational/Rotational Velocity Calculations and Rotational Orientation"""
     def __init__(self) -> None:
         self.BNO055 = adafruit_bno055.BNO055_I2C(board.I2C())
+        self.calibrate()
     
-    @staticmethod
-    def calibrateGyro():
-        Logger.log("Calibrating Gyroscope, ensure this occured at a time when robot is completely still")
-        # TODO: IMPLEMENT
+    def calibrate(self):
+        Logger.log("Calibrating IMU, ensure this occured at a time when robot is completely still")
+        last = time.time()
+        while(not self.BNO055.calibrated):
+            if(time.time() - last >= 1):
+                results = self.BNO055.calibration_status
+                print(f"\n\nSys status: {results[0]}\nGyro status: {results[1]}\nAccel status: {results[2]}\nMagn status: {results[3]}")
+            pass
     
     def getTemp(self):
         return self.BNO055.temperature
