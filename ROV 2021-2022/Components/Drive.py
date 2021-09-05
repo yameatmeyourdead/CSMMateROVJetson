@@ -1,7 +1,5 @@
 import Components.PCA9685 as PCA9685
-from enum import Enum
 from tools import Logger, Controller
-from tools.IllegalStateException import IllegalStateException
 from tools.Vectors import Vector3f
 from Components.Component import Component
 import time
@@ -31,7 +29,7 @@ def expectedThrust(throttle):
 
 # function to simplify getting time in ms
 def time_ms():
-    return time.time_ns() / 1000000
+    return time.time_ns() / 1e6
 
 class ThrusterConfiguration:
     def __init__(self, size) -> None:
@@ -121,19 +119,19 @@ class Drive(Component):
         self.debug = debug
         self.thrusterConfiguration:"ThrusterConfiguration" = thrusterConfiguration
 
-        self.linear_position = Vector3f()
-        self.angular_position = Vector3f()
+        self.linear_position = Vector3f() # TODO: how to implement X/Y tracking
+        self.angular_position = Vector3f() # TODO: change to imu's quaternions?
         self.linear_velocity = Vector3f()
         self.angular_velocity = Vector3f()
-        self.moment_of_inertia = Vector3f()
+        self.moment_of_inertia = Vector3f() # tau = I * alpha
 
         self.mass = 0 # TODO: GET MASS ESTIMATE
 
-        self.setPointTranslation = Vector3f()
+        self.setPointTranslation = Vector3f() # TODO: IMPLEMENT
         self.setPointRotation = Vector3f()
 
         self.KP = 0
-        self.KI = 0
+        self.KI = 0 # TODO: CALIBRATE
         self.KD = 0
 
         self.error = Vector3f() # desired - actual
@@ -168,7 +166,7 @@ class Drive(Component):
         self.t = time_ms()
         dt = self.t - self.t_last
         
-        # update control signals here
+        # TODO: update control signals here
     
     def autoUpdate(self):
         self.update()
