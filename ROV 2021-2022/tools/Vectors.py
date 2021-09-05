@@ -8,8 +8,18 @@ class Vector3f:
     
     @classmethod
     def fromComponents(cls, tupl3):
-        cls(tupl3[0], tupl3[1], tupl3[2])
+        return cls(tupl3[0], tupl3[1], tupl3[2])
     
+    @classmethod
+    def fromMagnitudeAndDirection(cls, mag, direc:"Vector3f"):
+        return cls(mag*direc.i, mag*direc.j, mag*direc.k)
+    
+    def toUnitVector(self):
+        mag = self.getMagnitude()
+        self.i = self.i/mag
+        self.j = self.j/mag
+        self.k = self.k/mag
+
     def setComponents(self, tupl3: tuple):
         self.i = tupl3[0]
         self.j = tupl3[1]
@@ -36,7 +46,7 @@ class Vector3f:
         """get the cross product of two vectors, specifically a x b"""
         return Vector3f(a.j*b.k - a.k*b.j, a.k*b.i - a.i*b.k, a.i*b.j - a.j*b.i)
 
-    # overload basic operators (more complex operators do not make sense to implement)
+    # overload basic operators
     def __add__(self, o:'Vector3f'):
         return Vector3f(self.i + o.i, self.j + o.j, self.k + o.k)
 
@@ -53,7 +63,7 @@ class Vector3f:
         return Vector3f(self.i // o, self.j // o, self.k // o)
     
     def __pow__(self, o:float):
-        return abs((self.i**2 + self.j**2 + self.k**2) ** .5)
+        return Vector3f(self.i ** o, self.j ** o, self.k ** o)
     
     def __getitem__(self, item):
         """allow Vector3f to be subscriptable (kinda jank implementation) TODO: literally change data structure lmoa <- annoying and im not going to"""

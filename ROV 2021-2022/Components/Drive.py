@@ -25,127 +25,153 @@ THRUSTER_Z1_META = (Vector3f(), Vector3f(0, 0, 1))
 THRUSTER_Z2_META = (Vector3f(), Vector3f(0, 0, 1))
 THRUSTER_Z3_META = (Vector3f(), Vector3f(0, 0, 1))
 
+# function to define expected thrust given a throttle
+def expectedThrust(throttle):
+    return 3.68 * (throttle) * (throttle) * (throttle) + 0.839 * (throttle) * (throttle) + 2.5(throttle) - .0186
+
+# function to simplify getting time in ms
+def time_ms():
+    return time.time_ns() / 1000000
+
 class ThrusterConfiguration:
     def __init__(self, size) -> None:
         super().__init__()
         assert(size != 0), "Thruster Configuration cannot have 0 thrusters"
-        self.size = size
-        self.thrusters:List["Thruster"] = [None for i in range(size)]
+        self._size = size
+        self._thrusters:List["Thruster"] = [None for i in range(size)]
 
     @classmethod
     def fromThrusters(cls, *args:"Thruster") -> "ThrusterConfiguration":
         toRet = cls(len(args))
         for thruster in args:
-            toRet.thrusters[thruster.ID] = thruster
+            toRet._thrusters[thruster.ID] = thruster
         return toRet
     
     @classmethod
     def fromConfigFile(cls, path="data/DefaultThrusterConfig.dat") -> "ThrusterConfiguration":
         with open(path, 'r') as f:
             rep = loads(''.join(f.readlines()).replace('\n', '')) # get data from file and get dictionary representation
+        return cls.fromThrusters(rep["thrusters"])
     
     def toConfigFile(self, path="data/DefaultThrusterConfig.dat") -> None:
         thrusterRep = {"thrusters":[]}
-        for thruster in self.thrusters:
+        for thruster in self._thrusters:
             thrusterRep["thrusters"].append(thruster.toDict())
         with open(path, 'w') as f:
             f.write(dumps(thrusterRep, sort_keys=True, indent=4))
 
     def getSize(self) -> int:
-        return self.size
+        return self._size
     
-    def killAllThrusters(self):
-        for thruster in self.thrusters:
+    def setThrusterThrottle(self, thruster, throttle) -> None:
+        self[thruster].throttle = throttle
+    
+    def getThrusters(self) -> List["Thruster"]:
+        return self._thrusters
+
+    def killAllThrusters(self) -> None:
+        for thruster in self._thrusters:
             thruster.kill()
 
     def __getitem__(self, item) -> Any:
-        return self.thrusters[item]
+        return self._thrusters[item]
     
     def __setitem__(self, item, val) -> None:
-        self.thrusters[item] = val
+        self._thrusters[item] = val
 
 class Thruster:
     def __init__(self, ID:int, vectors:Tuple[Vector3f, Vector3f]=None, thrustVector:Vector3f=None, positionVector:Vector3f=None) -> None:
         self.ID = ID # ID of thruster (corresponds to PWM Out on PCA9685)
+
         # Create PWM object from ID
         PCA9685._kit._items[ID] = PCA9685.servo.ContinuousServo(PCA9685._kit._pca.channels[ID])
-        PCA9685._kit._items[ID].set_pulse_width_range(1200,2000)
-        self.thrusterPWM = PCA9685._kit._items[ID]
+        PCA9685._kit._items[ID].set_pulse_width_range(1200,2000) # should be 1100,1900 but it dont work properly like that
+        self.thrusterPWM:PCA9685.servo.ContinuousServo = PCA9685._kit._items[ID]
 
         # store/calculate important vectors
         if(vectors is not None):
             positionVector = vectors[0]
             thrustVector = vectors[1]
 
-        self.thrustVector = thrustVector
+        self.thrustUnitVector = thrustVector.toUnitVector()
         self.positionVector = positionVector
-        self.torqueVector = Vector3f.cross(self.positionVector, self.thrustVector) # no need to calculate this multiple times, just do it once
+        self.torqueUnitVector = Vector3f.cross(self.positionVector, self.thrustUnitVector).toUnitVector() # no need to calculate this multiple times, just do it once
     
     @classmethod
     def fromString(cls, string):
         components = loads(string)
         return cls(components["ID"], components["thrustVector"], components["positionVector"])
 
-    def kill(self):
+    def kill(self) -> None:
         self.thrusterPWM.throttle = 0
 
     def __str__(self):
-        return f'{{\n\t"ID":{self.ID},\n\t"thrustVector":{self.thrustVector},\n\t"positionVector":{self.positionVector}\n}}'
+        return f'{{\n\t"ID":{self.ID},\n\t"thrustVector":{self.thrustUnitVector},\n\t"positionVector":{self.positionVector}\n}}'
     
     def toDict(self):
-        return {"ID":self.ID, "thrustVector":str(self.thrustVector), "positionVector":str(self.positionVector)}
+        return {"ID":self.ID, "thrustVector":str(self.thrustUnitVector), "positionVector":str(self.positionVector)}
 
+G = 9.81
 
 class Drive(Component):
-    def __init__(self, thrusterConfiguration=ThrusterConfiguration.fromConfigFile(), debug=False):
-        # set variable defaults
+    def __init__(self, thrusterConfiguration=ThrusterConfiguration.fromConfigFile(), debug=False) -> None:
+        self.started = False
+        self.killed = False
+
         self.debug = debug
-        self.velocity_mod = 1
-        self.idle = False
         self.thrusterConfiguration:"ThrusterConfiguration" = thrusterConfiguration
-        self.trgt_velocity = Vector3f()
-        self.trgt_angular_velocity = Vector3f()
-        self.thruster_events = [0 for x in range(8)] # list of events for indexed thruster
-        self.now = 0
-        self.last = time.time_ns() / 1000000 # TODO: this does not ensure startup PID spike is removed (it should help but not by much)
-        Logger.log("Drive Constructed")
 
-    def setSpeedLimit(self, limit) -> None:
-        if(limit > 1):
-            self.velocity_mod = 1
+        self.linear_position = Vector3f()
+        self.angular_position = Vector3f()
+        self.linear_velocity = Vector3f()
+        self.angular_velocity = Vector3f()
+        self.moment_of_inertia = Vector3f()
+
+        self.mass = 0 # TODO: GET MASS ESTIMATE
+
+        self.setPointTranslation = Vector3f()
+        self.setPointRotation = Vector3f()
+
+        self.KP = 0
+        self.KI = 0
+        self.KD = 0
+
+        self.error = Vector3f() # desired - actual
+        self.error_last = Vector3f() # used for derivative: (error-error_last)/dt
+        self.error_accumulated = Vector3f() # used for integral: error_accumulated += error * dt
+
+        self.t = 0.0
+        self.t_last = 0.0
+    
+    def control_thrust(self):
+        f = Vector3f()
+        for thruster in self.thrusterConfiguration.getThrusters():
+            f += Vector3f.fromMagnitudeAndDirection(expectedThrust(thruster.thrusterPWM.throttle), thruster.thrustUnitVector)
+        return f
+
+    def control_torque(self):
+        # calculate torque applied about COM due to speed of all thrusters
+        t = Vector3f()
+        for thruster in self.thrusterConfiguration.getThrusters():
+            t += Vector3f.fromMagnitudeAndDirection(expectedThrust(thruster.thrusterPWM.throttle), thruster.torqueUnitVector)
+        return t
+
+
+    def start(self):
+        assert(self.started == False), "Cannot start PID; it is already started"
+        self.started = True
+        self.t_last = time_ms()
+
+    def update(self):
+        if(self.killed or not self.started):
             return
-        self.velocity_mod = limit
-
-    def update(self) -> None:
-        self.now = time.time_ns() / 1000000 # get time in ms
-        # get controller's presses/stick positions
-        presses = Controller.getButtonPresses()
-        LS = Controller.getLeftStick()
-        RS = Controller.getRightStick()
-
-        # set deadzone
-        if(LS[0] < CONTROLLER_DEADZONE):
-            LS[0] = 0
-        if(LS[1] < CONTROLLER_DEADZONE):
-            LS[1] = 0
-        if(RS[0] < CONTROLLER_DEADZONE):
-            RS[0] = 0
-        if(RS[1] < CONTROLLER_DEADZONE):
-            RS[1] = 0
-
-        # TODO: IMPLEMENT PID
+        self.t = time_ms()
+        dt = self.t - self.t_last
+        
+        # update control signals here
     
-    def autoUpdate(self) -> None:
-        raise NotImplementedError()
-        # if(self.state == State.translation):
-        #     pass
-        # elif(self.state == State.rotation):
-        #     pass
-        # else:
-        #     raise IllegalStateException("Drive is in undefined state")
+    def autoUpdate(self):
+        self.update()
     
-    def kill(self) -> None:
+    def kill(self):
         self.thrusterConfiguration.killAllThrusters()
-        Logger.log("Drive Thrusters Successfully Killed")
-
-
