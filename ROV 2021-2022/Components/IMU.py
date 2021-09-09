@@ -1,6 +1,6 @@
 import os
 from typing import Tuple
-from Components import Component
+from Components.Component import Component
 from tools import Logger
 import time
 import board
