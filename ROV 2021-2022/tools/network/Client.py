@@ -66,10 +66,10 @@ def startClient():
     clientThread.setDaemon(True)
     clientThread.start()
 
-def main():
-    startClient()
-    import cv2
-    cam = cv2.VideoCapture(1)
-    cameraIdent = 0
-    while True:
-        sendQueue.put((messageType.camera.value, (cameraIdent, cam.read()[1])))
+# def main():
+#     startClient()
+#     import cv2
+#     cam = cv2.VideoCapture(1)
+#     cameraIdent = 0
+#     while True:
+#         sendQueue.put((messageType.camera.value, (cameraIdent, cam.read()[1])))
