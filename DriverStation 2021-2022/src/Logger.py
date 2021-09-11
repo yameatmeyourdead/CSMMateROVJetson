@@ -4,7 +4,7 @@ import os
 import threading
 
 # Path to Current log
-CURRENTLOG = ""
+CURRENTLOG = os.path.join(".", "Logs", "latest")
 
 def getTime():
     """Return _ delimited 24hr time"""

@@ -12,7 +12,7 @@ from OpenGL.GLUT import fonts
 from pyopengltk import OpenGLFrame
 import psutil
 from multiprocessing import Queue
-from tools.network import Client
+from src.network import Client
 
 HEIGHT = 720
 WIDTH = 1280
