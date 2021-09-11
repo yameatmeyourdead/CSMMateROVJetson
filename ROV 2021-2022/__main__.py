@@ -4,7 +4,7 @@ from Components.Drive import Drive
 from Components.Manipulator import Manipulator
 from tools import Logger, Controller
 from tools.IllegalStateException import IllegalStateException
-from tools.network import Client, Server
+from Network import Client, Server
 from Components import Cameras
 from enum import Enum
 from traceback import format_exc
